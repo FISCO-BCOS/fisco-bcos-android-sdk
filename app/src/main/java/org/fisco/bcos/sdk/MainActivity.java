@@ -9,6 +9,7 @@ import com.google.common.util.concurrent.RateLimiter;
 
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
+import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.abi.tools.TopicTools;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
@@ -48,10 +49,26 @@ public class MainActivity extends AppCompatActivity {
         Logger logger = Logger.getLogger(MainActivity.class);
         final String ConfigFilePath = Environment.getExternalStorageDirectory().getPath() + "/javasdk/config.toml";
         BcosSDK sdk = BcosSDK.build(ConfigFilePath);
-        testDeployAndSendTx(sdk, logger);
-        //testSubscribeEvent(sdk, logger);
-        //testECRecover(sdk, logger);
-        //testPerformanceOk(sdk, 1000, 10, 1);
+
+        // HelloWorldProxy
+        try {
+            Client client = sdk.getClient(1);
+            NodeVersion nodeVersion = client.getClientNodeVersion();
+            logger.info("node version: " + JsonUtils.toJson(nodeVersion));
+            HelloWorldProxy sol = HelloWorldProxy.deploy(client, client.getCryptoSuite().getCryptoKeyPair(), "Hello world.");
+            logger.info("deploy contract , contract address: " + JsonUtils.toJson(sol.getContractAddress()));
+            TransactionReceipt ret1 = sol.set("Hello, FISCO BCOS.");
+            logger.info("send, receipt: " + JsonUtils.toJson(ret1));
+            String ret2 = sol.get();
+            logger.info("call to return string, result: " + ret2);
+            List<String> ret3 = sol.getList();
+            logger.info("call to return list, result: " + JsonUtils.toJson(ret3));
+            Tuple2<String, BigInteger> ret4 = sol.getTuple();
+            logger.info("call to return tuple, result: " + JsonUtils.toJson(ret4));
+        } catch (Exception e) {
+            logger.error("error info: " + e.getMessage());
+        }
+
         try {
             Thread.sleep(3000);
         } catch (Exception e) {
