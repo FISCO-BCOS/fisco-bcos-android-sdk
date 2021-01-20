@@ -7,6 +7,7 @@ import android.os.Environment;
 
 import com.google.common.util.concurrent.RateLimiter;
 
+import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerImp;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         BcosSDKLogUtil.configLog(Environment.getExternalStorageDirectory().getPath(), Level.TRACE);
         Logger logger = Logger.getLogger(MainActivity.class);
         final String ConfigFilePath = Environment.getExternalStorageDirectory().getPath() + "/javasdk/config.toml";
-        BcosSDK sdk = BcosSDK.build(ConfigFilePath);
+        // 传入网络请求实现，创建用于访问Proxy的BCOSSDK
+        BcosSDKForProxy sdk = BcosSDKForProxy.build(ConfigFilePath, new NetworkHandlerImp());
 
         // HelloWorldProxy
         try {

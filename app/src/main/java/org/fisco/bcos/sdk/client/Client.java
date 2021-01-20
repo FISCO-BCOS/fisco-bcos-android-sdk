@@ -15,10 +15,20 @@
 
 package org.fisco.bcos.sdk.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.channel.Channel;
+import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
+import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
 import org.fisco.bcos.sdk.client.protocol.response.BcosBlock;
 import org.fisco.bcos.sdk.client.protocol.response.BcosBlockHeader;
@@ -52,14 +62,19 @@ import org.fisco.bcos.sdk.client.protocol.response.SystemConfig;
 import org.fisco.bcos.sdk.client.protocol.response.TotalTransactionCount;
 import org.fisco.bcos.sdk.client.protocol.response.TransactionReceiptWithProof;
 import org.fisco.bcos.sdk.client.protocol.response.TransactionWithProof;
+import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.eventsub.EventResource;
+import org.fisco.bcos.sdk.model.CryptoType;
+import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.service.GroupManagerService;
+import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
 
 /**
  * This is the interface of client module.
@@ -115,6 +130,34 @@ public interface Client {
 
     static Client build(Channel channel) {
         return new ClientImpl(channel);
+    }
+
+    static Client build(Integer groupId,
+                        JsonRpcServiceForProxy jsonRpcServiceForProxy,
+                        ConfigOption configOption) {
+        // get crypto type from nodeVersion
+        Integer cryptoType = CryptoType.ECDSA_TYPE;
+        NodeVersion nodeVersion;
+        JsonRpcRequest jsonRpcService = new JsonRpcRequest(JsonRpcMethods.GET_NODE_VERSION, Arrays.asList(groupId));
+        String responseStr = jsonRpcServiceForProxy.sendRequestToGroup(jsonRpcService);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map responseMap = objectMapper.readValue(responseStr, Map.class);
+            if ((int)responseMap.get("code") == NetworkResponseCode.SuccessCode) {
+                Map dataMap = (Map)responseMap.get("data");
+                nodeVersion = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), NodeVersion.class);
+                if (nodeVersion.getNodeVersion().getVersion().contains("gm")) {
+                    cryptoType = CryptoType.SM_TYPE;
+                }
+                CryptoSuite cryptoSuite = new CryptoSuite(cryptoType, configOption);
+                return new ClientImplForProxy(groupId, cryptoSuite, nodeVersion, jsonRpcServiceForProxy);
+            } else {
+                logger.error("get node version failed, error info: " + (String)responseMap.get("message"));
+            }
+        } catch (Exception e) {
+            logger.error("build client failed, error info: " + e.getMessage());
+        }
+        return null;
     }
 
     GroupManagerService getGroupManagerService();
@@ -890,6 +933,8 @@ public interface Client {
      * @return EventResource
      */
     EventResource getEventResource();
+
+    void start();
 
     void stop();
 }

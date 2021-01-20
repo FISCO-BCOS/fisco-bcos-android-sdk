@@ -37,9 +37,11 @@ public class JsonRpcService {
     protected final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
     private static Logger logger = LoggerFactory.getLogger(JsonRpcService.class);
 
-    private final GroupManagerService groupManagerService;
-    public final Channel channel;
-    private final Integer groupId;
+    protected GroupManagerService groupManagerService;
+    public Channel channel;
+    protected Integer groupId;
+
+    public JsonRpcService() {}
 
     public JsonRpcService(
             GroupManagerService groupManagerService, Channel channel, Integer groupId) {
