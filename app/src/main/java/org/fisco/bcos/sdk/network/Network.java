@@ -15,21 +15,25 @@
 
 package org.fisco.bcos.sdk.network;
 
-import io.netty.channel.ChannelHandlerContext;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 import org.fisco.bcos.sdk.model.Message;
 
-/** Network interface Modules interact with the network module through this interface. */
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+
+import io.netty.channel.ChannelHandlerContext;
+
+/**
+ * Network interface Modules interact with the network module through this interface.
+ */
 public interface Network {
     /**
      * Init network module
      *
      * @param configOption the path of the yaml config file
-     * @param handler message handler
+     * @param handler      message handler
      * @return a Network implementation instance
      * @throws ConfigException the configuration exception
      */
@@ -51,7 +55,7 @@ public interface Network {
     /**
      * Send to peer
      *
-     * @param out the sent message
+     * @param out        the sent message
      * @param peerIpPort the node to receive the message
      * @throws NetworkException the network exception
      */
@@ -92,6 +96,8 @@ public interface Network {
      */
     void setMsgHandleThreadPool(ExecutorService threadPool);
 
-    /** Exit gracefully */
+    /**
+     * Exit gracefully
+     */
     void stop();
 }

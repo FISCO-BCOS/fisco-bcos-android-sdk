@@ -16,7 +16,9 @@
 package org.fisco.bcos.sdk.eventsub.filter;
 
 public enum EventSubNodeRespStatus {
-    /** When make a subscribe of an event, the node would response the status. */
+    /**
+     * When make a subscribe of an event, the node would response the status.
+     */
     SUCCESS(0),
     PUSH_COMPLETED(1),
     INVALID_PARAMS(-41000),
@@ -34,14 +36,6 @@ public enum EventSubNodeRespStatus {
 
     private EventSubNodeRespStatus(int status) {
         this.setStatus(status);
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public static EventSubNodeRespStatus fromIntStatus(int status) {
@@ -89,13 +83,20 @@ public enum EventSubNodeRespStatus {
             case SDK_PERMISSION_DENIED:
                 desc = "the SDK is not allowed to access this group.";
                 break;
-            default:
-                {
-                    desc = "other errors";
-                    break;
-                }
+            default: {
+                desc = "other errors";
+                break;
+            }
         }
 
         return desc;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

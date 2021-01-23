@@ -16,10 +16,7 @@
 package org.fisco.bcos.sdk.amop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+
 import org.fisco.bcos.sdk.amop.exception.AmopException;
 import org.fisco.bcos.sdk.amop.topic.AmopMsgHandler;
 import org.fisco.bcos.sdk.amop.topic.TopicManager;
@@ -41,6 +38,11 @@ import org.fisco.bcos.sdk.model.Response;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Amop implement

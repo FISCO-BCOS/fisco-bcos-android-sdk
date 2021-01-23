@@ -14,13 +14,6 @@
  */
 package org.fisco.bcos.sdk.transaction.codec.decode;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
@@ -45,11 +38,16 @@ import org.fisco.bcos.sdk.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class TransactionDecoderService implements TransactionDecoderInterface {
     protected static Logger logger = LoggerFactory.getLogger(TransactionDecoderService.class);
-
-    private CryptoSuite cryptoSuite;
     private final ABICodec abiCodec;
+    private CryptoSuite cryptoSuite;
     private EventEncoder eventEncoder;
 
     /**
@@ -214,12 +212,16 @@ public class TransactionDecoderService implements TransactionDecoderInterface {
         return methodSign.toString();
     }
 
-    /** @return the cryptoSuite */
+    /**
+     * @return the cryptoSuite
+     */
     public CryptoSuite getCryptoSuite() {
         return cryptoSuite;
     }
 
-    /** @param cryptoSuite the cryptoSuite to set */
+    /**
+     * @param cryptoSuite the cryptoSuite to set
+     */
     public void setCryptoSuite(CryptoSuite cryptoSuite) {
         this.cryptoSuite = cryptoSuite;
     }

@@ -13,9 +13,10 @@
  */
 package org.fisco.bcos.sdk.transaction.model.exception;
 
-import java.util.Objects;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
+
+import java.util.Objects;
 
 public class ContractException extends Exception {
     private Call.CallOutput responseOutput = null;
@@ -55,16 +56,16 @@ public class ContractException extends Exception {
         return this.responseOutput;
     }
 
+    public void setResponseOutput(Call.CallOutput responseOutput) {
+        this.responseOutput = responseOutput;
+    }
+
     public int getErrorCode() {
         return errorCode;
     }
 
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
-    }
-
-    public void setResponseOutput(Call.CallOutput responseOutput) {
-        this.responseOutput = responseOutput;
     }
 
     public TransactionReceipt getReceipt() {

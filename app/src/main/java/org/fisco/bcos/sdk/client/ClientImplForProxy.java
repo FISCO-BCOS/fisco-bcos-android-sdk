@@ -13,17 +13,8 @@
  */
 package org.fisco.bcos.sdk.client;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
@@ -36,14 +27,20 @@ import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 public class ClientImplForProxy extends ClientImpl {
 
+    private static long getBlockNumberInterval = 60000;
+    private static BigInteger blockLimit = BigInteger.valueOf(500);
     private JsonRpcServiceForProxy jsonRpcServiceForProxy;
-
     private BigInteger curBlockNum = BigInteger.ZERO;
     private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
-    private static long getBlockNumberInterval = 2000;
-    private static BigInteger blockLimit = BigInteger.valueOf(500);
 
     public ClientImplForProxy(
             Integer groupId,
@@ -63,7 +60,7 @@ public class ClientImplForProxy extends ClientImpl {
     }
 
     private void startPeriodTask() {
-        // periodically getBlockNumber, default period : 2s
+        // periodically updateBlockNumber, default period : 60s
         scheduledExecutorService.scheduleAtFixedRate(
                 () -> updateBlockNumber(), 0, getBlockNumberInterval, TimeUnit.MILLISECONDS);
     }
@@ -86,10 +83,10 @@ public class ClientImplForProxy extends ClientImpl {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int)responseMap.get("code");
+            code = (int) responseMap.get("code");
             message = (String) responseMap.get("message");
             if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map)responseMap.get("data");
+                Map dataMap = (Map) responseMap.get("data");
                 nodeVersion = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), NodeVersion.class);
             } else {
                 logger.error("get node version failed, error info: " + message);
@@ -119,10 +116,10 @@ public class ClientImplForProxy extends ClientImpl {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int)responseMap.get("code");
+            code = (int) responseMap.get("code");
             message = (String) responseMap.get("message");
             if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map)responseMap.get("data");
+                Map dataMap = (Map) responseMap.get("data");
                 blockNumber = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), BlockNumber.class);
             } else {
                 logger.error("get block number failed, error info: " + message);
@@ -165,11 +162,11 @@ public class ClientImplForProxy extends ClientImpl {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int)responseMap.get("code");
+            code = (int) responseMap.get("code");
             message = (String) responseMap.get("message");
             if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map)responseMap.get("data");
-                Map resultMap = (Map)dataMap.get("result");
+                Map dataMap = (Map) responseMap.get("data");
+                Map resultMap = (Map) dataMap.get("result");
                 receipt = objectMapper.readValue(objectMapper.writeValueAsString(resultMap), TransactionReceipt.class);
             } else {
                 logger.error("sendRawTransactionAndGetReceiptByProxy failed, error info: " + message);
@@ -198,10 +195,10 @@ public class ClientImplForProxy extends ClientImpl {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int)responseMap.get("code");
+            code = (int) responseMap.get("code");
             message = (String) responseMap.get("message");
             if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map)responseMap.get("data");
+                Map dataMap = (Map) responseMap.get("data");
                 callResult = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), Call.class);
             } else {
                 logger.error("callByProxy failed, error info: " + message);

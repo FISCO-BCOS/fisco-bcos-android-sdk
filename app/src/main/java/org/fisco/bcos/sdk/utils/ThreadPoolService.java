@@ -13,14 +13,15 @@
  */
 package org.fisco.bcos.sdk.utils;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ThreadPoolService {
     private static final Logger logger = LoggerFactory.getLogger(ThreadPoolService.class);
@@ -61,14 +62,6 @@ public class ThreadPoolService {
                         new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
-    public ExecutorService getThreadPool() {
-        return threadPool;
-    }
-
-    public void stop() {
-        stopThreadPool(threadPool);
-    }
-
     public static void stopThreadPool(ExecutorService threadPool) {
         threadPool.shutdown();
         try {
@@ -80,5 +73,13 @@ public class ThreadPoolService {
             threadPool.shutdownNow();
             Thread.currentThread().interrupt();
         }
+    }
+
+    public ExecutorService getThreadPool() {
+        return threadPool;
+    }
+
+    public void stop() {
+        stopThreadPool(threadPool);
     }
 }

@@ -1,13 +1,13 @@
 package org.fisco.bcos.sdk.abi;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.fisco.bcos.sdk.abi.datatypes.Event;
 import org.fisco.bcos.sdk.abi.datatypes.Type;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.fisco.bcos.sdk.utils.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ethereum filter encoding. Further limited details are available <a
@@ -52,12 +52,16 @@ public class EventEncoder {
         return Numeric.toHexString(hash);
     }
 
-    /** @return the cryptoSuite */
+    /**
+     * @return the cryptoSuite
+     */
     public CryptoSuite getCryptoSuite() {
         return cryptoSuite;
     }
 
-    /** @param cryptoSuite the cryptoSuite to set */
+    /**
+     * @param cryptoSuite the cryptoSuite to set
+     */
     public void setCryptoSuite(CryptoSuite cryptoSuite) {
         this.cryptoSuite = cryptoSuite;
     }

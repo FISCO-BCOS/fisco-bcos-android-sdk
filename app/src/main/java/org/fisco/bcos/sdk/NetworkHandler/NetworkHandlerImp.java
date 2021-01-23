@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,10 +17,10 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
 
     @Override
     public String onRPCRequestCallback(String input) {
-        logger.trace("onRPCRequestCallback http request body:" + input);
+        logger.trace("onRPCRequestCallback http request body: " + input);
 
         OkHttpClient okHttpClient = new OkHttpClient();
-        final String URL = "http://116.63.184.110:8171/Bcos-node-proxy/rpc/v1";
+        final String URL = "http://127.0.0.1:8170/Bcos-node-proxy/rpc/v1";
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         RequestBody requestBody = RequestBody.create(JSON, input);
         Request request = new Request.Builder()
@@ -33,7 +31,7 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 String body = response.body().string();
-                logger.info("onRPCRequestCallback http response body : " + body);
+                logger.info("onRPCRequestCallback http response body: " + body);
                 return body;
             }
         } catch (IOException e) {

@@ -1,8 +1,9 @@
 package org.fisco.bcos.sdk.abi.datatypes.generated;
 
-import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.StaticArray;
 import org.fisco.bcos.sdk.abi.datatypes.Type;
+
+import java.util.List;
 
 /**
  * Auto generated code.

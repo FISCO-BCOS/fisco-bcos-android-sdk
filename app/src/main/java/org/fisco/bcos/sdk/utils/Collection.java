@@ -16,7 +16,9 @@ package org.fisco.bcos.sdk.utils;
 import java.util.Arrays;
 import java.util.List;
 
-/** Utility functions for working with Collections. */
+/**
+ * Utility functions for working with Collections.
+ */
 public class Collection {
     private static String[] EMPTY_STRING_ARRAY = {};
 

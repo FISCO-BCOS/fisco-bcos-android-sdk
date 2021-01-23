@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/** Fixed size array. */
+/**
+ * Fixed size array.
+ */
 public abstract class Array<T extends Type> implements Type<List<T>> {
 
-    private String type;
     protected final List<T> value;
+    private String type;
 
     @SafeVarargs
     Array(String type, T... values) {

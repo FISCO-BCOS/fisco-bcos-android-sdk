@@ -15,7 +15,9 @@ package org.fisco.bcos.sdk.transaction.model.exception;
 
 import org.fisco.bcos.sdk.model.RetCode;
 
-/** BaseException. */
+/**
+ * BaseException.
+ */
 public class TransactionBaseException extends Exception {
 
     private static final long serialVersionUID = 1L;

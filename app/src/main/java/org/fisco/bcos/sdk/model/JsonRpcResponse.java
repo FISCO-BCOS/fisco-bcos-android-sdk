@@ -73,7 +73,8 @@ public class JsonRpcResponse<T> {
         private String message;
         private String data;
 
-        public Error() {}
+        public Error() {
+        }
 
         public Error(int code, String message) {
             this.code = code;

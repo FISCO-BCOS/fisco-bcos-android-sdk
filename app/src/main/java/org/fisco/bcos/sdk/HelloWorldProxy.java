@@ -1,9 +1,5 @@
 package org.fisco.bcos.sdk;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.FunctionEncoder;
 import org.fisco.bcos.sdk.abi.FunctionReturnDecoder;
 import org.fisco.bcos.sdk.abi.TypeReference;
@@ -23,6 +19,11 @@ import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.utils.StringUtils;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class HelloWorldProxy extends Contract {
@@ -54,67 +55,6 @@ public class HelloWorldProxy extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public TransactionReceipt set(String n) {
-        final Function function = new Function(
-                FUNC_SET, 
-                Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Utf8String(n)), 
-                Collections.<TypeReference<?>>emptyList());
-        return executeTransaction(function);
-    }
-
-    public void set(String n, TransactionCallback callback) {
-        final Function function = new Function(
-                FUNC_SET, 
-                Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Utf8String(n)), 
-                Collections.<TypeReference<?>>emptyList());
-        asyncExecuteTransaction(function, callback);
-    }
-
-    public String getSignedTransactionForSet(String n) {
-        final Function function = new Function(
-                FUNC_SET, 
-                Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Utf8String(n)), 
-                Collections.<TypeReference<?>>emptyList());
-        return createSignedTransaction(function);
-    }
-
-    public Tuple1<String> getSetInput(TransactionReceipt transactionReceipt) {
-        String data = transactionReceipt.getInput().substring(10);
-        final Function function = new Function(FUNC_SET, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
-        List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
-        return new Tuple1<String>(
-
-                (String) results.get(0).getValue()
-                );
-    }
-
-    public String get() throws ContractException {
-        final Function function = new Function(FUNC_GET, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
-        return executeCallWithSingleValueReturn(function, String.class);
-    }
-
-    public List getList() throws ContractException {
-        final Function function = new Function(FUNC_GETLIST, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<StaticArray2<Uint256>>() {}));
-        List<Type> result = (List<Type>) executeCallWithSingleValueReturn(function, List.class);
-        return convertToNative(result);
-    }
-
-    public Tuple2<String, BigInteger> getTuple() throws ContractException {
-        final Function function = new Function(FUNC_GETTUPLE, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
-        List<Type> results = executeCallWithMultipleValueReturn(function);
-        return new Tuple2<String, BigInteger>(
-                (String) results.get(0).getValue(), 
-                (BigInteger) results.get(1).getValue());
-    }
-
     public static HelloWorldProxy load(String contractAddress, Client client, CryptoKeyPair credential) {
         return new HelloWorldProxy(contractAddress, client, credential);
     }
@@ -122,5 +62,71 @@ public class HelloWorldProxy extends Contract {
     public static HelloWorldProxy deploy(Client client, CryptoKeyPair credential, String str) throws ContractException {
         String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Utf8String(str)));
         return deploy(HelloWorldProxy.class, client, credential, getBinary(client.getCryptoSuite()), encodedConstructor);
+    }
+
+    public TransactionReceipt set(String n) {
+        final Function function = new Function(
+                FUNC_SET,
+                Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Utf8String(n)),
+                Collections.<TypeReference<?>>emptyList());
+        return executeTransaction(function);
+    }
+
+    public void set(String n, TransactionCallback callback) {
+        final Function function = new Function(
+                FUNC_SET,
+                Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Utf8String(n)),
+                Collections.<TypeReference<?>>emptyList());
+        asyncExecuteTransaction(function, callback);
+    }
+
+    public String getSignedTransactionForSet(String n) {
+        final Function function = new Function(
+                FUNC_SET,
+                Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Utf8String(n)),
+                Collections.<TypeReference<?>>emptyList());
+        return createSignedTransaction(function);
+    }
+
+    public Tuple1<String> getSetInput(TransactionReceipt transactionReceipt) {
+        String data = transactionReceipt.getInput().substring(10);
+        final Function function = new Function(FUNC_SET,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                }));
+        List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
+        return new Tuple1<String>(
+
+                (String) results.get(0).getValue()
+        );
+    }
+
+    public String get() throws ContractException {
+        final Function function = new Function(FUNC_GET,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                }));
+        return executeCallWithSingleValueReturn(function, String.class);
+    }
+
+    public List getList() throws ContractException {
+        final Function function = new Function(FUNC_GETLIST,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<StaticArray2<Uint256>>() {
+                }));
+        List<Type> result = (List<Type>) executeCallWithSingleValueReturn(function, List.class);
+        return convertToNative(result);
+    }
+
+    public Tuple2<String, BigInteger> getTuple() throws ContractException {
+        final Function function = new Function(FUNC_GETTUPLE,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                }, new TypeReference<Uint256>() {
+                }));
+        List<Type> results = executeCallWithMultipleValueReturn(function);
+        return new Tuple2<String, BigInteger>(
+                (String) results.get(0).getValue(),
+                (BigInteger) results.get(1).getValue());
     }
 }

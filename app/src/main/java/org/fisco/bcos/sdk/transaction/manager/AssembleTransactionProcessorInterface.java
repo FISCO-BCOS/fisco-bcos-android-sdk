@@ -14,8 +14,6 @@
  */
 package org.fisco.bcos.sdk.transaction.manager;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.callback.TransactionCallback;
@@ -24,6 +22,9 @@ import org.fisco.bcos.sdk.transaction.model.dto.CallResponse;
 import org.fisco.bcos.sdk.transaction.model.dto.TransactionResponse;
 import org.fisco.bcos.sdk.transaction.model.exception.NoSuchTransactionFileException;
 import org.fisco.bcos.sdk.transaction.model.exception.TransactionBaseException;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface AssembleTransactionProcessorInterface {
 

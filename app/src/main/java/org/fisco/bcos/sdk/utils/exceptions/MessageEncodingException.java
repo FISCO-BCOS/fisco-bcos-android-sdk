@@ -13,7 +13,9 @@
  */
 package org.fisco.bcos.sdk.utils.exceptions;
 
-/** Encoding exception. */
+/**
+ * Encoding exception.
+ */
 public class MessageEncodingException extends RuntimeException {
     public MessageEncodingException(String message) {
         super(message);

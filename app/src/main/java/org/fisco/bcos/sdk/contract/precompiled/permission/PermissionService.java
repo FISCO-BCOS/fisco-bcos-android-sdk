@@ -17,8 +17,6 @@ package org.fisco.bcos.sdk.contract.precompiled.permission;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.util.List;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledAddress;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledVersionCheck;
@@ -29,6 +27,9 @@ import org.fisco.bcos.sdk.transaction.codec.decode.ReceiptParser;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
+import java.io.IOException;
+import java.util.List;
+
 public class PermissionService {
     private final PermissionPrecompiled permissionPrecompiled;
     private final String currentVersion;
@@ -38,18 +39,6 @@ public class PermissionService {
                 PermissionPrecompiled.load(
                         PrecompiledAddress.PERMISSION_PRECOMPILED_ADDRESS, client, credential);
         this.currentVersion = client.getClientNodeVersion().getNodeVersion().getSupportedVersion();
-    }
-
-    public RetCode grantPermission(String tableName, String userAddress) throws ContractException {
-        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
-        return ReceiptParser.parseTransactionReceipt(
-                this.permissionPrecompiled.insert(tableName, userAddress));
-    }
-
-    public RetCode revokePermission(String tableName, String userAddress) throws ContractException {
-        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
-        return ReceiptParser.parseTransactionReceipt(
-                this.permissionPrecompiled.remove(tableName, userAddress));
     }
 
     public static List<PermissionInfo> parsePermissionInfo(String permissionInfo)
@@ -64,6 +53,18 @@ public class PermissionService {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public RetCode grantPermission(String tableName, String userAddress) throws ContractException {
+        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
+        return ReceiptParser.parseTransactionReceipt(
+                this.permissionPrecompiled.insert(tableName, userAddress));
+    }
+
+    public RetCode revokePermission(String tableName, String userAddress) throws ContractException {
+        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
+        return ReceiptParser.parseTransactionReceipt(
+                this.permissionPrecompiled.remove(tableName, userAddress));
     }
 
     public List<PermissionInfo> queryPermission(String contractAddress) throws ContractException {
@@ -129,6 +130,7 @@ public class PermissionService {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
         return queryPermissionByTableName(PrecompiledConstant.SYS_TABLE);
     }
+
     // permission interfaces for _sys_table_access_
     public RetCode grantPermissionManager(String userAddress) throws ContractException {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
@@ -160,6 +162,7 @@ public class PermissionService {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
         return queryPermissionByTableName(PrecompiledConstant.SYS_CONSENSUS);
     }
+
     // permission interfaces for _sys_cns_
     public RetCode grantCNSManager(String userAddress) throws ContractException {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
@@ -175,6 +178,7 @@ public class PermissionService {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
         return queryPermissionByTableName(PrecompiledConstant.SYS_CNS);
     }
+
     // permission interfaces for _sys_config_
     public RetCode grantSysConfigManager(String userAddress) throws ContractException {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);

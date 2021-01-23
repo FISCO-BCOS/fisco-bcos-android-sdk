@@ -20,6 +20,7 @@ import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 
 public class TransactionSignerServcie implements TransactionSignerInterface {
     private Signature signature;
+
     /**
      * create the TransactionSignerService according the the given signature
      *
@@ -35,12 +36,16 @@ public class TransactionSignerServcie implements TransactionSignerInterface {
         return signature.sign(hash, cryptoKeyPair);
     }
 
-    /** @return the signature */
+    /**
+     * @return the signature
+     */
     public Signature getSignature() {
         return signature;
     }
 
-    /** @param signature the signature to set */
+    /**
+     * @param signature the signature to set
+     */
     public void setSignature(Signature signature) {
         this.signature = signature;
     }
