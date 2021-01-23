@@ -13,10 +13,13 @@
  */
 package org.fisco.bcos.sdk.client;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -51,6 +54,7 @@ public class ClientImplForProxy extends ClientImpl {
         this.cryptoSuite = cryptoSuite;
         this.nodeVersion = nodeVersion;
         this.jsonRpcServiceForProxy = jsonRpcServiceForProxy;
+        getBlockNumber();
     }
 
     @Override
@@ -94,6 +98,13 @@ public class ClientImplForProxy extends ClientImpl {
             logger.error("get node version failed, error info: " + e.getMessage());
         }
         return new NetworkResponse(code, message, nodeVersion);
+    }
+
+    @Override
+    public BlockNumber getBlockNumber() {
+        NetworkResponse<BlockNumber> networkResponse = getBlockNumberByProxy();
+        curBlockNum = networkResponse.getResult().getBlockNumber();
+        return networkResponse.getResult();
     }
 
     public NetworkResponse<BlockNumber> getBlockNumberByProxy() {
@@ -150,7 +161,7 @@ public class ClientImplForProxy extends ClientImpl {
         String responseStr = this.jsonRpcServiceForProxy.sendRequestToGroup(jsonRpcRequest);
         int code = 0;
         String message = "success";
-        TransactionReceipt receipt = null;
+        TransactionReceipt receipt = new TransactionReceipt();
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map responseMap = objectMapper.readValue(responseStr, Map.class);
@@ -158,7 +169,8 @@ public class ClientImplForProxy extends ClientImpl {
             message = (String) responseMap.get("message");
             if (code == NetworkResponseCode.SuccessCode) {
                 Map dataMap = (Map)responseMap.get("data");
-                receipt = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), TransactionReceipt.class);
+                Map resultMap = (Map)dataMap.get("result");
+                receipt = objectMapper.readValue(objectMapper.writeValueAsString(resultMap), TransactionReceipt.class);
             } else {
                 logger.error("sendRawTransactionAndGetReceiptByProxy failed, error info: " + message);
             }
