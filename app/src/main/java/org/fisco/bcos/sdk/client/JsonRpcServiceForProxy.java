@@ -14,6 +14,7 @@
 package org.fisco.bcos.sdk.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerInterface;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
@@ -22,9 +23,8 @@ import org.slf4j.LoggerFactory;
 
 public class JsonRpcServiceForProxy extends JsonRpcService {
 
-    private NetworkHandlerInterface networkHandle;
-
     private static Logger logger = LoggerFactory.getLogger(JsonRpcServiceForProxy.class);
+    private NetworkHandlerInterface networkHandle;
 
     public JsonRpcServiceForProxy(NetworkHandlerInterface networkHandle) {
         this.networkHandle = networkHandle;

@@ -2,8 +2,6 @@ package org.fisco.bcos.sdk.test.abi;
 
 import android.util.Base64;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.wrapper.ABICodecJsonWrapper;
 import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
 import org.fisco.bcos.sdk.abi.wrapper.ABIObject;
@@ -11,6 +9,9 @@ import org.fisco.bcos.sdk.abi.wrapper.ABIObjectFactory;
 import org.fisco.bcos.sdk.abi.wrapper.ContractABIDefinition;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ABIObjectCodecTest {
     String abiDesc =

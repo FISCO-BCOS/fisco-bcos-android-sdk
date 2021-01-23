@@ -13,12 +13,13 @@
  */
 package org.fisco.bcos.sdk.service.model;
 
-import java.io.IOException;
 import org.fisco.bcos.sdk.channel.model.EnumChannelProtocolVersion;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class BlockNumberMessageDecoder {
     private static Logger logger = LoggerFactory.getLogger(BlockNumberMessageDecoder.class);
@@ -26,16 +27,14 @@ public class BlockNumberMessageDecoder {
     public BlockNumberNotification decode(EnumChannelProtocolVersion version, Message message) {
         BlockNumberNotification blockNumberNotification;
         switch (version) {
-            case VERSION_1:
-                {
-                    blockNumberNotification = decodeV1(message);
-                }
-                break;
-            default:
-                {
-                    blockNumberNotification = decodeByDefault(message);
-                }
-                break;
+            case VERSION_1: {
+                blockNumberNotification = decodeV1(message);
+            }
+            break;
+            default: {
+                blockNumberNotification = decodeByDefault(message);
+            }
+            break;
         }
         return blockNumberNotification;
     }

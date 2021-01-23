@@ -1,10 +1,11 @@
 package org.fisco.bcos.sdk.log;
 
+import android.util.Log;
+
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Layout;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
-import android.util.Log;
 
 /**
  * 源自 android-logging-log4j-1.0.3.jar

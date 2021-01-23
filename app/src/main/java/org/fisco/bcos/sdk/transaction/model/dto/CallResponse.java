@@ -14,8 +14,9 @@
  */
 package org.fisco.bcos.sdk.transaction.model.dto;
 
-import java.util.List;
 import org.fisco.bcos.sdk.abi.wrapper.ABIObject;
+
+import java.util.List;
 
 /**
  * CallResponse @Description: CallResponse
@@ -27,12 +28,16 @@ public class CallResponse extends CommonResponse {
     private List<Object> returnObject;
     private List<ABIObject> returnABIObject;
 
-    /** @return the values */
+    /**
+     * @return the values
+     */
     public String getValues() {
         return values;
     }
 
-    /** @param values the values to set */
+    /**
+     * @param values the values to set
+     */
     public void setValues(String values) {
         this.values = values;
     }

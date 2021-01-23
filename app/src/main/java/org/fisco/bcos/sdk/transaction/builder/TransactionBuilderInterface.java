@@ -14,8 +14,9 @@
  */
 package org.fisco.bcos.sdk.transaction.builder;
 
-import java.math.BigInteger;
 import org.fisco.bcos.sdk.transaction.model.po.RawTransaction;
+
+import java.math.BigInteger;
 
 /**
  * TransactionBuilderInterface @Description: TransactionBuilderInterface
@@ -37,8 +38,8 @@ public interface TransactionBuilderInterface {
     /**
      * Create fisco bcos transaction for short
      *
-     * @param to target address
-     * @param data encoded data
+     * @param to      target address
+     * @param data    encoded data
      * @param groupId the group that need create transaction
      * @return RawTransaction the created transaction
      */

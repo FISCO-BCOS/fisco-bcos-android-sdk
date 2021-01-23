@@ -1,9 +1,12 @@
 package org.fisco.bcos.sdk.abi;
 
-import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.Type;
 
-/** Persisted solidity event parameters. */
+import java.util.List;
+
+/**
+ * Persisted solidity event parameters.
+ */
 public class EventValues {
     private final List<Type> indexedValues;
     private final List<Type> nonIndexedValues;

@@ -15,13 +15,14 @@
 
 package org.fisco.bcos.sdk.eventsub;
 
-import java.math.BigInteger;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.tools.TopicTools;
 import org.fisco.bcos.sdk.utils.AddressUtils;
 import org.fisco.bcos.sdk.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.util.List;
 
 public class EventLogParams {
     private static Logger logger = LoggerFactory.getLogger(EventLogParams.class);
@@ -139,7 +140,7 @@ public class EventLogParams {
         BigInteger toBlock = new BigInteger(getToBlock());
         return (blockNumber.compareTo(BigInteger.ONE) <= 0)
                 || (blockNumber.compareTo(BigInteger.ONE) > 0
-                        && (toBlock.compareTo(blockNumber)) > 0);
+                && (toBlock.compareTo(blockNumber)) > 0);
     }
 
     private boolean checkFromBlock(BigInteger blockNumber) {

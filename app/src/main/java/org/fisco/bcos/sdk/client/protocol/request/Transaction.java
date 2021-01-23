@@ -23,8 +23,8 @@ public class Transaction {
     private String data;
 
     /**
-     * @param from from address
-     * @param to to address
+     * @param from            from address
+     * @param to              to address
      * @param encodedFunction the string encodedFunction
      */
     public Transaction(String from, String to, String encodedFunction) {

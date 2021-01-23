@@ -34,5 +34,6 @@ public class PrecompiledAddress {
     public static final String KVTABLEFACTORY_PRECOMPILED_ADDRESS =
             "0x0000000000000000000000000000000000001010";
 
-    private PrecompiledAddress() {}
+    private PrecompiledAddress() {
+    }
 }

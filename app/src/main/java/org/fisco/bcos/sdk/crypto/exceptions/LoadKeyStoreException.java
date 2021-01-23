@@ -13,7 +13,9 @@
  */
 package org.fisco.bcos.sdk.crypto.exceptions;
 
-/** Exceptioned when calling KeyManager. */
+/**
+ * Exceptioned when calling KeyManager.
+ */
 public class LoadKeyStoreException extends RuntimeException {
     public LoadKeyStoreException(String message) {
         super(message);

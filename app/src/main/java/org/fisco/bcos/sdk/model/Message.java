@@ -15,21 +15,24 @@
 
 package org.fisco.bcos.sdk.model;
 
-import io.netty.buffer.ByteBuf;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import org.fisco.bcos.sdk.model.exceptions.DecodeMessageException;
 
-/** Messages between sdk and FISCO BCOS node. */
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+
+import io.netty.buffer.ByteBuf;
+
+/**
+ * Messages between sdk and FISCO BCOS node.
+ */
 public class Message implements Serializable {
+    public static final int HEADER_LENGTH = 4 + 2 + 32 + 4;
     private static final long serialVersionUID = -7276897518418560354L;
     protected Integer length = 0;
     protected Short type = 0;
     protected String seq = "";
     protected Integer result = 0;
     protected byte[] data;
-
-    public static final int HEADER_LENGTH = 4 + 2 + 32 + 4;
 
     /**
      * encode the message into ByteBuf

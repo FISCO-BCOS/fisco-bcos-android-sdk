@@ -2,7 +2,9 @@ package org.fisco.bcos.sdk.abi.datatypes;
 
 import java.math.BigInteger;
 
-/** Common fixed-point type properties. */
+/**
+ * Common fixed-point type properties.
+ */
 public abstract class FixedPointType extends NumericType {
 
     static final int DEFAULT_BIT_LENGTH = MAX_BIT_LENGTH >> 1;
@@ -13,10 +15,6 @@ public abstract class FixedPointType extends NumericType {
             throw new UnsupportedOperationException(
                     "Bitsize must be 8 bit aligned, and in range 0 < bitSize <= 256");
         }
-    }
-
-    boolean valid(int mBitSize, int nBitSize, BigInteger value) {
-        return isValidBitSize(mBitSize, nBitSize) && isValidBitCount(mBitSize, nBitSize, value);
     }
 
     static boolean isValidBitSize(int mBitSize, int nBitSize) {
@@ -39,5 +37,9 @@ public abstract class FixedPointType extends NumericType {
         // find next multiple of 4
         int shift = (nBitLength + 3) & ~0x03;
         return mPadded.or(n.shiftLeft(nBitSize - shift));
+    }
+
+    boolean valid(int mBitSize, int nBitSize, BigInteger value) {
+        return isValidBitSize(mBitSize, nBitSize) && isValidBitCount(mBitSize, nBitSize, value);
     }
 }

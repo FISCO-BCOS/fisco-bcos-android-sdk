@@ -1,9 +1,11 @@
 package org.fisco.bcos.sdk.client.protocol.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.fisco.bcos.sdk.model.JsonRpcResponse;
+
 import java.util.List;
 import java.util.Objects;
-import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
 public class NodeInfo extends JsonRpcResponse<NodeInfo.NodeInformation> {
     public NodeInfo.NodeInformation getNodeInfo() {

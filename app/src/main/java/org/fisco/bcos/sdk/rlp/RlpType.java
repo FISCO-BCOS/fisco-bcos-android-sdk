@@ -13,5 +13,8 @@
  */
 package org.fisco.bcos.sdk.rlp;
 
-/** Base RLP type. */
-public interface RlpType {}
+/**
+ * Base RLP type.
+ */
+public interface RlpType {
+}

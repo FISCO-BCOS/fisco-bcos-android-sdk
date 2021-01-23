@@ -14,14 +14,16 @@
  */
 package org.fisco.bcos.sdk.client.handler;
 
-import io.netty.channel.ChannelHandlerContext;
-import java.util.function.Consumer;
 import org.fisco.bcos.sdk.channel.ChannelVersionNegotiation;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.model.MsgType;
 import org.fisco.bcos.sdk.network.MsgHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.function.Consumer;
+
+import io.netty.channel.ChannelHandlerContext;
 
 public class TransactionNotifyHandler implements MsgHandler {
     private static Logger logger = LoggerFactory.getLogger(TransactionNotifyHandler.class);

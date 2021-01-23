@@ -15,9 +15,6 @@
 
 package org.fisco.bcos.sdk.abi;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 import org.fisco.bcos.sdk.abi.wrapper.ABICodecJsonWrapper;
 import org.fisco.bcos.sdk.abi.wrapper.ABICodecObject;
@@ -31,15 +28,18 @@ import org.fisco.bcos.sdk.model.EventLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ABICodec {
 
-    private static final Logger logger = LoggerFactory.getLogger(ABICodec.class);
-
-    private final CryptoSuite cryptoSuite;
     public static final String TYPE_CONSTRUCTOR = "constructor";
-    private ABIDefinitionFactory abiDefinitionFactory;
+    private static final Logger logger = LoggerFactory.getLogger(ABICodec.class);
+    private final CryptoSuite cryptoSuite;
     private final ABIObjectFactory abiObjectFactory = new ABIObjectFactory();
     private final ABICodecJsonWrapper abiCodecJsonWrapper = new ABICodecJsonWrapper();
+    private ABIDefinitionFactory abiDefinitionFactory;
 
     public ABICodec(CryptoSuite cryptoSuite) {
         super();

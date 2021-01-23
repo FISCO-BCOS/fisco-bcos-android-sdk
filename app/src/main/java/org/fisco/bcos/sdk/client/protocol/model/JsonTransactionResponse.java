@@ -14,10 +14,6 @@
  */
 package org.fisco.bcos.sdk.client.protocol.model;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.signature.ECDSASignatureResult;
@@ -31,6 +27,11 @@ import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class JsonTransactionResponse {
     private static Logger logger = LoggerFactory.getLogger(JsonTransactionResponse.class);
@@ -53,81 +54,7 @@ public class JsonTransactionResponse {
     private String extraData;
     private SignatureResponse signature;
 
-    public JsonTransactionResponse() {}
-
-    public static class SignatureResponse {
-        private String r;
-        private String s;
-        private String v;
-        private String signature;
-
-        public SignatureResponse() {}
-
-        public String getR() {
-            return r;
-        }
-
-        public void setR(String r) {
-            this.r = r;
-        }
-
-        public String getS() {
-            return s;
-        }
-
-        public void setS(String s) {
-            this.s = s;
-        }
-
-        public String getV() {
-            return v;
-        }
-
-        public void setV(String v) {
-            this.v = v;
-        }
-
-        public String getSignature() {
-            return signature;
-        }
-
-        public void setSignature(String signature) {
-            this.signature = signature;
-        }
-
-        @Override
-        public String toString() {
-            return "{"
-                    + "r='"
-                    + r
-                    + '\''
-                    + ", s='"
-                    + s
-                    + '\''
-                    + ", v='"
-                    + v
-                    + '\''
-                    + ", signature='"
-                    + signature
-                    + '\''
-                    + '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            SignatureResponse that = (SignatureResponse) o;
-            return Objects.equals(r, that.r)
-                    && Objects.equals(s, that.s)
-                    && Objects.equals(v, that.v)
-                    && Objects.equals(signature, that.signature);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(r, s, v, signature);
-        }
+    public JsonTransactionResponse() {
     }
 
     public String getBlockHash() {
@@ -336,8 +263,8 @@ public class JsonTransactionResponse {
         JsonTransactionResponse that = (JsonTransactionResponse) o;
         return Objects.equals(blockHash, that.blockHash)
                 && Objects.equals(
-                        Numeric.decodeQuantity(blockNumber),
-                        Numeric.decodeQuantity(that.blockNumber))
+                Numeric.decodeQuantity(blockNumber),
+                Numeric.decodeQuantity(that.blockNumber))
                 && Objects.equals(from, that.from)
                 && Objects.equals(gas, that.gas)
                 && Objects.equals(hash, that.hash)
@@ -426,5 +353,81 @@ public class JsonTransactionResponse {
                 + ", signature="
                 + signature
                 + '}';
+    }
+
+    public static class SignatureResponse {
+        private String r;
+        private String s;
+        private String v;
+        private String signature;
+
+        public SignatureResponse() {
+        }
+
+        public String getR() {
+            return r;
+        }
+
+        public void setR(String r) {
+            this.r = r;
+        }
+
+        public String getS() {
+            return s;
+        }
+
+        public void setS(String s) {
+            this.s = s;
+        }
+
+        public String getV() {
+            return v;
+        }
+
+        public void setV(String v) {
+            this.v = v;
+        }
+
+        public String getSignature() {
+            return signature;
+        }
+
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
+
+        @Override
+        public String toString() {
+            return "{"
+                    + "r='"
+                    + r
+                    + '\''
+                    + ", s='"
+                    + s
+                    + '\''
+                    + ", v='"
+                    + v
+                    + '\''
+                    + ", signature='"
+                    + signature
+                    + '\''
+                    + '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            SignatureResponse that = (SignatureResponse) o;
+            return Objects.equals(r, that.r)
+                    && Objects.equals(s, that.s)
+                    && Objects.equals(v, that.v)
+                    && Objects.equals(signature, that.signature);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(r, s, v, signature);
+        }
     }
 }

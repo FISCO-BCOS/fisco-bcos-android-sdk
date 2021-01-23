@@ -15,14 +15,6 @@
 
 package org.fisco.bcos.sdk.amop.topic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import org.fisco.bcos.sdk.amop.AmopCallback;
 import org.fisco.bcos.sdk.amop.AmopMsgOut;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
@@ -32,7 +24,19 @@ import org.fisco.bcos.sdk.model.CryptoType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class TopicManager {
+    public static final String verifyChannelPrefix = "#!$VerifyChannel_";
+    public static final String pushChannelPrefix = "#!$PushChannel_";
+    public static final String topicNeedVerifyPrefix = "#!$TopicNeedVerify_";
     private static Logger logger = LoggerFactory.getLogger(TopicManager.class);
     private CryptoSuite cryptoSuite = new CryptoSuite(CryptoType.ECDSA_TYPE);
     private Map<String, CryptoKeyPair> topic2PrivateKey = new ConcurrentHashMap<>();
@@ -42,10 +46,6 @@ public class TopicManager {
     private Set<String> topics = Collections.synchronizedSet(new HashSet<>());
     private Map<String, Set<String>> peer2BlockNotify = new ConcurrentHashMap<>();
     private AmopCallback callback;
-
-    public static final String verifyChannelPrefix = "#!$VerifyChannel_";
-    public static final String pushChannelPrefix = "#!$PushChannel_";
-    public static final String topicNeedVerifyPrefix = "#!$TopicNeedVerify_";
 
     public void addTopic(String topicString, AmopCallback callback) {
         topics.add(topicString);

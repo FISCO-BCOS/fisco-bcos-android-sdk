@@ -15,10 +15,13 @@
 
 package org.fisco.bcos.sdk.eventsub;
 
-import java.util.List;
 import org.fisco.bcos.sdk.model.EventLog;
 
-/** Event callback */
+import java.util.List;
+
+/**
+ * Event callback
+ */
 public interface EventCallback {
 
     /**
@@ -26,7 +29,7 @@ public interface EventCallback {
      * parsed by the user through the ABI module.
      *
      * @param status the status that peer response to sdk.
-     * @param logs logs from the message.
+     * @param logs   logs from the message.
      */
     void onReceiveLog(int status, List<EventLog> logs);
 }

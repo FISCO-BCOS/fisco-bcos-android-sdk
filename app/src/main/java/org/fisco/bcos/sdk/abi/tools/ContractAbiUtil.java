@@ -17,22 +17,24 @@ package org.fisco.bcos.sdk.abi.tools;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** ContractAbiUtil. */
-public class ContractAbiUtil {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-    private static final Logger logger = LoggerFactory.getLogger(ContractAbiUtil.class);
+/**
+ * ContractAbiUtil.
+ */
+public class ContractAbiUtil {
 
     public static final String TYPE_CONSTRUCTOR = "constructor";
     public static final String TYPE_FUNCTION = "function";
     public static final String TYPE_EVENT = "event";
+    private static final Logger logger = LoggerFactory.getLogger(ContractAbiUtil.class);
 
     /**
      * @param contractAbi the contract abi

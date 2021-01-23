@@ -13,12 +13,13 @@
  */
 package org.fisco.bcos.sdk.crypto.signature;
 
-import java.util.List;
 import org.fisco.bcos.sdk.crypto.exceptions.SignatureException;
 import org.fisco.bcos.sdk.rlp.RlpString;
 import org.fisco.bcos.sdk.rlp.RlpType;
 import org.fisco.bcos.sdk.utils.ByteUtils;
 import org.fisco.bcos.sdk.utils.Hex;
+
+import java.util.List;
 
 public abstract class SignatureResult {
     protected byte[] r;
@@ -60,20 +61,20 @@ public abstract class SignatureResult {
         return r;
     }
 
-    public byte[] getS() {
-        return s;
-    }
-
-    public byte[] getSignatureBytes() {
-        return signatureBytes;
-    }
-
     public void setR(byte[] r) {
         this.r = r;
     }
 
+    public byte[] getS() {
+        return s;
+    }
+
     public void setS(byte[] s) {
         this.s = s;
+    }
+
+    public byte[] getSignatureBytes() {
+        return signatureBytes;
     }
 
     public void setSignatureBytes(byte[] signatureBytes) {

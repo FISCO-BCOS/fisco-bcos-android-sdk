@@ -15,21 +15,8 @@
 
 package org.fisco.bcos.sdk.amop.topic;
 
-import static org.fisco.bcos.sdk.amop.topic.TopicManager.topicNeedVerifyPrefix;
-import static org.fisco.bcos.sdk.amop.topic.TopicManager.verifyChannelPrefix;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.socket.SocketChannel;
 
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import org.fisco.bcos.sdk.amop.Amop;
 import org.fisco.bcos.sdk.amop.AmopCallback;
 import org.fisco.bcos.sdk.channel.Channel;
@@ -48,6 +35,20 @@ import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.socket.SocketChannel;
+
+import static org.fisco.bcos.sdk.amop.topic.TopicManager.topicNeedVerifyPrefix;
+import static org.fisco.bcos.sdk.amop.topic.TopicManager.verifyChannelPrefix;
+
 public class AmopMsgHandler implements MsgHandler {
     private static Logger logger = LoggerFactory.getLogger(AmopMsgHandler.class);
     private TopicManager topicManager;
@@ -60,6 +61,19 @@ public class AmopMsgHandler implements MsgHandler {
     public AmopMsgHandler(Channel channel, TopicManager topicManager) {
         this.topicManager = topicManager;
         this.channel = channel;
+    }
+
+    public static boolean isPrivateTopic(String topic) {
+        return topic.length() > topicNeedVerifyPrefix.length()
+                && topicNeedVerifyPrefix.equals(topic.substring(0, topicNeedVerifyPrefix.length()));
+    }
+
+    public static String removePrivateTopicPrefix(String topic) {
+        if (isPrivateTopic(topic)) {
+            return topic.substring(topicNeedVerifyPrefix.length());
+        } else {
+            return topic;
+        }
     }
 
     public void setIsRunning(boolean isRunning) {
@@ -134,7 +148,8 @@ public class AmopMsgHandler implements MsgHandler {
     }
 
     @Override
-    public void onDisconnect(ChannelHandlerContext ctx) {}
+    public void onDisconnect(ChannelHandlerContext ctx) {
+    }
 
     public void onVerifyRequest(ChannelHandlerContext ctx, Message msg) {
         logger.trace(
@@ -244,20 +259,7 @@ public class AmopMsgHandler implements MsgHandler {
     private boolean isVerifyingPrivateTopic(AmopMsg amopMsg) {
         return amopMsg.getTopic().length() > verifyChannelPrefix.length()
                 && verifyChannelPrefix.equals(
-                        amopMsg.getTopic().substring(0, verifyChannelPrefix.length()));
-    }
-
-    public static boolean isPrivateTopic(String topic) {
-        return topic.length() > topicNeedVerifyPrefix.length()
-                && topicNeedVerifyPrefix.equals(topic.substring(0, topicNeedVerifyPrefix.length()));
-    }
-
-    public static String removePrivateTopicPrefix(String topic) {
-        if (isPrivateTopic(topic)) {
-            return topic.substring(topicNeedVerifyPrefix.length());
-        } else {
-            return topic;
-        }
+                amopMsg.getTopic().substring(0, verifyChannelPrefix.length()));
     }
 
     private String getSimpleTopic(String fullTopic) {

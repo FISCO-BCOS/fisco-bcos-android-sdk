@@ -15,10 +15,11 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
-import java.math.BigInteger;
-import java.util.Objects;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.utils.Numeric;
+
+import java.math.BigInteger;
+import java.util.Objects;
 
 /**
  * RPC response of ledger call
@@ -26,6 +27,14 @@ import org.fisco.bcos.sdk.utils.Numeric;
  * @author Maggie
  */
 public class Call extends JsonRpcResponse<Call.CallOutput> {
+    public void setResult(CallOutput result) {
+        super.setResult(result);
+    }
+
+    public CallOutput getCallResult() {
+        return getResult();
+    }
+
     public static class CallOutput {
         private String currentBlockNumber;
         private String status;
@@ -61,8 +70,8 @@ public class Call extends JsonRpcResponse<Call.CallOutput> {
             if (o == null || getClass() != o.getClass()) return false;
             CallOutput that = (CallOutput) o;
             return Objects.equals(
-                            Numeric.decodeQuantity(currentBlockNumber),
-                            Numeric.decodeQuantity(that.currentBlockNumber))
+                    Numeric.decodeQuantity(currentBlockNumber),
+                    Numeric.decodeQuantity(that.currentBlockNumber))
                     && Objects.equals(status, that.status)
                     && Objects.equals(output, that.output);
         }
@@ -86,13 +95,5 @@ public class Call extends JsonRpcResponse<Call.CallOutput> {
                     + '\''
                     + '}';
         }
-    }
-
-    public void setResult(CallOutput result) {
-        super.setResult(result);
-    }
-
-    public CallOutput getCallResult() {
-        return getResult();
     }
 }

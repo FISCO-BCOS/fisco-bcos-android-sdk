@@ -2,7 +2,9 @@ package org.fisco.bcos.sdk.abi.datatypes;
 
 import java.util.List;
 
-/** Static array type. */
+/**
+ * Static array type.
+ */
 public class StaticArray<T extends Type> extends Array<T> {
     /**
      * Warning: increasing this constant will cause more generated StaticArrayN types, see:

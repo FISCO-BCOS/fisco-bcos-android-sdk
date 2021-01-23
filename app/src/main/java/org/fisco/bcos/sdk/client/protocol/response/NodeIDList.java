@@ -15,10 +15,13 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
-import java.util.List;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-/** getNodeIDList */
+import java.util.List;
+
+/**
+ * getNodeIDList
+ */
 public class NodeIDList extends JsonRpcResponse<List<String>> {
     public List<String> getNodeIDList() {
         return getResult();

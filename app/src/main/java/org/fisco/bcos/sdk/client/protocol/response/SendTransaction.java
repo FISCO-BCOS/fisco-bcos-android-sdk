@@ -17,7 +17,9 @@ package org.fisco.bcos.sdk.client.protocol.response;
 
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-/** Return data structure of send transaction */
+/**
+ * Return data structure of send transaction
+ */
 public class SendTransaction extends JsonRpcResponse<String> {
     public String getTransactionHash() {
         return getResult();

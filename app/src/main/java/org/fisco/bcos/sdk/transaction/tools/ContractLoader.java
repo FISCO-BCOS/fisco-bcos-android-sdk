@@ -14,13 +14,6 @@
  */
 package org.fisco.bcos.sdk.transaction.tools;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -33,6 +26,14 @@ import org.fisco.bcos.sdk.transaction.model.exception.NoSuchTransactionFileExcep
 import org.fisco.bcos.sdk.transaction.model.exception.TransactionRetCodeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ContractLoader @Description: ContractLoader
@@ -54,6 +55,16 @@ public class ContractLoader {
     public ContractLoader(String contractName, String abi, String bin) {
         loadBinary(contractName, bin);
         loadABI(contractName, abi);
+    }
+
+    public static ABIDefinition selectConstructor(List<ABIDefinition> abiList) {
+        for (ABIDefinition ABIDefinition : abiList) {
+            if (ABIDefinition.getType().equals(CommonConstant.ABI_CONSTRUCTOR)) {
+                return ABIDefinition;
+            }
+        }
+        // The case where the sol file does not define constructor
+        return null;
     }
 
     public boolean appendContractAbi(String contractName, String abi) {
@@ -124,16 +135,6 @@ public class ContractLoader {
             loadABI(contract, abi);
         }
         return new AbiInfo(contractFuncAbis, contractConstructorAbi);
-    }
-
-    public static ABIDefinition selectConstructor(List<ABIDefinition> abiList) {
-        for (ABIDefinition ABIDefinition : abiList) {
-            if (ABIDefinition.getType().equals(CommonConstant.ABI_CONSTRUCTOR)) {
-                return ABIDefinition;
-            }
-        }
-        // The case where the sol file does not define constructor
-        return null;
     }
 
     private String parseContractName(File file) {

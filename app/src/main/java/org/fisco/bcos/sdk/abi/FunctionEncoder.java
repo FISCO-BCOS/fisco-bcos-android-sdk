@@ -1,15 +1,15 @@
 package org.fisco.bcos.sdk.abi;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.fisco.bcos.sdk.abi.datatypes.Function;
 import org.fisco.bcos.sdk.abi.datatypes.Type;
 import org.fisco.bcos.sdk.abi.datatypes.Uint;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.fisco.bcos.sdk.utils.StringUtils;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ethereum Contract Application Binary Interface (ABI) encoding for functions. Further details are
@@ -21,18 +21,6 @@ public class FunctionEncoder {
 
     public FunctionEncoder(CryptoSuite cryptoSuite) {
         this.cryptoSuite = cryptoSuite;
-    }
-
-    public String encode(Function function) {
-        List<Type> parameters = function.getInputParameters();
-
-        String methodSignature = buildMethodSignature(function.getName(), parameters);
-        String methodId = buildMethodId(methodSignature);
-
-        StringBuilder result = new StringBuilder();
-        result.append(methodId);
-
-        return encodeParameters(parameters, result);
     }
 
     public static String encodeConstructor(List<Type> parameters) {
@@ -77,18 +65,34 @@ public class FunctionEncoder {
         return result.toString();
     }
 
+    public String encode(Function function) {
+        List<Type> parameters = function.getInputParameters();
+
+        String methodSignature = buildMethodSignature(function.getName(), parameters);
+        String methodId = buildMethodId(methodSignature);
+
+        StringBuilder result = new StringBuilder();
+        result.append(methodId);
+
+        return encodeParameters(parameters, result);
+    }
+
     public String buildMethodId(String methodSignature) {
         byte[] input = methodSignature.getBytes();
         byte[] hash = cryptoSuite.hash(input);
         return Numeric.toHexString(hash).substring(0, 10);
     }
 
-    /** @return the cryptoSuite */
+    /**
+     * @return the cryptoSuite
+     */
     public CryptoSuite getCryptoSuite() {
         return cryptoSuite;
     }
 
-    /** @param cryptoSuite the cryptoSuite to set */
+    /**
+     * @param cryptoSuite the cryptoSuite to set
+     */
     public void setCryptoSuite(CryptoSuite cryptoSuite) {
         this.cryptoSuite = cryptoSuite;
     }

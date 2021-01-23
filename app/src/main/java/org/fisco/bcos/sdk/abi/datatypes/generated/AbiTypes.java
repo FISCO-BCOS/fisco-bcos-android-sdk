@@ -14,7 +14,8 @@ import org.fisco.bcos.sdk.abi.datatypes.Utf8String;
  * href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  */
 public final class AbiTypes {
-    private AbiTypes() {}
+    private AbiTypes() {
+    }
 
     public static Class<?> getType(String type) {
         switch (type) {

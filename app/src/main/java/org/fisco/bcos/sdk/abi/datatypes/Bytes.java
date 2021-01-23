@@ -1,6 +1,8 @@
 package org.fisco.bcos.sdk.abi.datatypes;
 
-/** Statically allocated sequence of bytes. */
+/**
+ * Statically allocated sequence of bytes.
+ */
 public class Bytes extends BytesType {
 
     public static final String TYPE_NAME = "bytes";

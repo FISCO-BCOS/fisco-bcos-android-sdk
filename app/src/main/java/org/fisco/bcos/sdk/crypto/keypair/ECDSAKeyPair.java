@@ -15,12 +15,14 @@ package org.fisco.bcos.sdk.crypto.keypair;
 
 import com.webank.wedpr.crypto.CryptoResult;
 import com.webank.wedpr.crypto.NativeInterface;
-import java.math.BigInteger;
-import java.security.KeyPair;
+
 import org.fisco.bcos.sdk.crypto.hash.Hash;
 import org.fisco.bcos.sdk.crypto.hash.Keccak256;
 import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
+
+import java.math.BigInteger;
+import java.security.KeyPair;
 
 public class ECDSAKeyPair extends CryptoKeyPair {
     public static Hash DefaultHashAlgorithm = new Keccak256();
@@ -42,15 +44,29 @@ public class ECDSAKeyPair extends CryptoKeyPair {
         initECDSAKeyPair();
     }
 
+    public static CryptoKeyPair createKeyPair() {
+        return new ECDSAKeyPair(NativeInterface.secp256k1GenKeyPair());
+    }
+
+    public static String getAddressByPublicKey(String publicKey) {
+        return getAddress(publicKey, ECDSAKeyPair.DefaultHashAlgorithm);
+    }
+
+    public static byte[] getAddressByPublicKey(byte[] publicKey) {
+        return Hex.decode(
+                Numeric.cleanHexPrefix(getAddressByPublicKey(Hex.toHexString(publicKey))));
+    }
+
+    public static byte[] getAddressByPublicKey(BigInteger publicKey) {
+        byte[] publicKeyBytes = Numeric.toBytesPadded(publicKey, PUBLIC_KEY_SIZE);
+        return getAddressByPublicKey(publicKeyBytes);
+    }
+
     private void initECDSAKeyPair() {
         this.hashImpl = new Keccak256();
         this.curveName = CryptoKeyPair.ECDSA_CURVE_NAME;
         this.keyStoreSubDir = ECDSA_ACCOUNT_SUBDIR;
         this.signatureAlgorithm = ECDSA_SIGNATURE_ALGORITHM;
-    }
-
-    public static CryptoKeyPair createKeyPair() {
-        return new ECDSAKeyPair(NativeInterface.secp256k1GenKeyPair());
     }
 
     /**
@@ -66,19 +82,5 @@ public class ECDSAKeyPair extends CryptoKeyPair {
     @Override
     public CryptoKeyPair createKeyPair(KeyPair javaKeyPair) {
         return new ECDSAKeyPair(javaKeyPair);
-    }
-
-    public static String getAddressByPublicKey(String publicKey) {
-        return getAddress(publicKey, ECDSAKeyPair.DefaultHashAlgorithm);
-    }
-
-    public static byte[] getAddressByPublicKey(byte[] publicKey) {
-        return Hex.decode(
-                Numeric.cleanHexPrefix(getAddressByPublicKey(Hex.toHexString(publicKey))));
-    }
-
-    public static byte[] getAddressByPublicKey(BigInteger publicKey) {
-        byte[] publicKeyBytes = Numeric.toBytesPadded(publicKey, PUBLIC_KEY_SIZE);
-        return getAddressByPublicKey(publicKeyBytes);
     }
 }

@@ -15,8 +15,6 @@
 
 package org.fisco.bcos.sdk.channel;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
 import org.fisco.bcos.sdk.channel.model.Options;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
@@ -26,6 +24,9 @@ import org.fisco.bcos.sdk.model.Response;
 import org.fisco.bcos.sdk.network.ConnectionInfo;
 import org.fisco.bcos.sdk.network.MsgHandler;
 import org.fisco.bcos.sdk.network.Network;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * The channel module interface.
@@ -54,7 +55,7 @@ public interface Channel {
      * Add a message handler to handle specific type messages. When one message comes the handler
      * will be notified, handler.onMessage(ChannleHandlerContext ctx, Message msg) called.
      *
-     * @param type the type of message
+     * @param type    the type of message
      * @param handler the message handler
      */
     void addMessageHandler(MsgType type, MsgHandler handler);
@@ -86,7 +87,7 @@ public interface Channel {
     /**
      * Send a message to the given group, only send
      *
-     * @param out Message to be sent
+     * @param out     Message to be sent
      * @param groupId ID of the group receiving the message packet
      */
     void broadcastToGroup(Message out, String groupId);
@@ -101,7 +102,7 @@ public interface Channel {
     /**
      * Synchronize interface, send a message to the given peer, and get the response
      *
-     * @param out Message to be sent
+     * @param out        Message to be sent
      * @param peerIpPort Remote ip:port information
      * @return Remote reply
      */
@@ -110,9 +111,9 @@ public interface Channel {
     /**
      * Synchronize interface with timeout, send a message to the given peer, and get the response
      *
-     * @param out Message to be sent
+     * @param out        Message to be sent
      * @param peerIpPort Remote ip:port information
-     * @param options Include timeout
+     * @param options    Include timeout
      * @return Remote reply
      */
     Response sendToPeerWithTimeOut(Message out, String peerIpPort, Options options);
@@ -120,7 +121,7 @@ public interface Channel {
     /**
      * Synchronize interface with timeout, randomly select nodes to send messages
      *
-     * @param out Message to be sent
+     * @param out     Message to be sent
      * @param options Include timeout
      * @return Remote reply
      */
@@ -129,8 +130,8 @@ public interface Channel {
     /**
      * Synchronize interface with timeout, send message to peer select by client`s rule
      *
-     * @param out Message to be sent
-     * @param rule Rule set by client
+     * @param out     Message to be sent
+     * @param rule    Rule set by client
      * @param options Include timeout
      * @return Remote reply
      */
@@ -139,10 +140,10 @@ public interface Channel {
     /**
      * Asynchronous interface, send message to peer
      *
-     * @param out Message to be sent
+     * @param out        Message to be sent
      * @param peerIpPort Remote ip:port information
-     * @param callback Response callback
-     * @param options Include timeout
+     * @param callback   Response callback
+     * @param options    Include timeout
      */
     void asyncSendToPeer(
             Message out, String peerIpPort, ResponseCallback callback, Options options);
@@ -150,19 +151,19 @@ public interface Channel {
     /**
      * Asynchronous interface, send to an random peer
      *
-     * @param out Message to be sent
+     * @param out      Message to be sent
      * @param callback Response callback
-     * @param options Include timeout
+     * @param options  Include timeout
      */
     void asyncSendToRandom(Message out, ResponseCallback callback, Options options);
 
     /**
      * Asynchronous interface, send message to peer select by client`s rule
      *
-     * @param out Message to be sent
-     * @param rule Rule set by client
+     * @param out      Message to be sent
+     * @param rule     Rule set by client
      * @param callback Response callback
-     * @param options Include timeout
+     * @param options  Include timeout
      */
     void asyncSendToPeerByRule(
             Message out, PeerSelectRule rule, ResponseCallback callback, Options options);

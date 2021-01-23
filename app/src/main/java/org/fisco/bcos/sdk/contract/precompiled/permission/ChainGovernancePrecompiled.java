@@ -1,9 +1,5 @@
 package org.fisco.bcos.sdk.contract.precompiled.permission;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.FunctionReturnDecoder;
 import org.fisco.bcos.sdk.abi.TypeReference;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
@@ -24,6 +20,11 @@ import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.utils.StringUtils;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 @SuppressWarnings("unchecked")
 public class ChainGovernancePrecompiled extends Contract {
     public static final String[] BINARY_ARRAY = {};
@@ -35,7 +36,7 @@ public class ChainGovernancePrecompiled extends Contract {
     public static final String SM_BINARY = StringUtils.joinAll("", SM_BINARY_ARRAY);
 
     public static final String[] ABI_ARRAY = {
-        "[{\"constant\":true,\"inputs\":[],\"name\":\"listOperators\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"},{\"name\":\"weight\",\"type\":\"int256\"}],\"name\":\"updateCommitteeMemberWeight\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"queryThreshold\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"queryVotesOfMember\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"queryCommitteeMemberWeight\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"},{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"grantCommitteeMember\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"unfreezeAccount\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"queryVotesOfThreshold\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"listCommitteeMembers\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"threshold\",\"type\":\"int256\"}],\"name\":\"updateThreshold\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"revokeCommitteeMember\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"grantOperator\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"freezeAccount\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"revokeOperator\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"getAccountStatus\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+            "[{\"constant\":true,\"inputs\":[],\"name\":\"listOperators\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"},{\"name\":\"weight\",\"type\":\"int256\"}],\"name\":\"updateCommitteeMemberWeight\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"queryThreshold\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"queryVotesOfMember\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"queryCommitteeMemberWeight\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"},{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"grantCommitteeMember\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"unfreezeAccount\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"queryVotesOfThreshold\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"listCommitteeMembers\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"threshold\",\"type\":\"int256\"}],\"name\":\"updateThreshold\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"revokeCommitteeMember\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"grantOperator\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"freezeAccount\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"revokeOperator\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"getAccountStatus\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
     };
 
     public static final String ABI = StringUtils.joinAll("", ABI_ARRAY);
@@ -79,12 +80,28 @@ public class ChainGovernancePrecompiled extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
+    public static ChainGovernancePrecompiled load(
+            String contractAddress, Client client, CryptoKeyPair credential) {
+        return new ChainGovernancePrecompiled(contractAddress, client, credential);
+    }
+
+    public static ChainGovernancePrecompiled deploy(Client client, CryptoKeyPair credential)
+            throws ContractException {
+        return deploy(
+                ChainGovernancePrecompiled.class,
+                client,
+                credential,
+                getBinary(client.getCryptoSuite()),
+                "");
+    }
+
     public String listOperators() throws ContractException {
         final Function function =
                 new Function(
                         FUNC_LISTOPERATORS,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                        }));
         return executeCallWithSingleValueReturn(function, String.class);
     }
 
@@ -131,7 +148,9 @@ public class ChainGovernancePrecompiled extends Contract {
                         FUNC_UPDATECOMMITTEEMEMBERWEIGHT,
                         Arrays.<Type>asList(),
                         Arrays.<TypeReference<?>>asList(
-                                new TypeReference<Address>() {}, new TypeReference<Int256>() {}));
+                                new TypeReference<Address>() {
+                                }, new TypeReference<Int256>() {
+                                }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple2<String, BigInteger>(
                 (String) results.get(0).getValue(), (BigInteger) results.get(1).getValue());
@@ -144,7 +163,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_UPDATECOMMITTEEMEMBERWEIGHT,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -154,7 +174,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_QUERYTHRESHOLD,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         return executeCallWithSingleValueReturn(function, BigInteger.class);
     }
 
@@ -163,7 +184,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_QUERYVOTESOFMEMBER,
                         Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Address(account)),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                        }));
         return executeCallWithSingleValueReturn(function, String.class);
     }
 
@@ -174,7 +196,9 @@ public class ChainGovernancePrecompiled extends Contract {
                         FUNC_QUERYCOMMITTEEMEMBERWEIGHT,
                         Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Address(user)),
                         Arrays.<TypeReference<?>>asList(
-                                new TypeReference<Bool>() {}, new TypeReference<Int256>() {}));
+                                new TypeReference<Bool>() {
+                                }, new TypeReference<Int256>() {
+                                }));
         List<Type> results = executeCallWithMultipleValueReturn(function);
         return new Tuple2<Boolean, BigInteger>(
                 (Boolean) results.get(0).getValue(), (BigInteger) results.get(1).getValue());
@@ -213,7 +237,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_GRANTCOMMITTEEMEMBER,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -224,7 +249,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_GRANTCOMMITTEEMEMBER,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -262,7 +288,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_UNFREEZEACCOUNT,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -273,7 +300,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_UNFREEZEACCOUNT,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -283,7 +311,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_QUERYVOTESOFTHRESHOLD,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                        }));
         return executeCallWithSingleValueReturn(function, String.class);
     }
 
@@ -292,7 +321,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_LISTCOMMITTEEMEMBERS,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                        }));
         return executeCallWithSingleValueReturn(function, String.class);
     }
 
@@ -332,7 +362,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_UPDATETHRESHOLD,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -343,7 +374,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_UPDATETHRESHOLD,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -381,7 +413,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_REVOKECOMMITTEEMEMBER,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -393,7 +426,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_REVOKECOMMITTEEMEMBER,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -431,7 +465,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_GRANTOPERATOR,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -442,7 +477,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_GRANTOPERATOR,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -480,7 +516,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_FREEZEACCOUNT,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -491,7 +528,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_FREEZEACCOUNT,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -529,7 +567,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_REVOKEOPERATOR,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -540,7 +579,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_REVOKEOPERATOR,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
+                        }));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -550,22 +590,8 @@ public class ChainGovernancePrecompiled extends Contract {
                 new Function(
                         FUNC_GETACCOUNTSTATUS,
                         Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Address(account)),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {
+                        }));
         return executeCallWithSingleValueReturn(function, String.class);
-    }
-
-    public static ChainGovernancePrecompiled load(
-            String contractAddress, Client client, CryptoKeyPair credential) {
-        return new ChainGovernancePrecompiled(contractAddress, client, credential);
-    }
-
-    public static ChainGovernancePrecompiled deploy(Client client, CryptoKeyPair credential)
-            throws ContractException {
-        return deploy(
-                ChainGovernancePrecompiled.class,
-                client,
-                credential,
-                getBinary(client.getCryptoSuite()),
-                "");
     }
 }

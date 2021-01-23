@@ -13,8 +13,6 @@
  */
 package org.fisco.bcos.sdk;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerInterface;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.JsonRpcServiceForProxy;
@@ -25,6 +23,8 @@ import org.fisco.bcos.sdk.model.ConstantConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class BcosSDKForProxy {
 
     private static Logger logger = LoggerFactory.getLogger(BcosSDKForProxy.class);
@@ -33,16 +33,6 @@ public class BcosSDKForProxy {
     private ConfigOption configOption;
     private NetworkHandlerInterface networkHandle;
 
-    public static BcosSDKForProxy build(String tomlConfigFilePath, NetworkHandlerInterface networkHandle) throws BcosSDKException {
-        try {
-            ConfigOption configOption = Config.load(tomlConfigFilePath);
-            logger.info("create BcosSDKForProxy, configPath: {}", tomlConfigFilePath);
-            return new BcosSDKForProxy(configOption, networkHandle);
-        } catch (ConfigException e) {
-            throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
-        }
-    }
-
     public BcosSDKForProxy(ConfigOption configOption, NetworkHandlerInterface networkHandle) throws BcosSDKException {
         try {
             this.configOption = configOption;
@@ -50,6 +40,16 @@ public class BcosSDKForProxy {
             logger.info("create BcosSDKForProxy successfully");
         } catch (Exception e) {
             stopAll();
+            throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
+        }
+    }
+
+    public static BcosSDKForProxy build(String tomlConfigFilePath, NetworkHandlerInterface networkHandle) throws BcosSDKException {
+        try {
+            ConfigOption configOption = Config.load(tomlConfigFilePath);
+            logger.info("create BcosSDKForProxy, configPath: {}", tomlConfigFilePath);
+            return new BcosSDKForProxy(configOption, networkHandle);
+        } catch (ConfigException e) {
             throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
         }
     }

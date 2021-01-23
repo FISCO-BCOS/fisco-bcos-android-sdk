@@ -15,10 +15,6 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
@@ -30,6 +26,11 @@ import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader> {
     private static Logger logger = LoggerFactory.getLogger(BcosBlockHeader.class);
@@ -47,7 +48,8 @@ public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader
         private String index;
         private String signature;
 
-        public Signature() {}
+        public Signature() {
+        }
 
         public String getIndex() {
             return index;
@@ -102,124 +104,124 @@ public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader
         protected String timestamp;
         protected List<Signature> signatureList;
 
-        public void setSignatureList(List<Signature> signatureList) {
-            this.signatureList = signatureList;
-        }
-
         public List<Signature> getSignatureList() {
             return this.signatureList;
         }
 
-        public void setNumber(String number) {
-            this.number = number;
-        }
-
-        public void setHash(String hash) {
-            this.hash = hash;
-        }
-
-        public void setParentHash(String parentHash) {
-            this.parentHash = parentHash;
-        }
-
-        public void setLogsBloom(String logsBloom) {
-            this.logsBloom = logsBloom;
-        }
-
-        public void setTransactionsRoot(String transactionsRoot) {
-            this.transactionsRoot = transactionsRoot;
-        }
-
-        public void setReceiptsRoot(String receiptsRoot) {
-            this.receiptsRoot = receiptsRoot;
-        }
-
-        public void setDbHash(String dbHash) {
-            this.dbHash = dbHash;
-        }
-
-        public void setStateRoot(String stateRoot) {
-            this.stateRoot = stateRoot;
-        }
-
-        public void setSealer(String sealer) {
-            this.sealer = sealer;
-        }
-
-        public void setSealerList(List<String> sealerList) {
-            this.sealerList = sealerList;
-        }
-
-        public void setExtraData(List<String> extraData) {
-            this.extraData = extraData;
-        }
-
-        public void setGasLimit(String gasLimit) {
-            this.gasLimit = gasLimit;
-        }
-
-        public void setGasUsed(String gasUsed) {
-            this.gasUsed = gasUsed;
-        }
-
-        public void setTimestamp(String timestamp) {
-            this.timestamp = timestamp;
+        public void setSignatureList(List<Signature> signatureList) {
+            this.signatureList = signatureList;
         }
 
         public BigInteger getNumber() {
             return Numeric.decodeQuantity(number);
         }
 
+        public void setNumber(String number) {
+            this.number = number;
+        }
+
         public String getHash() {
             return hash;
+        }
+
+        public void setHash(String hash) {
+            this.hash = hash;
         }
 
         public String getParentHash() {
             return parentHash;
         }
 
+        public void setParentHash(String parentHash) {
+            this.parentHash = parentHash;
+        }
+
         public String getLogsBloom() {
             return logsBloom;
+        }
+
+        public void setLogsBloom(String logsBloom) {
+            this.logsBloom = logsBloom;
         }
 
         public String getTransactionsRoot() {
             return transactionsRoot;
         }
 
+        public void setTransactionsRoot(String transactionsRoot) {
+            this.transactionsRoot = transactionsRoot;
+        }
+
         public String getReceiptsRoot() {
             return receiptsRoot;
+        }
+
+        public void setReceiptsRoot(String receiptsRoot) {
+            this.receiptsRoot = receiptsRoot;
         }
 
         public String getDbHash() {
             return dbHash;
         }
 
+        public void setDbHash(String dbHash) {
+            this.dbHash = dbHash;
+        }
+
         public String getStateRoot() {
             return stateRoot;
+        }
+
+        public void setStateRoot(String stateRoot) {
+            this.stateRoot = stateRoot;
         }
 
         public String getSealer() {
             return sealer;
         }
 
+        public void setSealer(String sealer) {
+            this.sealer = sealer;
+        }
+
         public List<String> getSealerList() {
             return sealerList;
+        }
+
+        public void setSealerList(List<String> sealerList) {
+            this.sealerList = sealerList;
         }
 
         public List<String> getExtraData() {
             return extraData;
         }
 
+        public void setExtraData(List<String> extraData) {
+            this.extraData = extraData;
+        }
+
         public String getGasLimit() {
             return gasLimit;
+        }
+
+        public void setGasLimit(String gasLimit) {
+            this.gasLimit = gasLimit;
         }
 
         public String getGasUsed() {
             return gasUsed;
         }
 
+        public void setGasUsed(String gasUsed) {
+            this.gasUsed = gasUsed;
+        }
+
         public String getTimestamp() {
             return timestamp;
+        }
+
+        public void setTimestamp(String timestamp) {
+            this.timestamp = timestamp;
         }
 
         private byte[] encodeBlockHeader() {
@@ -276,7 +278,7 @@ public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader
             if (o == null || getClass() != o.getClass()) return false;
             BlockHeader that = (BlockHeader) o;
             return Objects.equals(
-                            Numeric.decodeQuantity(number), Numeric.decodeQuantity(that.number))
+                    Numeric.decodeQuantity(number), Numeric.decodeQuantity(that.number))
                     && Objects.equals(hash, that.hash)
                     && Objects.equals(parentHash, that.parentHash)
                     && Objects.equals(logsBloom, that.logsBloom)

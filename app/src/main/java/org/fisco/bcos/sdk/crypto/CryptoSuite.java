@@ -13,7 +13,6 @@
  */
 package org.fisco.bcos.sdk.crypto;
 
-import java.security.KeyPair;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.config.model.AccountConfig;
 import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
@@ -31,6 +30,8 @@ import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.KeyPair;
 
 public class CryptoSuite {
 
@@ -55,6 +56,7 @@ public class CryptoSuite {
         }
         loadAccount(configOption);
     }
+
     /**
      * init the common crypto implementation according to the crypto type
      *
@@ -110,11 +112,6 @@ public class CryptoSuite {
                 accountConfig.getAccountFileFormat(),
                 accountFilePath,
                 accountConfig.getAccountPassword());
-    }
-
-    public void setConfig(ConfigOption config) {
-        this.config = config;
-        this.keyPairFactory.setConfig(config);
     }
 
     public int getCryptoTypeConfig() {
@@ -186,17 +183,22 @@ public class CryptoSuite {
         return this.cryptoKeyPair;
     }
 
+    public CryptoKeyPair getCryptoKeyPair() {
+        return this.cryptoKeyPair;
+    }
+
     public void setCryptoKeyPair(CryptoKeyPair cryptoKeyPair) {
         this.cryptoKeyPair = cryptoKeyPair;
         this.cryptoKeyPair.setConfig(config);
     }
 
-    public CryptoKeyPair getCryptoKeyPair() {
-        return this.cryptoKeyPair;
-    }
-
     public ConfigOption getConfig() {
         return this.config;
+    }
+
+    public void setConfig(ConfigOption config) {
+        this.config = config;
+        this.keyPairFactory.setConfig(config);
     }
 
     public CryptoKeyPair getKeyPairFactory() {

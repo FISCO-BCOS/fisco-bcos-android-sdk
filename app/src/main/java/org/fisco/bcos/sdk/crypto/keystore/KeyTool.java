@@ -13,6 +13,23 @@
  */
 package org.fisco.bcos.sdk.crypto.keystore;
 
+import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
+import org.fisco.bcos.sdk.utils.Numeric;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.spongycastle.crypto.params.ECDomainParameters;
+import org.spongycastle.crypto.params.ECPrivateKeyParameters;
+import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
+import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
+import org.spongycastle.jcajce.provider.asymmetric.util.EC5Util;
+import org.spongycastle.jce.ECNamedCurveTable;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.jce.spec.ECNamedCurveParameterSpec;
+import org.spongycastle.jce.spec.ECNamedCurveSpec;
+import org.spongycastle.jce.spec.ECPrivateKeySpec;
+import org.spongycastle.util.io.pem.PemObject;
+import org.spongycastle.util.io.pem.PemWriter;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -36,22 +53,6 @@ import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Collections;
-import org.spongycastle.crypto.params.ECDomainParameters;
-import org.spongycastle.crypto.params.ECPrivateKeyParameters;
-import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
-import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
-import org.spongycastle.jcajce.provider.asymmetric.util.EC5Util;
-import org.spongycastle.jce.ECNamedCurveTable;
-import org.spongycastle.jce.provider.BouncyCastleProvider;
-import org.spongycastle.jce.spec.ECNamedCurveParameterSpec;
-import org.spongycastle.jce.spec.ECNamedCurveSpec;
-import org.spongycastle.jce.spec.ECPrivateKeySpec;
-import org.spongycastle.util.io.pem.PemObject;
-import org.spongycastle.util.io.pem.PemWriter;
-import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
-import org.fisco.bcos.sdk.utils.Numeric;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class KeyTool {
     protected static Logger logger = LoggerFactory.getLogger(KeyTool.class);
@@ -65,7 +66,7 @@ public abstract class KeyTool {
      * constructor for the P12: with password
      *
      * @param keyStoreFile the path of the keystore file
-     * @param password password to read the keystore file
+     * @param password     password to read the keystore file
      */
     public KeyTool(final String keyStoreFile, final String password) {
         this.keyStoreFile = keyStoreFile;
@@ -87,7 +88,7 @@ public abstract class KeyTool {
      * constructor for the P12: with password and key file input stream
      *
      * @param keyStoreFileInputStream the input stream of the keystore file
-     * @param password password to read the keystore file
+     * @param password                password to read the keystore file
      */
     public KeyTool(InputStream keyStoreFileInputStream, final String password) {
         this.keyStoreFile = null;
@@ -105,43 +106,16 @@ public abstract class KeyTool {
         this(keyStoreFileInputStream, null);
     }
 
-    protected abstract PrivateKey getPrivateKey();
-
     private static void initSecurity() {
         Security.setProperty("crypto.policy", "unlimited");
         Security.addProvider(new BouncyCastleProvider());
     }
-
-    public final String getKeyStoreFile() {
-        return this.keyStoreFile;
-    }
-
-    /**
-     * get keyPair loaded from the keyStore file
-     *
-     * @return the keyPair
-     */
-    public KeyPair getKeyPair() {
-        PrivateKey privateKey = getPrivateKey();
-        PublicKey publicKey = getPublicKeyFromPrivateKey();
-        return new KeyPair(publicKey, privateKey);
-    }
-
-    protected abstract PublicKey getPublicKey();
 
     public static String getHexedPublicKey(PublicKey publicKey) {
         byte[] publicKeyBytes = ((BCECPublicKey) publicKey).getQ().getEncoded(false);
         BigInteger publicKeyValue =
                 new BigInteger(1, Arrays.copyOfRange(publicKeyBytes, 1, publicKeyBytes.length));
         return ("04" + Numeric.toHexStringNoPrefixZeroPadded(publicKeyValue, 128));
-    }
-
-    public String getHexedPublicKey() {
-        if (!"".equals(hexedPublicKey)) {
-            return this.hexedPublicKey;
-        }
-        this.hexedPublicKey = getHexedPublicKey(getPublicKey());
-        return this.hexedPublicKey;
     }
 
     public static String getHexedPrivateKey(PrivateKey privateKey) {
@@ -152,7 +126,7 @@ public abstract class KeyTool {
      * convert hexed string into PrivateKey type storePublicKeyWithPem
      *
      * @param hexedPrivateKey the hexed privateKey
-     * @param curveName the curve name
+     * @param curveName       the curve name
      * @return the converted privateKey
      * @throws LoadKeyStoreException convert exception, return exception information
      */
@@ -225,24 +199,6 @@ public abstract class KeyTool {
         writer.close();
     }
 
-    protected abstract void load(InputStream in);
-
-    /** load information from the keyStoreFile */
-    protected void load() {
-        try {
-            InputStream keyStoreFileInputStream = new FileInputStream(keyStoreFile);
-            this.load(keyStoreFileInputStream);
-        } catch (FileNotFoundException | org.spongycastle.util.encoders.DecoderException e) {
-            String errorMessage =
-                    "load keys from "
-                            + keyStoreFile
-                            + " failed for FileNotFoundException, error message:"
-                            + e.getMessage();
-            logger.error(errorMessage);
-            throw new LoadKeyStoreException(errorMessage, e);
-        }
-    }
-
     private static Method getMethod(
             Class<EC5Util> ec5UtilClass, String methodName, Class<?>... parameterTypes) {
         try {
@@ -291,10 +247,6 @@ public abstract class KeyTool {
                     e.getStackTrace().toString());
             throw new LoadKeyStoreException("convertToECParamSpec exception for " + e.getMessage());
         }
-    }
-
-    protected PublicKey getPublicKeyFromPrivateKey() {
-        return getPublicKeyFromPrivateKey(getPrivateKey());
     }
 
     public static PublicKey getPublicKeyFromPrivateKey(PrivateKey privateKey)
@@ -346,5 +298,56 @@ public abstract class KeyTool {
             }
         }
         return params;
+    }
+
+    protected abstract PrivateKey getPrivateKey();
+
+    public final String getKeyStoreFile() {
+        return this.keyStoreFile;
+    }
+
+    /**
+     * get keyPair loaded from the keyStore file
+     *
+     * @return the keyPair
+     */
+    public KeyPair getKeyPair() {
+        PrivateKey privateKey = getPrivateKey();
+        PublicKey publicKey = getPublicKeyFromPrivateKey();
+        return new KeyPair(publicKey, privateKey);
+    }
+
+    protected abstract PublicKey getPublicKey();
+
+    public String getHexedPublicKey() {
+        if (!"".equals(hexedPublicKey)) {
+            return this.hexedPublicKey;
+        }
+        this.hexedPublicKey = getHexedPublicKey(getPublicKey());
+        return this.hexedPublicKey;
+    }
+
+    protected abstract void load(InputStream in);
+
+    /**
+     * load information from the keyStoreFile
+     */
+    protected void load() {
+        try {
+            InputStream keyStoreFileInputStream = new FileInputStream(keyStoreFile);
+            this.load(keyStoreFileInputStream);
+        } catch (FileNotFoundException | org.spongycastle.util.encoders.DecoderException e) {
+            String errorMessage =
+                    "load keys from "
+                            + keyStoreFile
+                            + " failed for FileNotFoundException, error message:"
+                            + e.getMessage();
+            logger.error(errorMessage);
+            throw new LoadKeyStoreException(errorMessage, e);
+        }
+    }
+
+    protected PublicKey getPublicKeyFromPrivateKey() {
+        return getPublicKeyFromPrivateKey(getPrivateKey());
     }
 }

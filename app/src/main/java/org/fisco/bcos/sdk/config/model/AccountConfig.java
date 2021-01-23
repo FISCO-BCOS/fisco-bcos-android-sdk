@@ -15,8 +15,9 @@
 
 package org.fisco.bcos.sdk.config.model;
 
-import java.util.Objects;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
+
+import java.util.Objects;
 
 public class AccountConfig {
     private String keyStoreDir;
