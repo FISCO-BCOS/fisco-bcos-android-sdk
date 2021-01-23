@@ -23,14 +23,18 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.fisco.bcos.sdk.model.JsonRpcResponse;
+import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.fisco.bcos.sdk.model.JsonRpcResponse;
-import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
-/** getConsensusStatus */
+/**
+ * getConsensusStatus
+ */
 public class ConsensusStatus extends JsonRpcResponse<ConsensusStatus.ConsensusInfo> {
     @Override
     @JsonDeserialize(using = ConsensusStatusDeserializer.class)
@@ -393,7 +397,8 @@ public class ConsensusStatus extends JsonRpcResponse<ConsensusStatus.ConsensusIn
         private BasicConsensusInfo baseConsensusInfo;
         private List<ViewInfo> viewInfos;
 
-        public ConsensusInfo() {}
+        public ConsensusInfo() {
+        }
 
         public ConsensusInfo(BasicConsensusInfo baseConsensusInfo, List<ViewInfo> viewInfos) {
             this.baseConsensusInfo = baseConsensusInfo;
@@ -467,7 +472,8 @@ public class ConsensusStatus extends JsonRpcResponse<ConsensusStatus.ConsensusIn
             if (node.size() > 1) {
                 viewInfos =
                         objecMapper.readValue(
-                                node.get(1).toString(), new TypeReference<List<ViewInfo>>() {});
+                                node.get(1).toString(), new TypeReference<List<ViewInfo>>() {
+                                });
             }
             return new ConsensusInfo(baseConsensusInfo, viewInfos);
         }

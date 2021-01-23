@@ -13,18 +13,22 @@
  */
 package org.fisco.bcos.sdk.utils;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Arrays;
 import org.fisco.bcos.sdk.utils.exceptions.MessageDecodingException;
 import org.fisco.bcos.sdk.utils.exceptions.MessageEncodingException;
 
-/** Message codec functions. */
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+
+/**
+ * Message codec functions.
+ */
 public final class Numeric {
 
     private static final String HEX_PREFIX = "0x";
 
-    private Numeric() {}
+    private Numeric() {
+    }
 
     public static String encodeQuantity(BigInteger value) {
         if (value.signum() != -1) {
@@ -181,7 +185,7 @@ public final class Numeric {
         int len = cleanInput.length();
 
         if (len == 0) {
-            return new byte[] {};
+            return new byte[]{};
         }
 
         byte[] data;

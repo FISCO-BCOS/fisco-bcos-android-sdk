@@ -1,8 +1,5 @@
 package org.fisco.bcos.sdk.test.abi;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.abi.wrapper.ABICodecObject;
@@ -12,6 +9,10 @@ import org.fisco.bcos.sdk.abi.wrapper.ABIObjectFactory;
 import org.fisco.bcos.sdk.abi.wrapper.ContractABIDefinition;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 class Item {
     private BigInteger a;

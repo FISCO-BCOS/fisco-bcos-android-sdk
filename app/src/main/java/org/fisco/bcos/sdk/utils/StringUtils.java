@@ -20,10 +20,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
-/** String utility functions. */
+/**
+ * String utility functions.
+ */
 public class StringUtils {
 
-    private StringUtils() {}
+    private StringUtils() {
+    }
 
     public static String capitaliseFirstLetter(String string) {
         if (string == null || string.length() == 0) {

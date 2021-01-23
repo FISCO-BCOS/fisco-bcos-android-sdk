@@ -13,13 +13,16 @@
  */
 package org.fisco.bcos.sdk.rlp;
 
-import java.math.BigInteger;
-import java.util.Arrays;
 import org.fisco.bcos.sdk.utils.Numeric;
 
-/** RLP string type. */
+import java.math.BigInteger;
+import java.util.Arrays;
+
+/**
+ * RLP string type.
+ */
 public final class RlpString implements RlpType {
-    private static final byte[] EMPTY = new byte[] {};
+    private static final byte[] EMPTY = new byte[]{};
 
     public final byte[] value;
 
@@ -27,27 +30,12 @@ public final class RlpString implements RlpType {
         this.value = value;
     }
 
-    public final byte[] getBytes() {
-        return value;
-    }
-
-    public BigInteger asPositiveBigInteger() {
-        if (value.length == 0) {
-            return BigInteger.ZERO;
-        }
-        return new BigInteger(1, value);
-    }
-
-    public String asString() {
-        return Numeric.toHexString(value);
-    }
-
     public static RlpString create(byte[] value) {
         return new RlpString(value);
     }
 
     public static RlpString create(byte value) {
-        return new RlpString(new byte[] {value});
+        return new RlpString(new byte[]{value});
     }
 
     public static RlpString create(BigInteger value) {
@@ -71,6 +59,21 @@ public final class RlpString implements RlpType {
 
     public static RlpString create(String value) {
         return new RlpString(value.getBytes());
+    }
+
+    public final byte[] getBytes() {
+        return value;
+    }
+
+    public BigInteger asPositiveBigInteger() {
+        if (value.length == 0) {
+            return BigInteger.ZERO;
+        }
+        return new BigInteger(1, value);
+    }
+
+    public String asString() {
+        return Numeric.toHexString(value);
     }
 
     @Override

@@ -17,7 +17,9 @@ package org.fisco.bcos.sdk.client.protocol.response;
 
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-/** getBlockHashByNumber */
+/**
+ * getBlockHashByNumber
+ */
 public class BlockHash extends JsonRpcResponse<String> {
     public String getBlockHashByNumber() {
         return getResult();

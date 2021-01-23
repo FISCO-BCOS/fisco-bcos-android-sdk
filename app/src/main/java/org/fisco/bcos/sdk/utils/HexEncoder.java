@@ -16,19 +16,29 @@ package org.fisco.bcos.sdk.utils;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/** A streaming Hex encoder. */
+/**
+ * A streaming Hex encoder.
+ */
 public class HexEncoder {
     protected final byte[] encodingTable = {
-        (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
-                (byte) '7',
-        (byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
-                (byte) 'f'
+            (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
+            (byte) '7',
+            (byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
+            (byte) 'f'
     };
 
     /*
      * set up the decoding table.
      */
     protected final byte[] decodingTable = new byte[128];
+
+    public HexEncoder() {
+        initialiseDecodingTable();
+    }
+
+    private static boolean ignore(char c) {
+        return c == '\n' || c == '\r' || c == '\t' || c == ' ';
+    }
 
     protected void initialiseDecodingTable() {
         for (int i = 0; i < decodingTable.length; i++) {
@@ -47,19 +57,15 @@ public class HexEncoder {
         decodingTable['F'] = decodingTable['f'];
     }
 
-    public HexEncoder() {
-        initialiseDecodingTable();
-    }
-
     /**
      * encode the input data producing a Hex output stream.
      *
-     * @param data the input byte array
-     * @param off the offset of the data to be converted
+     * @param data   the input byte array
+     * @param off    the offset of the data to be converted
      * @param length the length of the data to be converted
-     * @param out the output stream
-     * @throws IOException the I/O exception
+     * @param out    the output stream
      * @return the number of bytes produced.
+     * @throws IOException the I/O exception
      */
     public int encode(byte[] data, int off, int length, OutputStream out) throws IOException {
         for (int i = off; i < (off + length); i++) {
@@ -72,20 +78,16 @@ public class HexEncoder {
         return length * 2;
     }
 
-    private static boolean ignore(char c) {
-        return c == '\n' || c == '\r' || c == '\t' || c == ' ';
-    }
-
     /**
      * decode the Hex encoded byte data writing it to the given output stream, whitespace characters
      * will be ignored.
      *
-     * @param data the input byte array
-     * @param off the offset of the data to be converted
+     * @param data   the input byte array
+     * @param off    the offset of the data to be converted
      * @param length the length of the data to be converted
-     * @param out the output stream
-     * @throws IOException the I/O exception
+     * @param out    the output stream
      * @return the number of bytes produced.
+     * @throws IOException the I/O exception
      */
     public int decode(byte[] data, int off, int length, OutputStream out) throws IOException {
         byte field1, field2;
@@ -132,9 +134,9 @@ public class HexEncoder {
      * characters will be ignored.
      *
      * @param data the input byte array
-     * @param out the output stream
-     * @throws IOException the I/O exception
+     * @param out  the output stream
      * @return the number of bytes produced.
+     * @throws IOException the I/O exception
      */
     public int decode(String data, OutputStream out) throws IOException {
         byte b1, b2;

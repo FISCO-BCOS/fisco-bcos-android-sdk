@@ -15,18 +15,19 @@
 
 package org.fisco.bcos.sdk.network;
 
-import io.netty.channel.ChannelHandlerContext;
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.fisco.bcos.sdk.model.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * An implementation of Network
@@ -86,27 +87,6 @@ public class NetworkImp implements Network {
     @Override
     public List<ConnectionInfo> getConnectionInfo() {
         return connManager.getConnectionInfoList();
-    }
-
-    private class CheckCertExistenceResult {
-        private boolean checkPassed = true;
-        private String errorMessage = "";
-
-        public boolean isCheckPassed() {
-            return checkPassed;
-        }
-
-        public void setCheckPassed(boolean checkPassed) {
-            this.checkPassed = checkPassed;
-        }
-
-        public String getErrorMessage() {
-            return errorMessage;
-        }
-
-        public void setErrorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
-        }
     }
 
     private CheckCertExistenceResult checkCertExistence(boolean isSM) {
@@ -234,5 +214,26 @@ public class NetworkImp implements Network {
         connManager.stopReconnectSchedule();
         connManager.stopNetty();
         return;
+    }
+
+    private class CheckCertExistenceResult {
+        private boolean checkPassed = true;
+        private String errorMessage = "";
+
+        public boolean isCheckPassed() {
+            return checkPassed;
+        }
+
+        public void setCheckPassed(boolean checkPassed) {
+            this.checkPassed = checkPassed;
+        }
+
+        public String getErrorMessage() {
+            return errorMessage;
+        }
+
+        public void setErrorMessage(String errorMessage) {
+            this.errorMessage = errorMessage;
+        }
     }
 }

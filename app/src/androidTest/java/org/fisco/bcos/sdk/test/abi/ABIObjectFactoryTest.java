@@ -1,9 +1,5 @@
 package org.fisco.bcos.sdk.test.abi;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-
-import java.util.Objects;
 import org.fisco.bcos.sdk.abi.FunctionEncoder;
 import org.fisco.bcos.sdk.abi.wrapper.ABIObject;
 import org.fisco.bcos.sdk.abi.wrapper.ABIObjectFactory;
@@ -11,6 +7,11 @@ import org.fisco.bcos.sdk.abi.wrapper.ContractABIDefinition;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Objects;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 public class ABIObjectFactoryTest {
 

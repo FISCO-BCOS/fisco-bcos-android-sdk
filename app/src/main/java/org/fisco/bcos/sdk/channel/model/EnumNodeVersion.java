@@ -11,6 +11,44 @@ public enum EnumNodeVersion {
         this.version = version;
     }
 
+    public static Version getClassVersion(String version) throws ChannelPrococolExceiption {
+        try {
+            // node version str format : "a.b.c" or "a.b.c-rcx" or gm version
+            if (version.endsWith("gm")) {
+                version = version.substring(0, version.indexOf("gm"));
+            }
+            String[] s0 = version.trim().split("-");
+
+            Version v = EnumNodeVersion.BCOS_2_0_0.new Version();
+            if (s0.length > 1) {
+                v.setExt(s0[1]);
+            }
+
+            //
+            String[] s1 = s0[0].split("\\.");
+            if (s1.length >= 3) {
+                v.setMajor(Integer.parseInt(s1[0].trim()));
+                v.setMinor(Integer.parseInt(s1[1].trim()));
+                v.setPatch(Integer.parseInt(s1[2].trim()));
+            } else { // invaid format
+                throw new ChannelPrococolExceiption(
+                        " invalid node version format, version: " + version);
+            }
+
+            return v;
+        } catch (Exception e) {
+            throw new ChannelPrococolExceiption(
+                    " invalid node version format, version: " + version);
+        }
+    }
+
+    public static boolean channelProtocolHandleShakeSupport(String version)
+            throws ChannelPrococolExceiption {
+        Version v = getClassVersion(version);
+        // 2.1.0 and above
+        return (v.getMajor() == 2) && (v.getMinor() >= 1);
+    }
+
     public String getVersion() {
         return version;
     }
@@ -74,43 +112,5 @@ public enum EnumNodeVersion {
         public void setExt(String ext) {
             this.ext = ext;
         }
-    }
-
-    public static Version getClassVersion(String version) throws ChannelPrococolExceiption {
-        try {
-            // node version str format : "a.b.c" or "a.b.c-rcx" or gm version
-            if (version.endsWith("gm")) {
-                version = version.substring(0, version.indexOf("gm"));
-            }
-            String[] s0 = version.trim().split("-");
-
-            Version v = EnumNodeVersion.BCOS_2_0_0.new Version();
-            if (s0.length > 1) {
-                v.setExt(s0[1]);
-            }
-
-            //
-            String[] s1 = s0[0].split("\\.");
-            if (s1.length >= 3) {
-                v.setMajor(Integer.parseInt(s1[0].trim()));
-                v.setMinor(Integer.parseInt(s1[1].trim()));
-                v.setPatch(Integer.parseInt(s1[2].trim()));
-            } else { // invaid format
-                throw new ChannelPrococolExceiption(
-                        " invalid node version format, version: " + version);
-            }
-
-            return v;
-        } catch (Exception e) {
-            throw new ChannelPrococolExceiption(
-                    " invalid node version format, version: " + version);
-        }
-    }
-
-    public static boolean channelProtocolHandleShakeSupport(String version)
-            throws ChannelPrococolExceiption {
-        Version v = getClassVersion(version);
-        // 2.1.0 and above
-        return (v.getMajor() == 2) && (v.getMinor() >= 1);
     }
 }

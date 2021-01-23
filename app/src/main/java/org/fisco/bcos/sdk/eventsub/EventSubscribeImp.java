@@ -16,10 +16,7 @@
 package org.fisco.bcos.sdk.eventsub;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.math.BigInteger;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.channel.ResponseCallback;
 import org.fisco.bcos.sdk.eventsub.filter.EventLogFilter;
@@ -29,14 +26,22 @@ import org.fisco.bcos.sdk.eventsub.filter.EventPushMsgHandler;
 import org.fisco.bcos.sdk.eventsub.filter.EventSubNodeRespStatus;
 import org.fisco.bcos.sdk.eventsub.filter.FilterManager;
 import org.fisco.bcos.sdk.eventsub.filter.ScheduleTimeConfig;
-import org.fisco.bcos.sdk.model.*;
+import org.fisco.bcos.sdk.model.Message;
+import org.fisco.bcos.sdk.model.MsgType;
+import org.fisco.bcos.sdk.model.Response;
 import org.fisco.bcos.sdk.service.GroupManagerService;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 public class EventSubscribeImp implements EventSubscribe {
     private static final Logger logger = LoggerFactory.getLogger(EventSubscribeImp.class);
+    ScheduledThreadPoolExecutor resendSchedule = new ScheduledThreadPoolExecutor(1);
     private Channel channel;
     private GroupManagerService groupManagerService;
     private Integer groupId;
@@ -44,7 +49,6 @@ public class EventSubscribeImp implements EventSubscribe {
     private EventPushMsgHandler msgHander;
     private EventResource eventResource;
     private boolean running = false;
-    ScheduledThreadPoolExecutor resendSchedule = new ScheduledThreadPoolExecutor(1);
 
     public EventSubscribeImp(
             GroupManagerService groupManagerService, EventResource eventResource, Integer groupId) {

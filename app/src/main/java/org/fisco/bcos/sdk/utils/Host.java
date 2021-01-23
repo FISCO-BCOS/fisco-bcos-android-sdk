@@ -18,7 +18,9 @@ package org.fisco.bcos.sdk.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Verify host and port, and extract host or port from string. */
+/**
+ * Verify host and port, and extract host or port from string.
+ */
 public class Host {
     /**
      * @param IP the IP string of host

@@ -1,12 +1,5 @@
 package org.fisco.bcos.sdk.abi.wrapper;
 
-import java.lang.reflect.Field;
-import java.math.BigInteger;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -22,9 +15,29 @@ import org.fisco.bcos.sdk.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class ABICodecObject {
 
     private static final Logger logger = LoggerFactory.getLogger(ABICodecObject.class);
+
+    public static byte[] formatBytesN(ABIObject abiObject) {
+        if (abiObject.getBytesLength() > 0
+                && abiObject.getBytesValue().getValue().length > abiObject.getBytesLength()) {
+            byte[] value = new byte[abiObject.getBytesLength()];
+            System.arraycopy(
+                    abiObject.getBytesValue().getValue(), 0, value, 0, abiObject.getBytesLength());
+            return value;
+        } else {
+            return abiObject.getBytesValue().getValue();
+        }
+    }
 
     private void errorReport(String path, String expected, String actual)
             throws InvalidParameterException {
@@ -67,26 +80,22 @@ public class ABICodecObject {
         for (int i = 0; i < list.size(); i++) {
             ABIObject nodeObject = abiObject.getListValueType().newObject();
             switch (nodeObject.getType()) {
-                case VALUE:
-                    {
-                        nodeObject = encodeValue(nodeObject, list.get(i));
-                        break;
-                    }
-                case STRUCT:
-                    {
-                        nodeObject = encodeStruct(nodeObject, list.get(i));
-                        break;
-                    }
-                case LIST:
-                    {
-                        nodeObject = encodeList(nodeObject, list.get(i));
-                        break;
-                    }
-                default:
-                    {
-                        throw new UnsupportedOperationException(
-                                " Unsupported objectType: " + nodeObject.getType());
-                    }
+                case VALUE: {
+                    nodeObject = encodeValue(nodeObject, list.get(i));
+                    break;
+                }
+                case STRUCT: {
+                    nodeObject = encodeStruct(nodeObject, list.get(i));
+                    break;
+                }
+                case LIST: {
+                    nodeObject = encodeList(nodeObject, list.get(i));
+                    break;
+                }
+                default: {
+                    throw new UnsupportedOperationException(
+                            " Unsupported objectType: " + nodeObject.getType());
+                }
             }
             abiObject.getListValues().add(nodeObject);
         }
@@ -110,26 +119,22 @@ public class ABICodecObject {
             for (int i = 0; i < abiObject.getStructFields().size(); i++) {
                 ABIObject nodeObject = abiObject.getStructFields().get(i);
                 switch (nodeObject.getType()) {
-                    case VALUE:
-                        {
-                            nodeObject = encodeValue(nodeObject, list.get(i));
-                            break;
-                        }
-                    case STRUCT:
-                        {
-                            nodeObject = encodeStruct(nodeObject, list.get(i));
-                            break;
-                        }
-                    case LIST:
-                        {
-                            nodeObject = encodeList(nodeObject, list.get(i));
-                            break;
-                        }
-                    default:
-                        {
-                            throw new UnsupportedOperationException(
-                                    " Unsupported objectType: " + nodeObject.getType());
-                        }
+                    case VALUE: {
+                        nodeObject = encodeValue(nodeObject, list.get(i));
+                        break;
+                    }
+                    case STRUCT: {
+                        nodeObject = encodeStruct(nodeObject, list.get(i));
+                        break;
+                    }
+                    case LIST: {
+                        nodeObject = encodeList(nodeObject, list.get(i));
+                        break;
+                    }
+                    default: {
+                        throw new UnsupportedOperationException(
+                                " Unsupported objectType: " + nodeObject.getType());
+                    }
                 }
                 abiObject.getStructFields().set(i, nodeObject);
             }
@@ -147,26 +152,22 @@ public class ABICodecObject {
             for (int i = 0; i < abiObject.getStructFields().size(); ++i) {
                 ABIObject nodeObject = abiObject.getStructFields().get(i);
                 switch (nodeObject.getType()) {
-                    case VALUE:
-                        {
-                            nodeObject = encodeValue(nodeObject, v.get(nodeObject.getName()));
-                            break;
-                        }
-                    case STRUCT:
-                        {
-                            nodeObject = encodeStruct(nodeObject, v.get(nodeObject.getName()));
-                            break;
-                        }
-                    case LIST:
-                        {
-                            nodeObject = encodeList(nodeObject, v.get(nodeObject.getName()));
-                            break;
-                        }
-                    default:
-                        {
-                            throw new UnsupportedOperationException(
-                                    " Unsupported objectType: " + nodeObject.getType());
-                        }
+                    case VALUE: {
+                        nodeObject = encodeValue(nodeObject, v.get(nodeObject.getName()));
+                        break;
+                    }
+                    case STRUCT: {
+                        nodeObject = encodeStruct(nodeObject, v.get(nodeObject.getName()));
+                        break;
+                    }
+                    case LIST: {
+                        nodeObject = encodeList(nodeObject, v.get(nodeObject.getName()));
+                        break;
+                    }
+                    default: {
+                        throw new UnsupportedOperationException(
+                                " Unsupported objectType: " + nodeObject.getType());
+                    }
                 }
                 abiObject.getStructFields().set(i, nodeObject);
             }
@@ -183,105 +184,97 @@ public class ABICodecObject {
             abiObject = encodeStruct(abiObject, value);
         } else {
             switch (abiObject.getValueType()) {
-                case BOOL:
-                    {
-                        if (value instanceof Boolean) {
-                            abiObject.setBoolValue(new Bool((Boolean) value));
-                        } else {
-                            errorReport(
-                                    " valueType mismatch",
-                                    abiObject.getValueType().getClass().getName(),
-                                    value.getClass().getName());
-                        }
-                        break;
+                case BOOL: {
+                    if (value instanceof Boolean) {
+                        abiObject.setBoolValue(new Bool((Boolean) value));
+                    } else {
+                        errorReport(
+                                " valueType mismatch",
+                                abiObject.getValueType().getClass().getName(),
+                                value.getClass().getName());
                     }
-                case UINT:
-                    {
-                        if (value instanceof BigInteger) {
-                            abiObject.setNumericValue(new Uint256((BigInteger) value));
-                        } else if (StringUtils.isNumeric(value.toString())) {
-                            abiObject.setNumericValue(
-                                    new Uint256((new BigInteger(value.toString()))));
-                        } else {
-                            errorReport(
-                                    " valueType mismatch",
-                                    abiObject.getValueType().getClass().getName(),
-                                    value.getClass().getName());
-                        }
-                        break;
+                    break;
+                }
+                case UINT: {
+                    if (value instanceof BigInteger) {
+                        abiObject.setNumericValue(new Uint256((BigInteger) value));
+                    } else if (StringUtils.isNumeric(value.toString())) {
+                        abiObject.setNumericValue(
+                                new Uint256((new BigInteger(value.toString()))));
+                    } else {
+                        errorReport(
+                                " valueType mismatch",
+                                abiObject.getValueType().getClass().getName(),
+                                value.getClass().getName());
                     }
-                case INT:
-                    {
-                        if (value instanceof BigInteger) {
-                            abiObject.setNumericValue(new Int256((BigInteger) value));
-                        } else if (StringUtils.isNumeric(value.toString())) {
-                            abiObject.setNumericValue(
-                                    new Uint256((new BigInteger(value.toString()))));
-                        } else {
-                            errorReport(
-                                    " valueType mismatch",
-                                    abiObject.getValueType().getClass().getName(),
-                                    value.getClass().getName());
-                        }
-                        break;
+                    break;
+                }
+                case INT: {
+                    if (value instanceof BigInteger) {
+                        abiObject.setNumericValue(new Int256((BigInteger) value));
+                    } else if (StringUtils.isNumeric(value.toString())) {
+                        abiObject.setNumericValue(
+                                new Uint256((new BigInteger(value.toString()))));
+                    } else {
+                        errorReport(
+                                " valueType mismatch",
+                                abiObject.getValueType().getClass().getName(),
+                                value.getClass().getName());
                     }
-                case ADDRESS:
-                    {
-                        if (value instanceof String) {
-                            abiObject.setAddressValue(new Address((String) value));
-                        } else {
-                            errorReport(
-                                    " valueType mismatch",
-                                    abiObject.getValueType().getClass().getName(),
-                                    value.getClass().getName());
-                        }
-                        break;
+                    break;
+                }
+                case ADDRESS: {
+                    if (value instanceof String) {
+                        abiObject.setAddressValue(new Address((String) value));
+                    } else {
+                        errorReport(
+                                " valueType mismatch",
+                                abiObject.getValueType().getClass().getName(),
+                                value.getClass().getName());
                     }
-                case BYTES:
-                    {
-                        if (value instanceof byte[]) {
-                            byte[] bytesValue = (byte[]) value;
-                            abiObject.setBytesValue(new Bytes(bytesValue.length, bytesValue));
+                    break;
+                }
+                case BYTES: {
+                    if (value instanceof byte[]) {
+                        byte[] bytesValue = (byte[]) value;
+                        abiObject.setBytesValue(new Bytes(bytesValue.length, bytesValue));
 
-                        } else {
-                            errorReport(
-                                    " valueType mismatch",
-                                    abiObject.getValueType().getClass().getName(),
-                                    value.getClass().getName());
-                        }
+                    } else {
+                        errorReport(
+                                " valueType mismatch",
+                                abiObject.getValueType().getClass().getName(),
+                                value.getClass().getName());
+                    }
+                    break;
+                }
+                case DBYTES: {
+                    if (value instanceof byte[]) {
+                        byte[] bytesValue = (byte[]) value;
+                        abiObject.setDynamicBytesValue(new DynamicBytes(bytesValue));
+                    } else {
+                        errorReport(
+                                " valueType mismatch",
+                                abiObject.getValueType().getClass().getName(),
+                                value.getClass().getName());
                         break;
                     }
-                case DBYTES:
-                    {
-                        if (value instanceof byte[]) {
-                            byte[] bytesValue = (byte[]) value;
-                            abiObject.setDynamicBytesValue(new DynamicBytes(bytesValue));
-                        } else {
-                            errorReport(
-                                    " valueType mismatch",
-                                    abiObject.getValueType().getClass().getName(),
-                                    value.getClass().getName());
-                            break;
-                        }
-                        break;
+                    break;
+                }
+                case STRING: {
+                    if (value instanceof String) {
+                        abiObject.setStringValue(new Utf8String((String) value));
+                    } else {
+                        errorReport(
+                                " valueType mismatch",
+                                abiObject.getValueType().getClass().getName(),
+                                value.getClass().getName());
                     }
-                case STRING:
-                    {
-                        if (value instanceof String) {
-                            abiObject.setStringValue(new Utf8String((String) value));
-                        } else {
-                            errorReport(
-                                    " valueType mismatch",
-                                    abiObject.getValueType().getClass().getName(),
-                                    value.getClass().getName());
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        throw new InvalidParameterException(
-                                "Unrecognized valueType: " + abiObject.getValueType());
-                    }
+                    break;
+                }
+                default: {
+                    throw new InvalidParameterException(
+                            "Unrecognized valueType: " + abiObject.getValueType());
+                }
             }
         }
 
@@ -310,18 +303,6 @@ public class ABICodecObject {
         return decodeJavaObjectAndGetOutputObject(template).getLeft();
     }
 
-    public static byte[] formatBytesN(ABIObject abiObject) {
-        if (abiObject.getBytesLength() > 0
-                && abiObject.getBytesValue().getValue().length > abiObject.getBytesLength()) {
-            byte[] value = new byte[abiObject.getBytesLength()];
-            System.arraycopy(
-                    abiObject.getBytesValue().getValue(), 0, value, 0, abiObject.getBytesLength());
-            return value;
-        } else {
-            return abiObject.getBytesValue().getValue();
-        }
-    }
-
     private Pair<List<Object>, List<ABIObject>> decodeJavaObjectAndGetOutputObject(
             ABIObject template) throws UnsupportedOperationException {
         List<Object> result = new ArrayList<Object>();
@@ -335,67 +316,57 @@ public class ABICodecObject {
         for (int i = 0; i < argObjects.size(); ++i) {
             ABIObject argObject = argObjects.get(i);
             switch (argObject.getType()) {
-                case VALUE:
-                    {
-                        resultABIObject.add(argObject);
-                        switch (argObject.getValueType()) {
-                            case BOOL:
-                                {
-                                    result.add(argObject.getBoolValue().getValue());
-                                    break;
-                                }
-                            case UINT:
-                            case INT:
-                                {
-                                    result.add(argObject.getNumericValue().getValue());
-                                    break;
-                                }
-                            case ADDRESS:
-                                {
-                                    result.add(argObject.getAddressValue().toString());
-                                    break;
-                                }
-                            case BYTES:
-                                {
-                                    result.add(new String(formatBytesN(argObject)));
-                                    break;
-                                }
-                            case DBYTES:
-                                {
-                                    result.add(
-                                            new String(
-                                                    argObject.getDynamicBytesValue().getValue()));
-                                    break;
-                                }
-                            case STRING:
-                                {
-                                    result.add(argObject.getStringValue().toString());
-                                    break;
-                                }
-                            default:
-                                {
-                                    throw new UnsupportedOperationException(
-                                            " Unsupported valueType: " + argObject.getValueType());
-                                }
+                case VALUE: {
+                    resultABIObject.add(argObject);
+                    switch (argObject.getValueType()) {
+                        case BOOL: {
+                            result.add(argObject.getBoolValue().getValue());
+                            break;
                         }
-                        break;
+                        case UINT:
+                        case INT: {
+                            result.add(argObject.getNumericValue().getValue());
+                            break;
+                        }
+                        case ADDRESS: {
+                            result.add(argObject.getAddressValue().toString());
+                            break;
+                        }
+                        case BYTES: {
+                            result.add(new String(formatBytesN(argObject)));
+                            break;
+                        }
+                        case DBYTES: {
+                            result.add(
+                                    new String(
+                                            argObject.getDynamicBytesValue().getValue()));
+                            break;
+                        }
+                        case STRING: {
+                            result.add(argObject.getStringValue().toString());
+                            break;
+                        }
+                        default: {
+                            throw new UnsupportedOperationException(
+                                    " Unsupported valueType: " + argObject.getValueType());
+                        }
                     }
+                    break;
+                }
                 case LIST:
-                case STRUCT:
-                    {
-                        Pair<List<Object>, List<ABIObject>> nodeAndAbiObject =
-                                decodeJavaObjectAndGetOutputObject(argObject);
-                        result.add(nodeAndAbiObject.getLeft());
-                        ABIObject listABIObject = new ABIObject(argObject.getValueType());
-                        listABIObject.setListValues(nodeAndAbiObject.getRight());
-                        resultABIObject.add(listABIObject);
-                        break;
-                    }
-                default:
-                    {
-                        throw new UnsupportedOperationException(
-                                " Unsupported objectType: " + argObject.getType());
-                    }
+                case STRUCT: {
+                    Pair<List<Object>, List<ABIObject>> nodeAndAbiObject =
+                            decodeJavaObjectAndGetOutputObject(argObject);
+                    result.add(nodeAndAbiObject.getLeft());
+                    ABIObject listABIObject = new ABIObject(argObject.getValueType());
+                    listABIObject.setListValues(nodeAndAbiObject.getRight());
+                    resultABIObject.add(listABIObject);
+                    break;
+                }
+                default: {
+                    throw new UnsupportedOperationException(
+                            " Unsupported objectType: " + argObject.getType());
+                }
             }
         }
         return new ImmutablePair<>(result, resultABIObject);

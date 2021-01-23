@@ -13,7 +13,9 @@
  */
 package org.fisco.bcos.sdk.model.exceptions;
 
-/** Exception thrown if an attempt is made to decode invalid data, or some other failure occurs. */
+/**
+ * Exception thrown if an attempt is made to decode invalid data, or some other failure occurs.
+ */
 public class DecodeMessageException extends IllegalStateException {
     private final Throwable cause;
 

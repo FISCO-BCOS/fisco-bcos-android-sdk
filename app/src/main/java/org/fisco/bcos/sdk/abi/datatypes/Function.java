@@ -1,11 +1,14 @@
 package org.fisco.bcos.sdk.abi.datatypes;
 
-import java.util.Collections;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.TypeReference;
 import org.fisco.bcos.sdk.abi.Utils;
 
-/** Function type. */
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Function type.
+ */
 public class Function {
     private String name;
     private List<Type> inputParameters;

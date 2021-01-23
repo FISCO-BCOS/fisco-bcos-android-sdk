@@ -13,10 +13,6 @@
  */
 package org.fisco.bcos.sdk.client;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Semaphore;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.client.protocol.request.GenerateGroupParam;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
@@ -61,6 +57,11 @@ import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.service.GroupManagerService;
 import org.fisco.bcos.sdk.utils.Numeric;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class ClientImpl implements Client {
     protected JsonRpcService jsonRpcService;
@@ -925,32 +926,6 @@ public class ClientImpl implements Client {
                 callback);
     }
 
-    class SynchronousTransactionCallback extends TransactionCallback {
-        public TransactionReceipt receipt;
-        public Semaphore semaphore = new Semaphore(1, true);
-
-        SynchronousTransactionCallback() {
-            try {
-                semaphore.acquire(1);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        @Override
-        public void onTimeout() {
-            super.onTimeout();
-            semaphore.release();
-        }
-
-        // wait until get the transactionReceipt
-        @Override
-        public void onResponse(TransactionReceipt receipt) {
-            this.receipt = receipt;
-            semaphore.release();
-        }
-    }
-
     @Override
     public TransactionReceipt sendRawTransactionAndGetReceipt(String signedTransactionData) {
         SynchronousTransactionCallback callback = new SynchronousTransactionCallback();
@@ -1025,10 +1000,37 @@ public class ClientImpl implements Client {
     }
 
     @Override
-    public void start() {}
+    public void start() {
+    }
 
     @Override
     public void stop() {
         Thread.currentThread().interrupt();
+    }
+
+    class SynchronousTransactionCallback extends TransactionCallback {
+        public TransactionReceipt receipt;
+        public Semaphore semaphore = new Semaphore(1, true);
+
+        SynchronousTransactionCallback() {
+            try {
+                semaphore.acquire(1);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        @Override
+        public void onTimeout() {
+            super.onTimeout();
+            semaphore.release();
+        }
+
+        // wait until get the transactionReceipt
+        @Override
+        public void onResponse(TransactionReceipt receipt) {
+            this.receipt = receipt;
+            semaphore.release();
+        }
     }
 }

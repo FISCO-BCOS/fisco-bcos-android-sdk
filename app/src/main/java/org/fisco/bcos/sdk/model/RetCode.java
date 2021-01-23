@@ -17,11 +17,12 @@ package org.fisco.bcos.sdk.model;
 import java.util.Objects;
 
 public class RetCode {
-    private TransactionReceipt transactionReceipt;
     public int code;
+    private TransactionReceipt transactionReceipt;
     private String message;
 
-    public RetCode() {}
+    public RetCode() {
+    }
 
     public RetCode(int code, String message) {
         this.code = code;

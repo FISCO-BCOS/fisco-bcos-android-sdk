@@ -26,13 +26,13 @@ import java.util.Set;
 public class ByteUtils {
 
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-    public static final byte[] ZERO_BYTE_ARRAY = new byte[] {0};
+    public static final byte[] ZERO_BYTE_ARRAY = new byte[]{0};
 
     /**
      * Creates a copy of bytes and appends b to the end of it
      *
      * @param bytes the original bytes
-     * @param b the appended byte
+     * @param b     the appended byte
      * @return a appended bytes @
      */
     public static byte[] appendByte(byte[] bytes, byte b) {
@@ -45,7 +45,7 @@ public class ByteUtils {
      * The regular {@link BigInteger#toByteArray()} method isn't quite what we often need: it
      * appends a leading zero to indicate that the number is positive and may need padding.
      *
-     * @param b the integer to format into a byte array
+     * @param b        the integer to format into a byte array
      * @param numBytes the desired size of the resulting byte array
      * @return numBytes byte long array.
      */
@@ -198,11 +198,11 @@ public class ByteUtils {
      */
     public static byte[] calcPacketLength(byte[] msg) {
         int msgLen = msg.length;
-        return new byte[] {
-            (byte) ((msgLen >> 24) & 0xFF),
-            (byte) ((msgLen >> 16) & 0xFF),
-            (byte) ((msgLen >> 8) & 0xFF),
-            (byte) ((msgLen) & 0xFF)
+        return new byte[]{
+                (byte) ((msgLen >> 24) & 0xFF),
+                (byte) ((msgLen >> 16) & 0xFF),
+                (byte) ((msgLen >> 8) & 0xFF),
+                (byte) ((msgLen) & 0xFF)
         };
     }
 
@@ -703,9 +703,9 @@ public class ByteUtils {
      * offset} is higher than {@code input.length} then zero byte array of length {@code len} will
      * be returned
      *
-     * @param input the input bytes array
+     * @param input  the input bytes array
      * @param offset an offset in {@code input} array to start parsing from
-     * @param len the length of zero byte array
+     * @param len    the length of zero byte array
      * @return a fixed bytes array
      */
     public static byte[] parseBytes(byte[] input, int offset, int len) {
@@ -725,7 +725,7 @@ public class ByteUtils {
      * input}
      *
      * @param input the input bytes array
-     * @param idx an index of the word starting from {@code 0}
+     * @param idx   an index of the word starting from {@code 0}
      * @return a fixed bytes array
      */
     public static byte[] parseWord(byte[] input, int idx) {
@@ -737,8 +737,8 @@ public class ByteUtils {
      * thus, result will be right-padded with zero bytes if there is not enough bytes in {@code
      * input}
      *
-     * @param input the input bytes array
-     * @param idx an index of the word starting from {@code 0}
+     * @param input  the input bytes array
+     * @param idx    an index of the word starting from {@code 0}
      * @param offset an offset in {@code input} array to start parsing from
      * @return a fixed bytes array
      */

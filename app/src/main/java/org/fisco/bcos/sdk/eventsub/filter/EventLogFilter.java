@@ -16,16 +16,21 @@
 package org.fisco.bcos.sdk.eventsub.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.netty.channel.ChannelHandlerContext;
-import java.math.BigInteger;
-import java.util.List;
+
 import org.fisco.bcos.sdk.eventsub.EventCallback;
 import org.fisco.bcos.sdk.eventsub.EventLogParams;
 import org.fisco.bcos.sdk.eventsub.EventSubscribe;
 import org.fisco.bcos.sdk.model.EventLog;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
-/** An event log filter is a subscription. */
+import java.math.BigInteger;
+import java.util.List;
+
+import io.netty.channel.ChannelHandlerContext;
+
+/**
+ * An event log filter is a subscription.
+ */
 public class EventLogFilter {
     private String registerID;
     private String filterID;
@@ -52,42 +57,6 @@ public class EventLogFilter {
                 new EventLogRequestParams(generateNewParams(), groupId, filterId);
         String content = requestParams.toJsonString();
         return content;
-    }
-
-    public class EventLogRequestParams extends EventLogParams {
-        private String groupID;
-        private String filterID;
-        private int timeout = 0;
-
-        public EventLogRequestParams(EventLogParams params, String groupID, String filterID) {
-            this.setFromBlock(params.getFromBlock());
-            this.setToBlock(params.getToBlock());
-            this.setAddresses(params.getAddresses());
-            this.setTopics(params.getTopics());
-            this.setGroupID(groupID);
-            this.setFilterID(filterID);
-        }
-
-        public void setGroupID(String groupID) {
-            this.groupID = groupID;
-        }
-
-        public void setFilterID(String filterID) {
-            this.filterID = filterID;
-        }
-
-        public String getGroupID() {
-            return this.groupID;
-        }
-
-        public String getFilterID() {
-            return this.filterID;
-        }
-
-        public String toJsonString() throws JsonProcessingException {
-            String content = ObjectMapperFactory.getObjectMapper().writeValueAsString(this);
-            return content;
-        }
     }
 
     private EventLogParams generateNewParams() {
@@ -165,5 +134,41 @@ public class EventLogFilter {
 
     public void setCtx(ChannelHandlerContext ctx) {
         this.ctx = ctx;
+    }
+
+    public class EventLogRequestParams extends EventLogParams {
+        private String groupID;
+        private String filterID;
+        private int timeout = 0;
+
+        public EventLogRequestParams(EventLogParams params, String groupID, String filterID) {
+            this.setFromBlock(params.getFromBlock());
+            this.setToBlock(params.getToBlock());
+            this.setAddresses(params.getAddresses());
+            this.setTopics(params.getTopics());
+            this.setGroupID(groupID);
+            this.setFilterID(filterID);
+        }
+
+        public String getGroupID() {
+            return this.groupID;
+        }
+
+        public void setGroupID(String groupID) {
+            this.groupID = groupID;
+        }
+
+        public String getFilterID() {
+            return this.filterID;
+        }
+
+        public void setFilterID(String filterID) {
+            this.filterID = filterID;
+        }
+
+        public String toJsonString() throws JsonProcessingException {
+            String content = ObjectMapperFactory.getObjectMapper().writeValueAsString(this);
+            return content;
+        }
     }
 }

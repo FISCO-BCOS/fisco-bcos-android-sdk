@@ -15,16 +15,17 @@
 
 package org.fisco.bcos.sdk.model.callback;
 
-import io.netty.util.Timeout;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.TransactionReceiptStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.netty.util.Timeout;
+
 public abstract class TransactionCallback {
+    public static Integer DEFAULT_TRANS_TIMEOUT = 30 * 1000;
     private static Logger logger = LoggerFactory.getLogger(TransactionCallback.class);
     private Timeout timeoutHandler;
-    public static Integer DEFAULT_TRANS_TIMEOUT = 30 * 1000;
     private Integer timeout = DEFAULT_TRANS_TIMEOUT;
 
     public abstract void onResponse(TransactionReceipt receipt);
@@ -62,11 +63,11 @@ public abstract class TransactionCallback {
         this.timeoutHandler = timeoutHandler;
     }
 
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
-    }
-
     public Integer getTimeout() {
         return this.timeout;
+    }
+
+    public void setTimeout(Integer timeout) {
+        this.timeout = timeout;
     }
 }

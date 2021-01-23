@@ -1,16 +1,16 @@
 package org.fisco.bcos.sdk;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.os.Environment;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerImp;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.log.BcosSDKLogUtil;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Level;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.transaction.tools.JsonUtils;

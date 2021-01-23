@@ -13,7 +13,9 @@
  */
 package org.fisco.bcos.sdk.crypto.exceptions;
 
-/** Exceptioned when calling hash. */
+/**
+ * Exceptioned when calling hash.
+ */
 public class KeyPairException extends RuntimeException {
     public KeyPairException(String message) {
         super(message);

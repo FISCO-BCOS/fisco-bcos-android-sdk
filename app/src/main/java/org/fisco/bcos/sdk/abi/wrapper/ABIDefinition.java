@@ -1,15 +1,15 @@
 package org.fisco.bcos.sdk.abi.wrapper;
 
+import org.fisco.bcos.sdk.abi.FunctionEncoder;
+import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import org.fisco.bcos.sdk.abi.FunctionEncoder;
-import org.fisco.bcos.sdk.crypto.CryptoSuite;
-import org.fisco.bcos.sdk.utils.StringUtils;
 
 /**
  * ABIDefinition wrapper
@@ -28,18 +28,18 @@ import org.fisco.bcos.sdk.utils.StringUtils;
  * not accept Ether - the default) and payable (function accepts Ether). <br>
  */
 public class ABIDefinition {
+    public static List<String> CONSTANT_KEY = Arrays.asList("view");
     private String name;
     private String type;
     private boolean constant;
     private boolean payable;
     private boolean anonymous;
     private String stateMutability;
-
     private List<NamedType> inputs;
     private List<NamedType> outputs;
-    public static List<String> CONSTANT_KEY = Arrays.asList("view");
 
-    public ABIDefinition() {}
+    public ABIDefinition() {
+    }
 
     public ABIDefinition(
             String name,
@@ -152,12 +152,12 @@ public class ABIDefinition {
         return outputs;
     }
 
-    public boolean hasOutputs() {
-        return !outputs.isEmpty();
-    }
-
     public void setOutputs(List<NamedType> outputs) {
         this.outputs = outputs;
+    }
+
+    public boolean hasOutputs() {
+        return !outputs.isEmpty();
     }
 
     public String getType() {
@@ -286,8 +286,16 @@ public class ABIDefinition {
             return type;
         }
 
+        public void setType(String type) {
+            this.type = type;
+        }
+
         public String getRawType() {
             return rawType;
+        }
+
+        public void setRawType(String rawType) {
+            this.rawType = rawType;
         }
 
         public Type reduceDimensionAndGetType() {
@@ -315,16 +323,12 @@ public class ABIDefinition {
             return isList() && (dimensions.get(dimensions.size() - 1) != 0);
         }
 
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public void setRawType(String rawType) {
-            this.rawType = rawType;
-        }
-
         public List<Integer> getDimensions() {
             return dimensions;
+        }
+
+        public void setDimensions(List<Integer> dimensions) {
+            this.dimensions = dimensions;
         }
 
         public Integer getLastDimension() {
@@ -334,10 +338,6 @@ public class ABIDefinition {
 
             return dimensions.get(dimensions.size() - 1);
         }
-
-        public void setDimensions(List<Integer> dimensions) {
-            this.dimensions = dimensions;
-        }
     }
 
     public static class NamedType {
@@ -346,7 +346,8 @@ public class ABIDefinition {
         private boolean indexed;
         private List<NamedType> components;
 
-        public NamedType() {}
+        public NamedType() {
+        }
 
         public NamedType(String name, String type) {
             this(name, type, false);

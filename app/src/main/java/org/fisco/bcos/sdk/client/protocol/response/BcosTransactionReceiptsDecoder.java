@@ -17,14 +17,15 @@ package org.fisco.bcos.sdk.client.protocol.response;
 
 import android.util.Base64;
 
-import java.io.IOException;
-import java.util.zip.DataFormatException;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
 import org.fisco.bcos.sdk.model.DataCompress;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 public class BcosTransactionReceiptsDecoder extends JsonRpcResponse<String> {
     private static Logger logger = LoggerFactory.getLogger(BcosTransactionReceiptsDecoder.class);

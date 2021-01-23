@@ -1,8 +1,5 @@
 package org.fisco.bcos.sdk.abi;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.Array;
 import org.fisco.bcos.sdk.abi.datatypes.Bytes;
 import org.fisco.bcos.sdk.abi.datatypes.BytesType;
@@ -14,18 +11,25 @@ import org.fisco.bcos.sdk.abi.datatypes.generated.Bytes32;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.fisco.bcos.sdk.utils.StringUtils;
 
-/** Decodes values returned by function or event calls. */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Decodes values returned by function or event calls.
+ */
 public class FunctionReturnDecoder {
 
-    private FunctionReturnDecoder() {}
+    private FunctionReturnDecoder() {
+    }
 
     /**
      * Decode ABI encoded return values from smart contract function call.
      *
-     * @param rawInput ABI encoded input
+     * @param rawInput         ABI encoded input
      * @param outputParameters list of return types as {@link TypeReference}
      * @return {@link List} of values returned by function, {@link Collections#emptyList()} if
-     *     invalid response
+     * invalid response
      */
     public static List<Type> decode(String rawInput, List<TypeReference<Type>> outputParameters) {
         String input = Numeric.cleanHexPrefix(rawInput);
@@ -54,9 +58,9 @@ public class FunctionReturnDecoder {
      * <p>See the <a href="http://solidity.readthedocs.io/en/latest/contracts.html#events">Solidity
      * documentation</a> for further information.
      *
-     * @param rawInput ABI encoded input
+     * @param rawInput      ABI encoded input
      * @param typeReference of expected result type
-     * @param <T> type of TypeReference
+     * @param <T>           type of TypeReference
      * @return the decode value
      */
     @SuppressWarnings("unchecked")

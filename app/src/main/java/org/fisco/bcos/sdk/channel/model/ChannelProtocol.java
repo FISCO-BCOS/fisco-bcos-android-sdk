@@ -7,7 +7,8 @@ public class ChannelProtocol {
 
     private String nodeVersion;
 
-    @JsonIgnore private EnumChannelProtocolVersion EnumProtocol;
+    @JsonIgnore
+    private EnumChannelProtocolVersion EnumProtocol;
 
     public String getNodeVersion() {
         return nodeVersion;

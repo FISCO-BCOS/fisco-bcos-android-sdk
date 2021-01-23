@@ -15,7 +15,9 @@
 
 package org.fisco.bcos.sdk.model;
 
-/** Message types send from fisco bcos node. */
+/**
+ * Message types send from fisco bcos node.
+ */
 public enum MsgType {
 
     /**

@@ -18,7 +18,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 
-/** Factory for managing our ObjectMapper instances. */
+/**
+ * Factory for managing our ObjectMapper instances.
+ */
 public class ObjectMapperFactory {
 
     private static final ObjectMapper DEFAULT_OBJECT_MAPPER = new ObjectMapper();
@@ -27,7 +29,8 @@ public class ObjectMapperFactory {
         configureObjectMapper(DEFAULT_OBJECT_MAPPER);
     }
 
-    private ObjectMapperFactory() {}
+    private ObjectMapperFactory() {
+    }
 
     public static ObjectMapper getObjectMapper() {
         return DEFAULT_OBJECT_MAPPER;

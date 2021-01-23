@@ -15,14 +15,16 @@
 
 package org.fisco.bcos.sdk.eventsub.filter;
 
-import io.netty.channel.ChannelHandlerContext;
+import org.fisco.bcos.sdk.eventsub.EventCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.fisco.bcos.sdk.eventsub.EventCallback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Filter manager is to maintain a EventLogFilter list, as well as a EventCallback list. Include

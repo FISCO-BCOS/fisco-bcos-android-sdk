@@ -15,15 +15,6 @@
 
 package org.fisco.bcos.sdk.test.precompiled;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.HelloWorld;
 import org.fisco.bcos.sdk.client.Client;
@@ -36,8 +27,6 @@ import org.fisco.bcos.sdk.contract.precompiled.consensus.ConsensusService;
 import org.fisco.bcos.sdk.contract.precompiled.contractmgr.ContractLifeCycleService;
 import org.fisco.bcos.sdk.contract.precompiled.crud.TableCRUDService;
 import org.fisco.bcos.sdk.contract.precompiled.crud.common.Entry;
-import org.fisco.bcos.sdk.contract.precompiled.permission.ChainGovernanceService;
-import org.fisco.bcos.sdk.contract.precompiled.permission.PermissionInfo;
 import org.fisco.bcos.sdk.contract.precompiled.permission.PermissionService;
 import org.fisco.bcos.sdk.contract.precompiled.sysconfig.SystemConfigService;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
@@ -53,11 +42,20 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PrecompiledTest {
-    public AtomicLong receiptCount = new AtomicLong();
     private static final String configFile =
             "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
+    public AtomicLong receiptCount = new AtomicLong();
 
     @Test
     public void test1ConsensusService() throws ConfigException, ContractException {
@@ -224,6 +222,7 @@ public class PrecompiledTest {
         // Assert.assertTrue(queriedValue.equals(updatedValue));
         // Assert.assertTrue(queriedValue.equals(value.add(BigInteger.valueOf(1000))));
     }
+
     // Note: Please make sure that the ut is before the permission-related ut
     @Test
     public void test5CRUDService() throws ConfigException, ContractException {
@@ -345,16 +344,6 @@ public class PrecompiledTest {
                     currentTxCount.compareTo(orgTxCount.add(BigInteger.valueOf(300))) >= 0);
         } catch (ContractException e) {
             System.out.println("test9SyncCRUDService failed, error info: " + e.getMessage());
-        }
-    }
-
-    class FakeTransactionCallback implements PrecompiledCallback {
-        public TransactionReceipt receipt;
-        // wait until get the transactionReceipt
-        @Override
-        public void onResponse(RetCode retCode) {
-            this.receipt = retCode.getTransactionReceipt();
-            receiptCount.addAndGet(1);
         }
     }
 
@@ -532,6 +521,17 @@ public class PrecompiledTest {
             Assert.assertTrue("Hello, fisco3".equals(helloWorld.get()));
         } catch (ContractException | ClientException e) {
             System.out.println("testContractLifeCycleService failed, error info:" + e.getMessage());
+        }
+    }
+
+    class FakeTransactionCallback implements PrecompiledCallback {
+        public TransactionReceipt receipt;
+
+        // wait until get the transactionReceipt
+        @Override
+        public void onResponse(RetCode retCode) {
+            this.receipt = retCode.getTransactionReceipt();
+            receiptCount.addAndGet(1);
         }
     }
 }

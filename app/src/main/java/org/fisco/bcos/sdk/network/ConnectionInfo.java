@@ -17,8 +17,13 @@ package org.fisco.bcos.sdk.network;
 
 import org.fisco.bcos.sdk.utils.Host;
 
-/** Connection information. */
+/**
+ * Connection information.
+ */
 public class ConnectionInfo {
+
+    private String ip = "";
+    private Integer port = 0;
 
     public ConnectionInfo(String peerIpPort) {
         String IP = Host.getIpFromString(peerIpPort);
@@ -46,9 +51,6 @@ public class ConnectionInfo {
     public String getEndPoint() {
         return ip + ":" + port;
     }
-
-    private String ip = "";
-    private Integer port = 0;
 
     @Override
     public String toString() {

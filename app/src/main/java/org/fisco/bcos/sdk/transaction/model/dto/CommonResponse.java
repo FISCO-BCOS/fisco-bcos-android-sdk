@@ -28,7 +28,7 @@ public class CommonResponse {
     }
 
     /**
-     * @param returnCode the return code of the response
+     * @param returnCode    the return code of the response
      * @param returnMessage the return message of the response
      */
     public CommonResponse(int returnCode, String returnMessage) {
@@ -37,22 +37,30 @@ public class CommonResponse {
         this.returnMessage = returnMessage;
     }
 
-    /** @return the returnCode */
+    /**
+     * @return the returnCode
+     */
     public int getReturnCode() {
         return returnCode;
     }
 
-    /** @param returnCode the returnCode to set */
+    /**
+     * @param returnCode the returnCode to set
+     */
     public void setReturnCode(int returnCode) {
         this.returnCode = returnCode;
     }
 
-    /** @return the returnMessage */
+    /**
+     * @return the returnMessage
+     */
     public String getReturnMessage() {
         return returnMessage;
     }
 
-    /** @param returnMessage the returnMessage to set */
+    /**
+     * @param returnMessage the returnMessage to set
+     */
     public void setReturnMessage(String returnMessage) {
         this.returnMessage = returnMessage;
     }

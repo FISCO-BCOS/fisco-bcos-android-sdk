@@ -14,6 +14,7 @@
 package org.fisco.bcos.sdk.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class BlockNumberNotification {
@@ -22,7 +23,8 @@ public class BlockNumberNotification {
     @JsonProperty("groupID")
     private String groupId;
 
-    public BlockNumberNotification() {}
+    public BlockNumberNotification() {
+    }
 
     public BlockNumberNotification(String groupId, String blockNumber) {
         this.groupId = groupId;

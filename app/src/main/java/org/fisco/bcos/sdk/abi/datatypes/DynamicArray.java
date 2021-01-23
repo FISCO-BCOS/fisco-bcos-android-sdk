@@ -2,7 +2,9 @@ package org.fisco.bcos.sdk.abi.datatypes;
 
 import java.util.List;
 
-/** Dynamic array type. */
+/**
+ * Dynamic array type.
+ */
 public class DynamicArray<T extends Type> extends Array<T> {
 
     @SafeVarargs

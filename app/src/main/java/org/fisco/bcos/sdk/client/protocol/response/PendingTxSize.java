@@ -15,11 +15,14 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
-import java.math.BigInteger;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.utils.Numeric;
 
-/** getPendingTxSize */
+import java.math.BigInteger;
+
+/**
+ * getPendingTxSize
+ */
 public class PendingTxSize extends JsonRpcResponse<String> {
     public BigInteger getPendingTxSize() {
         return Numeric.decodeQuantity(getResult());

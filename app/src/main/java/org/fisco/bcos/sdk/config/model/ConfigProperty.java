@@ -16,6 +16,7 @@
 package org.fisco.bcos.sdk.config.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -34,6 +35,33 @@ public class ConfigProperty {
     public Map<String, Object> account;
 
     public Map<String, Object> threadPool;
+
+    public static String getValue(Map<String, Object> config, String key, String defaultValue) {
+        if (config == null || config.get(key) == null) {
+            return defaultValue;
+        }
+        return (String) config.get(key);
+    }
+
+    public static String getConfigFilePath(String configFilePath) {
+        if (configFilePath == null) {
+            return null;
+        }
+        File file = new File(configFilePath);
+        if (file.exists()) {
+            return configFilePath;
+        }
+        // try to load from the resource path
+        URL url = Thread.currentThread().getContextClassLoader().getResource(configFilePath);
+        if (url == null) {
+            return configFilePath;
+        }
+        String resourceCertPath = url.getPath();
+        if (new File(resourceCertPath).exists()) {
+            return resourceCertPath;
+        }
+        return configFilePath;
+    }
 
     public Map<String, Object> getCryptoMaterial() {
         return cryptoMaterial;
@@ -73,32 +101,5 @@ public class ConfigProperty {
 
     public void setThreadPool(Map<String, Object> threadPool) {
         this.threadPool = threadPool;
-    }
-
-    public static String getValue(Map<String, Object> config, String key, String defaultValue) {
-        if (config == null || config.get(key) == null) {
-            return defaultValue;
-        }
-        return (String) config.get(key);
-    }
-
-    public static String getConfigFilePath(String configFilePath) {
-        if (configFilePath == null) {
-            return null;
-        }
-        File file = new File(configFilePath);
-        if (file.exists()) {
-            return configFilePath;
-        }
-        // try to load from the resource path
-        URL url = Thread.currentThread().getContextClassLoader().getResource(configFilePath);
-        if (url == null) {
-            return configFilePath;
-        }
-        String resourceCertPath = url.getPath();
-        if (new File(resourceCertPath).exists()) {
-            return resourceCertPath;
-        }
-        return configFilePath;
     }
 }

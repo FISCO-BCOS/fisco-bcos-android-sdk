@@ -14,13 +14,6 @@
  */
 package org.fisco.bcos.sdk.contract;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.fisco.bcos.sdk.abi.EventEncoder;
 import org.fisco.bcos.sdk.abi.EventValues;
 import org.fisco.bcos.sdk.abi.FunctionEncoder;
@@ -48,21 +41,27 @@ import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Contract {
+    public static final String FUNC_DEPLOY = "deploy";
     protected static Logger logger = LoggerFactory.getLogger(Contract.class);
+    protected static String LATEST_BLOCK = "latest";
     protected final String contractBinary;
-    protected String contractAddress;
-    // transactionReceipt after deploying the contract
-    protected TransactionReceipt deployReceipt;
     protected final TransactionProcessor transactionProcessor;
     protected final Client client;
-    public static final String FUNC_DEPLOY = "deploy";
     protected final FunctionEncoder functionEncoder;
     protected final CryptoKeyPair credential;
     protected final CryptoSuite cryptoSuite;
     protected final EventEncoder eventEncoder;
     private final EventSubscribe eventSubscribe;
-    protected static String LATEST_BLOCK = "latest";
+    protected String contractAddress;
+    // transactionReceipt after deploying the contract
+    protected TransactionReceipt deployReceipt;
 
     protected Contract(
             String contractBinary,
@@ -157,6 +156,37 @@ public class Contract {
         contract.setContractAddress(contractAddress);
         contract.setDeployReceipt(transactionReceipt);
         return contract;
+    }
+
+    public static EventValues staticExtractEventParameters(
+            EventEncoder eventEncoder, Event event, TransactionReceipt.Logs log) {
+        List<String> topics = log.getTopics();
+        String encodedEventSignature = eventEncoder.encode(event);
+        if (!topics.get(0).equals(encodedEventSignature)) {
+            return null;
+        }
+
+        List<Type> indexedValues = new ArrayList<>();
+        List<Type> nonIndexedValues =
+                FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
+
+        List<TypeReference<Type>> indexedParameters = event.getIndexedParameters();
+        for (int i = 0; i < indexedParameters.size(); i++) {
+            Type value =
+                    FunctionReturnDecoder.decodeIndexedValue(
+                            topics.get(i + 1), indexedParameters.get(i));
+            indexedValues.add(value);
+        }
+        return new EventValues(indexedValues, nonIndexedValues);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <S extends Type, T> List<T> convertToNative(List<S> arr) {
+        List<T> out = new ArrayList<T>();
+        for (Iterator<S> it = arr.iterator(); it.hasNext(); ) {
+            out.add((T) it.next().getValue());
+        }
+        return out;
     }
 
     public String getContractAddress() {
@@ -261,29 +291,6 @@ public class Contract {
         return transactionProcessor.sendTransactionAndGetReceipt(contractAddress, data, credential);
     }
 
-    /** Adds a log field to {@link EventValues}. */
-    public static class EventValuesWithLog {
-        private final EventValues eventValues;
-        private final TransactionReceipt.Logs log;
-
-        private EventValuesWithLog(EventValues eventValues, TransactionReceipt.Logs log) {
-            this.eventValues = eventValues;
-            this.log = log;
-        }
-
-        public List<Type> getIndexedValues() {
-            return eventValues.getIndexedValues();
-        }
-
-        public List<Type> getNonIndexedValues() {
-            return eventValues.getNonIndexedValues();
-        }
-
-        public TransactionReceipt.Logs getLog() {
-            return log;
-        }
-    }
-
     protected String createSignedTransaction(Function function) {
         return createSignedTransaction(contractAddress, this.functionEncoder.encode(function));
     }
@@ -327,28 +334,6 @@ public class Contract {
         }
         filter.setTopics(topics);
         this.subscribeEvent(filter, callback);
-    }
-
-    public static EventValues staticExtractEventParameters(
-            EventEncoder eventEncoder, Event event, TransactionReceipt.Logs log) {
-        List<String> topics = log.getTopics();
-        String encodedEventSignature = eventEncoder.encode(event);
-        if (!topics.get(0).equals(encodedEventSignature)) {
-            return null;
-        }
-
-        List<Type> indexedValues = new ArrayList<>();
-        List<Type> nonIndexedValues =
-                FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
-
-        List<TypeReference<Type>> indexedParameters = event.getIndexedParameters();
-        for (int i = 0; i < indexedParameters.size(); i++) {
-            Type value =
-                    FunctionReturnDecoder.decodeIndexedValue(
-                            topics.get(i + 1), indexedParameters.get(i));
-            indexedValues.add(value);
-        }
-        return new EventValues(indexedValues, nonIndexedValues);
     }
 
     protected EventValues extractEventParameters(Event event, TransactionReceipt.Logs log) {
@@ -415,20 +400,36 @@ public class Contract {
         return ret;
     }
 
-    @SuppressWarnings("unchecked")
-    public static <S extends Type, T> List<T> convertToNative(List<S> arr) {
-        List<T> out = new ArrayList<T>();
-        for (Iterator<S> it = arr.iterator(); it.hasNext(); ) {
-            out.add((T) it.next().getValue());
-        }
-        return out;
-    }
-
     public TransactionProcessor getTransactionProcessor() {
         return this.transactionProcessor;
     }
 
     public String getCurrentExternalAccountAddress() {
         return this.credential.getAddress();
+    }
+
+    /**
+     * Adds a log field to {@link EventValues}.
+     */
+    public static class EventValuesWithLog {
+        private final EventValues eventValues;
+        private final TransactionReceipt.Logs log;
+
+        private EventValuesWithLog(EventValues eventValues, TransactionReceipt.Logs log) {
+            this.eventValues = eventValues;
+            this.log = log;
+        }
+
+        public List<Type> getIndexedValues() {
+            return eventValues.getIndexedValues();
+        }
+
+        public List<Type> getNonIndexedValues() {
+            return eventValues.getNonIndexedValues();
+        }
+
+        public TransactionReceipt.Logs getLog() {
+            return log;
+        }
     }
 }

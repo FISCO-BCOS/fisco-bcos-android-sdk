@@ -15,7 +15,9 @@ package org.fisco.bcos.sdk.utils;
 
 import java.util.UUID;
 
-/** Channel utility functions. */
+/**
+ * Channel utility functions.
+ */
 public class ChannelUtils {
 
     public static String newSeq() {

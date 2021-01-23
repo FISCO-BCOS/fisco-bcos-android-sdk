@@ -1,11 +1,24 @@
 package org.fisco.bcos.sdk.abi;
 
-import static org.fisco.bcos.sdk.abi.datatypes.Type.MAX_BYTE_LENGTH;
+import org.fisco.bcos.sdk.abi.datatypes.Address;
+import org.fisco.bcos.sdk.abi.datatypes.Array;
+import org.fisco.bcos.sdk.abi.datatypes.Bool;
+import org.fisco.bcos.sdk.abi.datatypes.Bytes;
+import org.fisco.bcos.sdk.abi.datatypes.BytesType;
+import org.fisco.bcos.sdk.abi.datatypes.DynamicArray;
+import org.fisco.bcos.sdk.abi.datatypes.DynamicBytes;
+import org.fisco.bcos.sdk.abi.datatypes.NumericType;
+import org.fisco.bcos.sdk.abi.datatypes.StaticArray;
+import org.fisco.bcos.sdk.abi.datatypes.Type;
+import org.fisco.bcos.sdk.abi.datatypes.Ufixed;
+import org.fisco.bcos.sdk.abi.datatypes.Uint;
+import org.fisco.bcos.sdk.abi.datatypes.Utf8String;
+import org.fisco.bcos.sdk.utils.Numeric;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import org.fisco.bcos.sdk.abi.datatypes.*;
-import org.fisco.bcos.sdk.utils.Numeric;
+
+import static org.fisco.bcos.sdk.abi.datatypes.Type.MAX_BYTE_LENGTH;
 
 /**
  * Ethereum Contract Application Binary Interface (ABI) encoding for types. Further details are
@@ -13,7 +26,8 @@ import org.fisco.bcos.sdk.utils.Numeric;
  */
 public class TypeEncoder {
 
-    private TypeEncoder() {}
+    private TypeEncoder() {
+    }
 
     @SuppressWarnings("unchecked")
     public static String encode(Type parameter) {

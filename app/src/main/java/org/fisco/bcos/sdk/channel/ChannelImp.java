@@ -16,20 +16,7 @@
 package org.fisco.bcos.sdk.channel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.netty.channel.ChannelException;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.HashedWheelTimer;
-import io.netty.util.Timeout;
-import io.netty.util.Timer;
-import io.netty.util.TimerTask;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
+
 import org.fisco.bcos.sdk.channel.model.ChannelMessageError;
 import org.fisco.bcos.sdk.channel.model.ChannelPrococolExceiption;
 import org.fisco.bcos.sdk.channel.model.HeartBeatParser;
@@ -50,6 +37,22 @@ import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+import io.netty.channel.ChannelException;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.HashedWheelTimer;
+import io.netty.util.Timeout;
+import io.netty.util.Timer;
+import io.netty.util.TimerTask;
 
 /**
  * An implementation of channel.
@@ -217,38 +220,6 @@ public class ChannelImp implements Channel {
         Options options = new Options();
         options.setTimeout(10000);
         return sendToPeerWithTimeOut(out, peerIpPort, options);
-    }
-
-    class Callback extends ResponseCallback {
-        public transient Response retResponse;
-        public transient Semaphore semaphore = new Semaphore(1, true);
-
-        Callback() {
-            try {
-                semaphore.acquire(1);
-            } catch (InterruptedException e) {
-                logger.error("error :", e);
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        @Override
-        public void onTimeout() {
-            super.onTimeout();
-            semaphore.release();
-        }
-
-        @Override
-        public void onResponse(Response response) {
-            retResponse = response;
-            if (retResponse != null && retResponse.getContent() != null) {
-                logger.trace("response: {}", retResponse.getContent());
-            } else {
-                logger.error("response is null");
-            }
-
-            semaphore.release();
-        }
     }
 
     public void waitResponse(Callback callback, Options options) {
@@ -460,5 +431,37 @@ public class ChannelImp implements Channel {
     @Override
     public void setThreadPool(ExecutorService threadPool) {
         network.setMsgHandleThreadPool(threadPool);
+    }
+
+    class Callback extends ResponseCallback {
+        public transient Response retResponse;
+        public transient Semaphore semaphore = new Semaphore(1, true);
+
+        Callback() {
+            try {
+                semaphore.acquire(1);
+            } catch (InterruptedException e) {
+                logger.error("error :", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        @Override
+        public void onTimeout() {
+            super.onTimeout();
+            semaphore.release();
+        }
+
+        @Override
+        public void onResponse(Response response) {
+            retResponse = response;
+            if (retResponse != null && retResponse.getContent() != null) {
+                logger.trace("response: {}", retResponse.getContent());
+            } else {
+                logger.error("response is null");
+            }
+
+            semaphore.release();
+        }
     }
 }
