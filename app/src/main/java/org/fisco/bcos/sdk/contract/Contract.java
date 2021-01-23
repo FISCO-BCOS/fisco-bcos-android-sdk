@@ -79,11 +79,16 @@ public class Contract {
         this.functionEncoder = new FunctionEncoder(client.getCryptoSuite());
         this.eventEncoder = new EventEncoder(client.getCryptoSuite());
         // create eventSubscribe
-        this.eventSubscribe =
-                EventSubscribe.build(
-                        client.getGroupManagerService(),
-                        client.getEventResource(),
-                        client.getGroupId());
+        String name = client.getClass().getName();
+        if (name.endsWith("ClientImpl")) {
+            this.eventSubscribe =
+                    EventSubscribe.build(
+                            client.getGroupManagerService(),
+                            client.getEventResource(),
+                            client.getGroupId());
+        } else {
+            this.eventSubscribe = null;
+        }
     }
 
     protected Contract(

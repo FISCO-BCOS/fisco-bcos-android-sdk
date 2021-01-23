@@ -63,12 +63,12 @@ import org.fisco.bcos.sdk.service.GroupManagerService;
 import org.fisco.bcos.sdk.utils.Numeric;
 
 public class ClientImpl implements Client {
-    private final JsonRpcService jsonRpcService;
-    private final Integer groupId;
-    private final Integer DefaultGroupId = Integer.valueOf(1);
-    private final CryptoSuite cryptoSuite;
-    private final NodeVersion nodeVersion;
-    private final GroupManagerService groupManagerService;
+    protected JsonRpcService jsonRpcService;
+    protected Integer groupId;
+    protected Integer DefaultGroupId = Integer.valueOf(1);
+    protected CryptoSuite cryptoSuite;
+    protected NodeVersion nodeVersion;
+    private GroupManagerService groupManagerService;
     private EventResource eventResource;
 
     protected ClientImpl(
@@ -94,6 +94,9 @@ public class ClientImpl implements Client {
         this.cryptoSuite = null;
         this.nodeVersion = null;
         this.groupManagerService = null;
+    }
+
+    public ClientImpl() {
     }
 
     @Override
@@ -1020,6 +1023,9 @@ public class ClientImpl implements Client {
     public EventResource getEventResource() {
         return eventResource;
     }
+
+    @Override
+    public void start() {}
 
     @Override
     public void stop() {
