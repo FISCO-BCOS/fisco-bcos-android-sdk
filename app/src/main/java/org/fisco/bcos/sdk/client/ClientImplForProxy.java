@@ -13,12 +13,12 @@
  */
 package org.fisco.bcos.sdk.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
+import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
+import org.fisco.bcos.sdk.client.protocol.response.BcosTransactionReceipt;
 import org.fisco.bcos.sdk.client.protocol.response.BlockNumber;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
@@ -29,7 +29,6 @@ import org.fisco.bcos.sdk.utils.ThreadPoolService;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -76,25 +75,7 @@ public class ClientImplForProxy extends ClientImpl {
                 JsonRpcMethods.GET_NODE_VERSION,
                 Arrays.asList(groupId));
 
-        String responseStr = this.jsonRpcServiceForProxy.sendRequestToGroup(jsonRpcRequest);
-        int code = 0;
-        String message = "success";
-        NodeVersion nodeVersion = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int) responseMap.get("code");
-            message = (String) responseMap.get("message");
-            if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map) responseMap.get("data");
-                nodeVersion = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), NodeVersion.class);
-            } else {
-                logger.error("get node version failed, error info: " + message);
-            }
-        } catch (Exception e) {
-            logger.error("get node version failed, error info: " + e.getMessage());
-        }
-        return new NetworkResponse(code, message, nodeVersion);
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, NodeVersion.class);
     }
 
     @Override
@@ -109,25 +90,7 @@ public class ClientImplForProxy extends ClientImpl {
                 JsonRpcMethods.GET_BLOCK_NUMBER,
                 Arrays.asList(groupId));
 
-        String responseStr = this.jsonRpcServiceForProxy.sendRequestToGroup(jsonRpcRequest);
-        int code = 0;
-        String message = "success";
-        BlockNumber blockNumber = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int) responseMap.get("code");
-            message = (String) responseMap.get("message");
-            if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map) responseMap.get("data");
-                blockNumber = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), BlockNumber.class);
-            } else {
-                logger.error("get block number failed, error info: " + message);
-            }
-        } catch (Exception e) {
-            logger.error("get block number failed, error info: " + e.getMessage());
-        }
-        return new NetworkResponse(code, message, blockNumber);
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BlockNumber.class);
     }
 
     private void updateBlockNumber() {
@@ -155,26 +118,8 @@ public class ClientImplForProxy extends ClientImpl {
                 JsonRpcMethods.SEND_RAWTRANSACTION,
                 Arrays.asList(this.groupId, signedTransactionData));
 
-        String responseStr = this.jsonRpcServiceForProxy.sendRequestToGroup(jsonRpcRequest);
-        int code = 0;
-        String message = "success";
-        TransactionReceipt receipt = new TransactionReceipt();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int) responseMap.get("code");
-            message = (String) responseMap.get("message");
-            if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map) responseMap.get("data");
-                Map resultMap = (Map) dataMap.get("result");
-                receipt = objectMapper.readValue(objectMapper.writeValueAsString(resultMap), TransactionReceipt.class);
-            } else {
-                logger.error("sendRawTransactionAndGetReceiptByProxy failed, error info: " + message);
-            }
-        } catch (Exception e) {
-            logger.error("sendRawTransactionAndGetReceiptByProxy failed, error info: " + e.getMessage());
-        }
-        return new NetworkResponse(code, message, receipt);
+        NetworkResponse<BcosTransactionReceipt> receipt = this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BcosTransactionReceipt.class);
+        return new NetworkResponse(receipt.getCode(), receipt.getMessage(), receipt.getResult().getTransactionReceipt());
     }
 
     @Override
@@ -188,25 +133,35 @@ public class ClientImplForProxy extends ClientImpl {
                 JsonRpcMethods.CALL,
                 Arrays.asList(this.groupId, transaction));
 
-        String responseStr = this.jsonRpcServiceForProxy.sendRequestToGroup(jsonRpcRequest);
-        int code = 0;
-        String message = "success";
-        Call callResult = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            code = (int) responseMap.get("code");
-            message = (String) responseMap.get("message");
-            if (code == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map) responseMap.get("data");
-                callResult = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), Call.class);
-            } else {
-                logger.error("callByProxy failed, error info: " + message);
-            }
-        } catch (Exception e) {
-            logger.error("callByProxy failed, error info: " + e.getMessage());
-        }
-        return new NetworkResponse(code, message, callResult);
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, Call.class);
+    }
+
+    @Override
+    public BcosTransaction getTransactionByHash(String transactionHash) {
+        NetworkResponse<BcosTransaction> networkResponse = getTransactionByHashByProxy(transactionHash);
+        return networkResponse.getResult();
+    }
+
+    public NetworkResponse<BcosTransaction> getTransactionByHashByProxy(String transactionHash) {
+        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
+                JsonRpcMethods.GET_TRANSACTION_BY_HASH,
+                Arrays.asList(this.groupId, transactionHash));
+
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BcosTransaction.class);
+    }
+
+    @Override
+    public BcosTransactionReceipt getTransactionReceipt(String transactionHash) {
+        NetworkResponse<BcosTransactionReceipt> networkResponse = getTransactionReceiptByProxy(transactionHash);
+        return networkResponse.getResult();
+    }
+
+    public NetworkResponse<BcosTransactionReceipt> getTransactionReceiptByProxy(String transactionHash) {
+        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
+                JsonRpcMethods.GET_TRANSACTIONRECEIPT,
+                Arrays.asList(this.groupId, transactionHash));
+
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BcosTransactionReceipt.class);
     }
 
     @Override
