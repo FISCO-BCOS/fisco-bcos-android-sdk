@@ -16,7 +16,11 @@ package org.fisco.bcos.sdk.NetworkHandler.model;
 
 public class NetworkResponseCode {
 
-    public static String SuccessMessage = "Success";
+    public static final String CODE = "code";
+    public static final String MESSAGE = "message";
+    public static final String DATA = "data";
 
-    public static int SuccessCode = 0;
+    public static final String SuccessMessage = "Success";
+
+    public static final int SuccessCode = 0;
 }

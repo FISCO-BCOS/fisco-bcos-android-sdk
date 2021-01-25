@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerImp;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.client.Client;
+import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
+import org.fisco.bcos.sdk.client.protocol.response.BcosTransactionReceipt;
 import org.fisco.bcos.sdk.log.BcosSDKLogUtil;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
@@ -53,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
                     logger.info("call to return list, result: " + JsonUtils.toJson(ret3));
                     Tuple2<String, BigInteger> ret4 = sol.getTuple();
                     logger.info("call to return tuple, result: " + JsonUtils.toJson(ret4));
+                    BcosTransaction ret5 = client.getTransactionByHash(ret1.getTransactionHash());
+                    logger.info("getTransactionByHash, result: " + JsonUtils.toJson(ret5));
+                    BcosTransactionReceipt ret6 = client.getTransactionReceipt(ret1.getTransactionHash());
+                    logger.info("getTransactionReceipt, result: " + JsonUtils.toJson(ret6));
                 } catch (Exception e) {
                     logger.error("error info: " + e.getMessage());
                     e.printStackTrace();
