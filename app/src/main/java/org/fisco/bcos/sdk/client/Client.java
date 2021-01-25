@@ -15,8 +15,6 @@
 
 package org.fisco.bcos.sdk.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
@@ -58,6 +56,7 @@ import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.eventsub.EventResource;
 import org.fisco.bcos.sdk.model.CryptoType;
+import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.callback.TransactionCallback;
@@ -68,7 +67,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -132,22 +130,18 @@ public interface Client {
                         ConfigOption configOption) {
         // get crypto type from nodeVersion
         Integer cryptoType = CryptoType.ECDSA_TYPE;
-        NodeVersion nodeVersion;
-        JsonRpcRequest jsonRpcService = new JsonRpcRequest(JsonRpcMethods.GET_NODE_VERSION, Arrays.asList(groupId));
-        String responseStr = jsonRpcServiceForProxy.sendRequestToGroup(jsonRpcService);
+        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(JsonRpcMethods.GET_NODE_VERSION, Arrays.asList(groupId));
+        NetworkResponse<NodeVersion> version = jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, NodeVersion.class);
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map responseMap = objectMapper.readValue(responseStr, Map.class);
-            if ((int) responseMap.get("code") == NetworkResponseCode.SuccessCode) {
-                Map dataMap = (Map) responseMap.get("data");
-                nodeVersion = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), NodeVersion.class);
+            if (version.getCode() == NetworkResponseCode.SuccessCode) {
+                NodeVersion nodeVersion = version.getResult();
                 if (nodeVersion.getNodeVersion().getVersion().contains("gm")) {
                     cryptoType = CryptoType.SM_TYPE;
                 }
                 CryptoSuite cryptoSuite = new CryptoSuite(cryptoType, configOption);
                 return new ClientImplForProxy(groupId, cryptoSuite, nodeVersion, jsonRpcServiceForProxy);
             } else {
-                logger.error("get node version failed, error info: " + (String) responseMap.get("message"));
+                logger.error("get node version failed, error info: " + version.getMessage());
             }
         } catch (Exception e) {
             logger.error("build client failed, error info: " + e.getMessage());

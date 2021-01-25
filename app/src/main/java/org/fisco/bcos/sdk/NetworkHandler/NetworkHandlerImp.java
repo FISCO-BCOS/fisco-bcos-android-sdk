@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.ConnectException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -34,6 +35,8 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
                 logger.info("onRPCRequestCallback http response body: " + body);
                 return body;
             }
+        } catch (ConnectException e) {
+            logger.error("request failed, error info: " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         }
