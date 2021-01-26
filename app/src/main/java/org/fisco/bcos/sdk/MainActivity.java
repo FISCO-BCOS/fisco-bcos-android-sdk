@@ -12,7 +12,9 @@ import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
 import org.fisco.bcos.sdk.client.protocol.response.BcosTransactionReceipt;
+import org.fisco.bcos.sdk.config.model.ProxyConfig;
 import org.fisco.bcos.sdk.log.BcosSDKLogUtil;
+import org.fisco.bcos.sdk.model.CryptoType;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
@@ -35,11 +37,15 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 BcosSDKLogUtil.configLog(Environment.getExternalStorageDirectory().getPath(), Level.TRACE);
                 Logger logger = Logger.getLogger(MainActivity.class);
-                final String ConfigFilePath = Environment.getExternalStorageDirectory().getPath() + "/javasdk/config.toml";
 
-                BcosSDKForProxy sdk = BcosSDKForProxy.build(ConfigFilePath, new NetworkHandlerImp());
-                //BcosSDK sdk = BcosSDK.build(ConfigFilePath);
-                // HelloWorldProxy
+                // config param
+                ProxyConfig proxyConfig = new ProxyConfig();
+                proxyConfig.setChainId("1");
+                proxyConfig.setCryptoType(CryptoType.ECDSA_TYPE);
+                proxyConfig.setHexPrivateKey("65c70b77051903d7876c63256d9c165cd372ec7df813d0b45869c56fcf5fd564");
+                proxyConfig.setNetworkHandler(new NetworkHandlerImp());
+                // config end
+                BcosSDKForProxy sdk = BcosSDKForProxy.build(proxyConfig);
                 try {
                     Client client = sdk.getClient(1);
                     NodeVersion nodeVersion = client.getClientNodeVersion();

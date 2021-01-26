@@ -38,9 +38,9 @@ public class JsonRpcServiceForProxy extends JsonRpcService {
 
     public <T extends JsonRpcResponse> NetworkResponse<T> sendRequestToGroupByProxy(JsonRpcRequest request, Class<T> responseType) {
         try {
-            String input = ObjectMapperFactory.getObjectMapper().writeValueAsString(request);
-            String responseStr = networkHandle.onRPCRequestCallback(input);
-            return parseNetworkResponse(request, responseStr, responseType);
+            String requestBodyJsonStr = ObjectMapperFactory.getObjectMapper().writeValueAsString(request);
+            String responseBodyJsonStr = networkHandle.onRPCRequest(requestBodyJsonStr);
+            return parseNetworkResponse(request, responseBodyJsonStr, responseType);
         } catch (JsonProcessingException e) {
             logger.error("serialize request failed, error info: " + e.getMessage());
         }
@@ -63,7 +63,7 @@ public class JsonRpcServiceForProxy extends JsonRpcService {
                 logger.error("parseNetworkResponse failed for request " + request.getMethod() + ", error info: " + message);
             }
         } catch (Exception e) {
-            logger.error("parseNetworkResponse failed for request " + request.getMethod() + ", exception info: " + message);
+            logger.error("parseNetworkResponse failed for request " + request.getMethod() + ", exception info: " + e.getMessage());
         }
 
         return new NetworkResponse(code, message, entity);

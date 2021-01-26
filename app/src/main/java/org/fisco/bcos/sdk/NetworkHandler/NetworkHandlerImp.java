@@ -17,13 +17,13 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
     private static Logger logger = LoggerFactory.getLogger(NetworkHandlerImp.class);
 
     @Override
-    public String onRPCRequestCallback(String input) {
-        logger.trace("onRPCRequestCallback http request body: " + input);
+    public String onRPCRequest(String requestBodyJsonStr) {
+        logger.trace("onRPCRequest http request body: " + requestBodyJsonStr);
 
         OkHttpClient okHttpClient = new OkHttpClient();
         final String URL = "http://127.0.0.1:8170/Bcos-node-proxy/rpc/v1";
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-        RequestBody requestBody = RequestBody.create(JSON, input);
+        RequestBody requestBody = RequestBody.create(JSON, requestBodyJsonStr);
         Request request = new Request.Builder()
                 .url(URL)
                 .post(requestBody)
@@ -31,12 +31,12 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
-                String body = response.body().string();
-                logger.info("onRPCRequestCallback http response body: " + body);
-                return body;
+                String responseBodyJsonStr = response.body().string();
+                logger.trace("onRPCRequest http response body: " + responseBodyJsonStr);
+                return responseBodyJsonStr;
             }
         } catch (ConnectException e) {
-            logger.error("request failed, error info: " + e.getMessage());
+            logger.error("onRPCRequest failed, error info: " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         }

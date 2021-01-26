@@ -52,7 +52,7 @@ import org.fisco.bcos.sdk.client.protocol.response.SystemConfig;
 import org.fisco.bcos.sdk.client.protocol.response.TotalTransactionCount;
 import org.fisco.bcos.sdk.client.protocol.response.TransactionReceiptWithProof;
 import org.fisco.bcos.sdk.client.protocol.response.TransactionWithProof;
-import org.fisco.bcos.sdk.config.ConfigOption;
+import org.fisco.bcos.sdk.config.model.ProxyConfig;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.eventsub.EventResource;
 import org.fisco.bcos.sdk.model.CryptoType;
@@ -127,7 +127,7 @@ public interface Client {
 
     static Client build(Integer groupId,
                         JsonRpcServiceForProxy jsonRpcServiceForProxy,
-                        ConfigOption configOption) {
+                        ProxyConfig proxyConfig) {
         // get crypto type from nodeVersion
         Integer cryptoType = CryptoType.ECDSA_TYPE;
         JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(JsonRpcMethods.GET_NODE_VERSION, Arrays.asList(groupId));
@@ -138,7 +138,19 @@ public interface Client {
                 if (nodeVersion.getNodeVersion().getVersion().contains("gm")) {
                     cryptoType = CryptoType.SM_TYPE;
                 }
-                CryptoSuite cryptoSuite = new CryptoSuite(cryptoType, configOption);
+                int cryptoTypeProxyConfig = proxyConfig.getCryptoType();
+                if (cryptoTypeProxyConfig != cryptoType) {
+                    logger.error("crypto in sdk and in node are different, sdk: " + cryptoTypeProxyConfig + ", node: " + cryptoType);
+                    return null;
+                }
+                String chainIdProxyConfig = proxyConfig.getChainId();
+                if (!chainIdProxyConfig.equals(nodeVersion.getNodeVersion().getChainId())) {
+                    logger.error("chainId in sdk and in node are different, sdk: " + chainIdProxyConfig + ", node: " + nodeVersion.getNodeVersion().getChainId());
+                    return null;
+                }
+                CryptoSuite cryptoSuite = new CryptoSuite(cryptoType);
+                cryptoSuite.createKeyPair(proxyConfig.getHexPrivateKey());
+                logger.info("created address: " + cryptoSuite.getCryptoKeyPair().getAddress());
                 return new ClientImplForProxy(groupId, cryptoSuite, nodeVersion, jsonRpcServiceForProxy);
             } else {
                 logger.error("get node version failed, error info: " + version.getMessage());
