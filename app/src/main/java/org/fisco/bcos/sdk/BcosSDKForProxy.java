@@ -13,12 +13,11 @@
  */
 package org.fisco.bcos.sdk;
 
+import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerImp;
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerInterface;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.JsonRpcServiceForProxy;
-import org.fisco.bcos.sdk.config.Config;
-import org.fisco.bcos.sdk.config.ConfigOption;
-import org.fisco.bcos.sdk.config.exceptions.ConfigException;
+import org.fisco.bcos.sdk.config.model.ProxyConfig;
 import org.fisco.bcos.sdk.model.ConstantConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +29,17 @@ public class BcosSDKForProxy {
     private static Logger logger = LoggerFactory.getLogger(BcosSDKForProxy.class);
 
     private ConcurrentHashMap<Integer, Client> groupToClient = new ConcurrentHashMap<>();
-    private ConfigOption configOption;
-    private NetworkHandlerInterface networkHandle;
+    private ProxyConfig proxyConfig;
+    private NetworkHandlerInterface networkHandler;
 
-    public BcosSDKForProxy(ConfigOption configOption, NetworkHandlerInterface networkHandle) throws BcosSDKException {
+    public BcosSDKForProxy(ProxyConfig proxyConfig) throws BcosSDKException {
         try {
-            this.configOption = configOption;
-            this.networkHandle = networkHandle;
+            this.proxyConfig = proxyConfig;
+            Object networkHandler = proxyConfig.getNetworkHandler();
+            if (networkHandler == null) {
+                networkHandler = (new NetworkHandlerImp());
+            }
+            this.networkHandler = (NetworkHandlerImp) networkHandler;
             logger.info("create BcosSDKForProxy successfully");
         } catch (Exception e) {
             stopAll();
@@ -44,14 +47,8 @@ public class BcosSDKForProxy {
         }
     }
 
-    public static BcosSDKForProxy build(String tomlConfigFilePath, NetworkHandlerInterface networkHandle) throws BcosSDKException {
-        try {
-            ConfigOption configOption = Config.load(tomlConfigFilePath);
-            logger.info("create BcosSDKForProxy, configPath: {}", tomlConfigFilePath);
-            return new BcosSDKForProxy(configOption, networkHandle);
-        } catch (ConfigException e) {
-            throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
-        }
+    public static BcosSDKForProxy build(ProxyConfig proxyConfig) throws BcosSDKException {
+        return new BcosSDKForProxy(proxyConfig);
     }
 
     public void checkGroupId(Integer groupId) {
@@ -70,11 +67,11 @@ public class BcosSDKForProxy {
         checkGroupId(groupId);
         if (!groupToClient.containsKey(groupId)) {
             // create a new client for the specified group
-            JsonRpcServiceForProxy jsonRpcServiceForProxy = new JsonRpcServiceForProxy(this.networkHandle);
+            JsonRpcServiceForProxy jsonRpcServiceForProxy = new JsonRpcServiceForProxy(this.networkHandler);
             Client client =
                     Client.build(groupId,
                             jsonRpcServiceForProxy,
-                            this.configOption);
+                            this.proxyConfig);
             if (client == null) {
                 throw new BcosSDKException(
                         "create client for group "
