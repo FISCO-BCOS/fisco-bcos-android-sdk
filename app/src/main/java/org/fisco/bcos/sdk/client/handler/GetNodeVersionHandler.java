@@ -15,6 +15,9 @@
 
 package org.fisco.bcos.sdk.client.handler;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import org.fisco.bcos.sdk.channel.ChannelVersionNegotiation;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.network.MsgHandler;
@@ -33,6 +36,7 @@ public class GetNodeVersionHandler implements MsgHandler {
         this.nodeVersionUpdater = nodeVersionUpdater;
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public void onConnect(ChannelHandlerContext ctx) {
         String peerIpAndPort = ChannelVersionNegotiation.getPeerHost(ctx);

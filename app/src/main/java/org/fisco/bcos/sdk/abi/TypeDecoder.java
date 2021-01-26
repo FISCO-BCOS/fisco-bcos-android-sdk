@@ -1,5 +1,8 @@
 package org.fisco.bcos.sdk.abi;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.abi.datatypes.Array;
 import org.fisco.bcos.sdk.abi.datatypes.Bool;
@@ -179,6 +182,7 @@ public class TypeDecoder {
      * @param <T>    the generic type
      * @return the decoded result
      */
+    @TargetApi(Build.VERSION_CODES.N)
     @SuppressWarnings("unchecked")
     public static <T extends Type> T decodeStaticArray(
             String input, int offset, java.lang.reflect.Type type, int length) {
@@ -210,6 +214,7 @@ public class TypeDecoder {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @SuppressWarnings("unchecked")
     public static <T extends Type> T decodeDynamicArray(
             String input, int offset, java.lang.reflect.Type type) {
@@ -230,6 +235,7 @@ public class TypeDecoder {
         return decodeArrayElements(input, valueOffset, type, length, function);
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @SuppressWarnings("rawtypes")
     private static <T extends Type> T decodeArrayElements(
             String input,
