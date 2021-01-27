@@ -15,13 +15,19 @@ import okhttp3.Response;
 public class NetworkHandlerImp implements NetworkHandlerInterface {
 
     private static Logger logger = LoggerFactory.getLogger(NetworkHandlerImp.class);
+    private String ipPort = "http://127.0.0.1:8170/";
+
+    @Override
+    public void setIpAndPort(String ipPort) {
+        this.ipPort = ipPort;
+    }
 
     @Override
     public String onRPCRequest(String requestBodyJsonStr) {
         logger.trace("onRPCRequest http request body: " + requestBodyJsonStr);
 
         OkHttpClient okHttpClient = new OkHttpClient();
-        final String URL = "http://127.0.0.1:8170/Bcos-node-proxy/rpc/v1";
+        String URL = ipPort + "Bcos-node-proxy/rpc/v1";
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         RequestBody requestBody = RequestBody.create(JSON, requestBodyJsonStr);
         Request request = new Request.Builder()
