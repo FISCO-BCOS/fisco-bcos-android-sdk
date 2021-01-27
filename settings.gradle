@@ -1,2 +1,2 @@
-include ':app'
+include ':fisco-bcos-android-sdk'
 rootProject.name = "fisco-bcos-android-sdk"
