@@ -13,16 +13,13 @@
  */
 package org.fisco.bcos.sdk.utils;
 
-import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
-import org.fisco.bcos.sdk.utils.exceptions.EncoderException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
+import org.fisco.bcos.sdk.utils.exceptions.EncoderException;
 
-/**
- * Utility class for converting hex data to bytes and back again.
- */
+/** Utility class for converting hex data to bytes and back again. */
 public class Hex {
     private static final HexEncoder encoder = new HexEncoder();
 
@@ -48,8 +45,8 @@ public class Hex {
     /**
      * encode the input data producing a Hex encoded byte array.
      *
-     * @param data   the input byte array
-     * @param off    the offset of the data to be converted
+     * @param data the input byte array
+     * @param off the offset of the data to be converted
      * @param length the length of the data to be converted
      * @return a byte array containing the Hex encoded data.
      */
@@ -69,7 +66,7 @@ public class Hex {
      * Hex encode the byte data writing it to the given output stream.
      *
      * @param data the byte array
-     * @param out  the output stream
+     * @param out the output stream
      * @return the number of bytes produced.
      * @throws IOException the I/O exception
      */
@@ -80,10 +77,10 @@ public class Hex {
     /**
      * Hex encode the byte data writing it to the given output stream.
      *
-     * @param data   the byte array
-     * @param off    the offset of the data to be converted
+     * @param data the byte array
+     * @param off the offset of the data to be converted
      * @param length the length of the data to be converted
-     * @param out    the output stream
+     * @param out the output stream
      * @return the number of bytes produced.
      * @throws IOException the I/O exception
      */
@@ -133,7 +130,7 @@ public class Hex {
      * characters will be ignored.
      *
      * @param data the input byte array
-     * @param out  the output stream
+     * @param out the output stream
      * @return the number of bytes produced.
      * @throws IOException the I/O exception
      */

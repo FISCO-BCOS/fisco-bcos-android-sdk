@@ -14,6 +14,10 @@
  */
 package org.fisco.bcos.sdk.transaction.builder;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.client.Client;
@@ -21,11 +25,6 @@ import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.transaction.codec.encode.TransactionEncoderService;
 import org.fisco.bcos.sdk.transaction.model.gas.DefaultGasProvider;
 import org.fisco.bcos.sdk.transaction.model.po.RawTransaction;
-
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class TransactionBuilderService implements TransactionBuilderInterface {
     private Client client;
@@ -110,16 +109,12 @@ public class TransactionBuilderService implements TransactionBuilderInterface {
                 null);
     }
 
-    /**
-     * @return the client
-     */
+    /** @return the client */
     public Client getClient() {
         return client;
     }
 
-    /**
-     * @param client the client to set
-     */
+    /** @param client the client to set */
     public void setClient(Client client) {
         this.client = client;
     }

@@ -16,19 +16,15 @@ package org.fisco.bcos.sdk.abi.tools;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * ContractAbiUtil.
- */
+/** ContractAbiUtil. */
 public class ContractAbiUtil {
 
     public static final String TYPE_CONSTRUCTOR = "constructor";

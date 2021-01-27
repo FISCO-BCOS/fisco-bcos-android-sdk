@@ -15,12 +15,11 @@
 
 package org.fisco.bcos.sdk.model.callback;
 
+import io.netty.util.Timeout;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.TransactionReceiptStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.netty.util.Timeout;
 
 public abstract class TransactionCallback {
     public static Integer DEFAULT_TRANS_TIMEOUT = 30 * 1000;

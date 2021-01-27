@@ -1,14 +1,13 @@
 package org.fisco.bcos.sdk.abi.wrapper;
 
-import org.fisco.bcos.sdk.crypto.CryptoSuite;
-import org.fisco.bcos.sdk.utils.Numeric;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.utils.Numeric;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ContractABIDefinition {
 
@@ -91,7 +90,7 @@ public class ContractABIDefinition {
     }
 
     public void addEvent(String name, ABIDefinition abiDefinition) {
-        //events.putIfAbsent(name, new ArrayList<>());
+        // events.putIfAbsent(name, new ArrayList<>());
         if (!events.containsKey(name) || events.get(name) == null) {
             events.put(name, new ArrayList<>());
         }

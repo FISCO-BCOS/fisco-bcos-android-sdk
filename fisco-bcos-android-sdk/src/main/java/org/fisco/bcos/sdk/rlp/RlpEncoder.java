@@ -13,15 +13,13 @@
  */
 package org.fisco.bcos.sdk.rlp;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.fisco.bcos.sdk.rlp.RlpDecoder.OFFSET_SHORT_LIST;
 import static org.fisco.bcos.sdk.rlp.RlpDecoder.OFFSET_SHORT_STRING;
 
-/**
- * Recursive Length Prefix (RLP) encoder.
- */
+import java.util.Arrays;
+import java.util.List;
+
+/** Recursive Length Prefix (RLP) encoder. */
 public final class RlpEncoder {
 
     private RlpEncoder() {
@@ -72,22 +70,22 @@ public final class RlpEncoder {
             }
         }
 
-        return new byte[]{};
+        return new byte[] {};
     }
 
     private static byte[] toByteArray(int value) {
-        return new byte[]{
-                (byte) ((value >> 24) & 0xff),
-                (byte) ((value >> 16) & 0xff),
-                (byte) ((value >> 8) & 0xff),
-                (byte) (value & 0xff)
+        return new byte[] {
+            (byte) ((value >> 24) & 0xff),
+            (byte) ((value >> 16) & 0xff),
+            (byte) ((value >> 8) & 0xff),
+            (byte) (value & 0xff)
         };
     }
 
     private static byte[] encodeList(RlpList value) {
         List<RlpType> values = value.getValues();
         if (values.isEmpty()) {
-            return encode(new byte[]{}, OFFSET_SHORT_LIST);
+            return encode(new byte[] {}, OFFSET_SHORT_LIST);
         } else {
             byte[] result = new byte[0];
             for (RlpType entry : values) {

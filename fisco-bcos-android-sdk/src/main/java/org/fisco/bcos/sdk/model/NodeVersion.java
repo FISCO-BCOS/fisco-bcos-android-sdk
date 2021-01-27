@@ -16,12 +16,9 @@
 package org.fisco.bcos.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
-/**
- * getNodeVersion.
- */
+/** getNodeVersion. */
 public class NodeVersion extends JsonRpcResponse<NodeVersion.ClientVersion> {
     public ClientVersion getNodeVersion() {
         return getResult();

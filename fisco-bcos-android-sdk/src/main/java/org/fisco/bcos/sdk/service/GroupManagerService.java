@@ -13,6 +13,9 @@
  */
 package org.fisco.bcos.sdk.service;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Set;
 import org.fisco.bcos.sdk.amop.Amop;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.channel.PeerSelectRule;
@@ -25,10 +28,6 @@ import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.network.ConnectionInfo;
 import org.fisco.bcos.sdk.service.callback.BlockNumberNotifyCallback;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Set;
-
 public interface GroupManagerService {
     public static final BigInteger BLOCK_LIMIT = BigInteger.valueOf(500);
 
@@ -36,7 +35,7 @@ public interface GroupManagerService {
      * Update the group list information of the node
      *
      * @param peerIpAndPort Node ip and port information
-     * @param groupList     Group list of nodes
+     * @param groupList Group list of nodes
      */
     void updateGroupInfo(String peerIpAndPort, List<String> groupList);
 
@@ -45,8 +44,8 @@ public interface GroupManagerService {
     /**
      * update the block number information for the specified group
      *
-     * @param groupId            the specified groupId
-     * @param peerInfo           the info of the peers
+     * @param groupId the specified groupId
+     * @param peerInfo the info of the peers
      * @param currentBlockNumber the current blockNumber
      */
     void updateBlockNumberInfo(Integer groupId, String peerInfo, BigInteger currentBlockNumber);
@@ -101,7 +100,7 @@ public interface GroupManagerService {
      *
      * @param groupId The group the message is sent to
      * @param message The message to be sent
-     * @param rule    Rule for filtering the target nodes
+     * @param rule Rule for filtering the target nodes
      * @return callback to be called after receiving response
      */
     Response sendMessageToGroupByRule(Integer groupId, Message message, PeerSelectRule rule);
@@ -110,8 +109,8 @@ public interface GroupManagerService {
      * Send a message to a node in the group and select the node with the highest block height in
      * the group
      *
-     * @param groupId  The group the message is sent to
-     * @param message  The message to be sent
+     * @param groupId The group the message is sent to
+     * @param message The message to be sent
      * @param callback callback to be called after receiving response
      */
     void asyncSendMessageToGroup(Integer groupId, Message message, ResponseCallback callback);
@@ -120,9 +119,9 @@ public interface GroupManagerService {
      * Send messages to nodes in the group according to specified rules (If multiple nodes are
      * filtered out, only select one of them to send the message)
      *
-     * @param groupId  The group the message is sent to
-     * @param message  The message to be sent
-     * @param rule     Rules for filtering the target nodes
+     * @param groupId The group the message is sent to
+     * @param message The message to be sent
+     * @param rule Rules for filtering the target nodes
      * @param callback Function to be called after receiving response
      */
     void asyncSendMessageToGroupByRule(

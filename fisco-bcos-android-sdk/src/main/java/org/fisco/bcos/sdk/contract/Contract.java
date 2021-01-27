@@ -14,6 +14,11 @@
  */
 package org.fisco.bcos.sdk.contract;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.EventEncoder;
 import org.fisco.bcos.sdk.abi.EventValues;
 import org.fisco.bcos.sdk.abi.FunctionEncoder;
@@ -40,12 +45,6 @@ import org.fisco.bcos.sdk.transaction.model.dto.CallRequest;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class Contract {
     public static final String FUNC_DEPLOY = "deploy";
@@ -343,11 +342,11 @@ public class Contract {
     protected List<EventValues> extractEventParameters(
             Event event, TransactionReceipt transactionReceipt) {
         /*return transactionReceipt
-                .getLogs()
-                .stream()
-                .map(log -> extractEventParameters(event, log))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());*/
+        .getLogs()
+        .stream()
+        .map(log -> extractEventParameters(event, log))
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());*/
         List<EventValues> ret = new ArrayList<>();
         List<TransactionReceipt.Logs> logs = transactionReceipt.getLogs();
         for (int i = 0; i < logs.size(); i++) {
@@ -368,11 +367,11 @@ public class Contract {
     protected List<EventValuesWithLog> extractEventParametersWithLog(
             Event event, TransactionReceipt transactionReceipt) {
         /*return transactionReceipt
-                .getLogs()
-                .stream()
-                .map(log -> extractEventParametersWithLog(event, log))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());*/
+        .getLogs()
+        .stream()
+        .map(log -> extractEventParametersWithLog(event, log))
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());*/
         List<EventValuesWithLog> ret = new ArrayList<>();
         List<TransactionReceipt.Logs> logs = transactionReceipt.getLogs();
         for (int i = 0; i < logs.size(); i++) {
@@ -387,9 +386,9 @@ public class Contract {
     protected List<EventValuesWithLog> extractEventParametersWithLog(
             Event event, List<TransactionReceipt.Logs> logs) {
         /*return logs.stream()
-                .map(log -> extractEventParametersWithLog(event, log))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());*/
+        .map(log -> extractEventParametersWithLog(event, log))
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());*/
         List<EventValuesWithLog> ret = new ArrayList<>();
         for (int i = 0; i < logs.size(); i++) {
             EventValuesWithLog values = extractEventParametersWithLog(event, logs.get(i));
@@ -408,9 +407,7 @@ public class Contract {
         return this.credential.getAddress();
     }
 
-    /**
-     * Adds a log field to {@link EventValues}.
-     */
+    /** Adds a log field to {@link EventValues}. */
     public static class EventValuesWithLog {
         private final EventValues eventValues;
         private final TransactionReceipt.Logs log;

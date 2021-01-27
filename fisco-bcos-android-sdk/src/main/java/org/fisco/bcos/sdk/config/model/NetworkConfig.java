@@ -15,13 +15,11 @@
 
 package org.fisco.bcos.sdk.config.model;
 
-import org.fisco.bcos.sdk.config.exceptions.ConfigException;
-import org.fisco.bcos.sdk.utils.Host;
-
+import io.netty.util.NetUtil;
 import java.util.List;
 import java.util.Map;
-
-import io.netty.util.NetUtil;
+import org.fisco.bcos.sdk.config.exceptions.ConfigException;
+import org.fisco.bcos.sdk.utils.Host;
 
 public class NetworkConfig {
     private List<String> peers;

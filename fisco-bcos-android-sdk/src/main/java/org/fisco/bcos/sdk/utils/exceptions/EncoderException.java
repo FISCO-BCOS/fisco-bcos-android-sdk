@@ -13,9 +13,7 @@
  */
 package org.fisco.bcos.sdk.utils.exceptions;
 
-/**
- * Exception thrown if an attempt is made to encode invalid data, or some other failure occurs.
- */
+/** Exception thrown if an attempt is made to encode invalid data, or some other failure occurs. */
 public class EncoderException extends IllegalStateException {
     private final Throwable cause;
 

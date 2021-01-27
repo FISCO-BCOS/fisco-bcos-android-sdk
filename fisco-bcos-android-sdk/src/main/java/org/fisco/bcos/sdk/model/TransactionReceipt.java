@@ -15,7 +15,6 @@
 package org.fisco.bcos.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -41,9 +40,7 @@ public class TransactionReceipt {
     private List<MerkleProofUnit> receiptProof;
     private String message;
 
-    public TransactionReceipt() {
-
-    }
+    public TransactionReceipt() {}
 
     public boolean isStatusOK() {
         return status.equals("0x0") || status.equals("0");
@@ -283,16 +280,12 @@ public class TransactionReceipt {
                 + '}';
     }
 
-    /**
-     * @return the message
-     */
+    /** @return the message */
     public String getMessage() {
         return message;
     }
 
-    /**
-     * @param message the message to set
-     */
+    /** @param message the message to set */
     public void setMessage(String message) {
         this.message = message;
     }

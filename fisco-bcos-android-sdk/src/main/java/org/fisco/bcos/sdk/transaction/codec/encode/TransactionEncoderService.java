@@ -14,6 +14,8 @@
  */
 package org.fisco.bcos.sdk.transaction.codec.encode;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.crypto.signature.Signature;
@@ -29,9 +31,6 @@ import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TransactionEncoderService implements TransactionEncoderInterface {
     protected static Logger logger = LoggerFactory.getLogger(TransactionEncoderService.class);
@@ -105,9 +104,7 @@ public class TransactionEncoderService implements TransactionEncoderInterface {
         return RlpEncoder.encode(rlpList);
     }
 
-    /**
-     * @return the signature
-     */
+    /** @return the signature */
     public Signature getSignature() {
         return signature;
     }

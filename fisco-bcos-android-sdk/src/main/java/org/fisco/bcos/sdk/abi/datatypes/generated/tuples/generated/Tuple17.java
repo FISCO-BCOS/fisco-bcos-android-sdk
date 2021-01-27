@@ -11,7 +11,7 @@ import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.Tuple;
  * href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  */
 public final class Tuple17<
-        T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>
+                T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>
         implements Tuple {
     private static final int SIZE = 17;
 

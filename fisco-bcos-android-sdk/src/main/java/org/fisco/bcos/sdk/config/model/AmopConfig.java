@@ -15,10 +15,9 @@
 
 package org.fisco.bcos.sdk.config.model;
 
-import org.fisco.bcos.sdk.config.exceptions.ConfigException;
-
 import java.io.File;
 import java.util.List;
+import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 
 public class AmopConfig {
     // AMOP topic related config

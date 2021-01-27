@@ -13,18 +13,19 @@ public class CryptoClient {
      * Encrypts an encoded message by ECIES with a public key on the secp256k1 curve.
      *
      * @param publicKey encoded public key.
-     * @param message   encoded message to encrypt.
+     * @param message encoded message to encrypt.
      * @return CryptoResult containing data for encryptedData.
      * @throws WedprException if any error occurred.
      */
-    public CryptoResult secp256k1EciesEncrypt(String publicKey, String message) throws WedprException {
+    public CryptoResult secp256k1EciesEncrypt(String publicKey, String message)
+            throws WedprException {
         return NativeInterface.secp256k1EciesEncrypt(publicKey, message).expectNoError();
     }
 
     /**
      * Decrypts an encoded encryptedData by ECIES with a private key on the secp256k1 curve.
      *
-     * @param privateKey    encoded private key.
+     * @param privateKey encoded private key.
      * @param encryptedData encoded ciphertext to decrypt.
      * @return CryptoResult containing data for decryptedData.
      * @throws WedprException if any error occurred.
@@ -47,7 +48,7 @@ public class CryptoClient {
     /**
      * Signs a message hash with the private key on the secp256k1 curve.
      *
-     * @param privateKey  encoded private key.
+     * @param privateKey encoded private key.
      * @param messageHash encoded hash of a message to sign.
      * @return CryptoResult containing data for signature.
      * @throws WedprException if any error occurred.
@@ -59,9 +60,9 @@ public class CryptoClient {
     /**
      * Verifies a message hash with the public key on the secp256k1 curve.
      *
-     * @param publicKey   encoded public key.
+     * @param publicKey encoded public key.
      * @param messageHash encoded hash of a message to verify.
-     * @param signature   encoded signature
+     * @param signature encoded signature
      * @return CryptoResult containing data for booleanResult.
      * @throws WedprException if any error occurred.
      */

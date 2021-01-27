@@ -16,14 +16,12 @@ package org.fisco.bcos.sdk.transaction.pusher;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-
+import java.util.concurrent.CompletableFuture;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.callback.TransactionCallback;
-
-import java.util.concurrent.CompletableFuture;
 
 public class TransactionPusherService implements TransactionPusherInterface {
 
@@ -68,16 +66,12 @@ public class TransactionPusherService implements TransactionPusherInterface {
         return future;
     }
 
-    /**
-     * @return the client
-     */
+    /** @return the client */
     public Client getClient() {
         return client;
     }
 
-    /**
-     * @param client the client to set
-     */
+    /** @param client the client to set */
     public void setClient(Client client) {
         this.client = client;
     }

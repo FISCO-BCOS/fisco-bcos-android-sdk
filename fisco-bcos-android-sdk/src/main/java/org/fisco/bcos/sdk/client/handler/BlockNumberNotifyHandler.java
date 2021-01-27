@@ -17,7 +17,9 @@ package org.fisco.bcos.sdk.client.handler;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.AttributeKey;
+import java.util.function.Consumer;
 import org.fisco.bcos.sdk.channel.ChannelVersionNegotiation;
 import org.fisco.bcos.sdk.channel.model.ChannelProtocol;
 import org.fisco.bcos.sdk.channel.model.EnumChannelProtocolVersion;
@@ -28,11 +30,6 @@ import org.fisco.bcos.sdk.model.MsgType;
 import org.fisco.bcos.sdk.network.MsgHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.function.Consumer;
-
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.AttributeKey;
 
 public class BlockNumberNotifyHandler implements MsgHandler {
     private static Logger logger = LoggerFactory.getLogger(BlockNumberNotifyHandler.class);
@@ -58,18 +55,18 @@ public class BlockNumberNotifyHandler implements MsgHandler {
         // get version
         ChannelProtocol protocol = null;
         if (ctx.channel()
-                .attr(
-                        AttributeKey.valueOf(
-                                EnumSocketChannelAttributeKey.CHANNEL_PROTOCOL_KEY
-                                        .getKey()))
-                != null
+                                .attr(
+                                        AttributeKey.valueOf(
+                                                EnumSocketChannelAttributeKey.CHANNEL_PROTOCOL_KEY
+                                                        .getKey()))
+                        != null
                 && ctx.channel()
-                .attr(
-                        AttributeKey.valueOf(
-                                EnumSocketChannelAttributeKey.CHANNEL_PROTOCOL_KEY
-                                        .getKey()))
-                .get()
-                != null) {
+                                .attr(
+                                        AttributeKey.valueOf(
+                                                EnumSocketChannelAttributeKey.CHANNEL_PROTOCOL_KEY
+                                                        .getKey()))
+                                .get()
+                        != null) {
             protocol =
                     (ChannelProtocol)
                             (ctx.channel()

@@ -14,6 +14,8 @@
  */
 package org.fisco.bcos.sdk.contract.precompiled.contractmgr;
 
+import java.math.BigInteger;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledAddress;
@@ -25,9 +27,6 @@ import org.fisco.bcos.sdk.transaction.codec.decode.ReceiptParser;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigInteger;
-import java.util.List;
 
 public class ContractLifeCycleService {
     private static Logger logger = LoggerFactory.getLogger(ContractLifeCycleService.class);
@@ -82,7 +81,7 @@ public class ContractLifeCycleService {
                     this.contractLifeCyclePrecompiled.getStatus(contractAddress);
             if (result.getValue1().intValue() != PrecompiledRetCode.CODE_SUCCESS.getCode()) {
                 return PrecompiledRetCode.getPrecompiledResponse(
-                        result.getValue1().intValue(), result.getValue2())
+                                result.getValue1().intValue(), result.getValue2())
                         .getMessage();
             }
             return result.getValue2();
@@ -104,7 +103,7 @@ public class ContractLifeCycleService {
         if (result.getValue1().intValue() != PrecompiledRetCode.CODE_SUCCESS.getCode()) {
             String errorMessage =
                     PrecompiledRetCode.getPrecompiledResponse(
-                            result.getValue1().intValue(), result.getValue2().toString())
+                                    result.getValue1().intValue(), result.getValue2().toString())
                             .getMessage();
             logger.warn(
                     "contractLifCycleService: listManager for {} failed, reason: {}",

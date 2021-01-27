@@ -15,14 +15,11 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
+import java.util.List;
 import org.fisco.bcos.sdk.client.protocol.model.JsonTransactionResponse;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-import java.util.List;
-
-/**
- * getPendingTransactions
- */
+/** getPendingTransactions */
 public class PendingTransactions extends JsonRpcResponse<List<JsonTransactionResponse>> {
     public List<JsonTransactionResponse> getPendingTransactions() {
         return getResult();

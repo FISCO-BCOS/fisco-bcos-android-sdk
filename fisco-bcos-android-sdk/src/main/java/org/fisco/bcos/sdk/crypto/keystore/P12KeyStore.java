@@ -13,11 +13,6 @@
  */
 package org.fisco.bcos.sdk.crypto.keystore;
 
-import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
-import org.fisco.bcos.sdk.crypto.exceptions.SaveKeyStoreException;
-import org.spongycastle.jce.X509Principal;
-import org.spongycastle.x509.X509V3CertificateGenerator;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +32,10 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
+import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
+import org.fisco.bcos.sdk.crypto.exceptions.SaveKeyStoreException;
+import org.spongycastle.jce.X509Principal;
+import org.spongycastle.x509.X509V3CertificateGenerator;
 
 public class P12KeyStore extends KeyTool {
     private static final String NAME = "key";
@@ -92,19 +91,19 @@ public class P12KeyStore extends KeyTool {
     /**
      * generate self-signed certificate
      *
-     * @param keyPair            the keyPair used to generated the certificate
+     * @param keyPair the keyPair used to generated the certificate
      * @param signatureAlgorithm the signature algorithm of the cert
      * @return the generated self-signed certificate object
-     * @throws NoSuchAlgorithmException     no such algorithm exception
+     * @throws NoSuchAlgorithmException no such algorithm exception
      * @throws CertificateEncodingException error occurs when encoding certificate
-     * @throws NoSuchProviderException      no such provider exception
-     * @throws InvalidKeyException          invalid key exception
-     * @throws SignatureException           generic signature exception
+     * @throws NoSuchProviderException no such provider exception
+     * @throws InvalidKeyException invalid key exception
+     * @throws SignatureException generic signature exception
      */
     public static X509Certificate generateSelfSignedCertificate(
             KeyPair keyPair, String signatureAlgorithm)
             throws NoSuchAlgorithmException, CertificateEncodingException, NoSuchProviderException,
-            InvalidKeyException, SignatureException {
+                    InvalidKeyException, SignatureException {
         X509V3CertificateGenerator cert = new X509V3CertificateGenerator();
         cert.setSerialNumber(BigInteger.valueOf(1)); // or generate a random number
         cert.setSubjectDN(new X509Principal("CN=localhost")); // see examples to add O,OU etc

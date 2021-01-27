@@ -2,9 +2,7 @@
 
 package com.webank.wedpr.crypto;
 
-/**
- * Native interface for Crypto client.
- */
+/** Native interface for Crypto client. */
 public class NativeInterface {
 
     // TODO: Check this path.
@@ -15,7 +13,8 @@ public class NativeInterface {
     // JNI function section.
     public static native CryptoResult secp256k1EciesEncrypt(String publicKey, String message);
 
-    public static native CryptoResult secp256k1EciesDecrypt(String privateKey, String encryptedData);
+    public static native CryptoResult secp256k1EciesDecrypt(
+            String privateKey, String encryptedData);
 
     public static native CryptoResult secp256k1GenKeyPair();
 

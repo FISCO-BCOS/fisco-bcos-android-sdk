@@ -14,6 +14,11 @@
  */
 package org.fisco.bcos.sdk.transaction.codec.decode;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
@@ -37,12 +42,6 @@ import org.fisco.bcos.sdk.transaction.tools.ReceiptStatusUtil;
 import org.fisco.bcos.sdk.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TransactionDecoderService implements TransactionDecoderInterface {
     protected static Logger logger = LoggerFactory.getLogger(TransactionDecoderService.class);
@@ -126,41 +125,7 @@ public class TransactionDecoderService implements TransactionDecoderInterface {
         Map<String, List<ABIDefinition>> eventsMap = contractABIDefinition.getEvents();
         Map<String, List<List<Object>>> result = new HashMap<>();
         /*eventsMap.forEach(
-                (name, events) -> {
-                    for (ABIDefinition abiDefinition : events) {
-                        ABIObjectFactory abiObjectFactory = new ABIObjectFactory();
-                        ABIObject outputObject =
-                                abiObjectFactory.createEventInputObject(abiDefinition);
-                        ABICodecObject abiCodecObject = new ABICodecObject();
-                        for (Logs log : logs) {
-                            String eventSignature =
-                                    eventEncoder.buildEventSignature(
-                                            decodeMethodSign(abiDefinition));
-                            if (log.getTopics().isEmpty()
-                                    || !log.getTopics().contains(eventSignature)) {
-                                continue;
-                            }
-                            try {
-                                List<Object> list =
-                                        abiCodecObject.decodeJavaObject(
-                                                outputObject, log.getData());
-                                if (result.containsKey(name)) {
-                                    result.get(name).add(list);
-                                } else {
-                                    List<List<Object>> l = new ArrayList<>();
-                                    l.add(list);
-                                    result.put(name, l);
-                                }
-                            } catch (Exception e) {
-                                logger.error(
-                                        " exception in decodeEventToObject : {}", e.getMessage());
-                            }
-                        }
-                    }
-                });*/
-        for (Map.Entry<String, List<ABIDefinition>> entry : eventsMap.entrySet()) {
-            String name = entry.getKey();
-            List<ABIDefinition> events = entry.getValue();
+        (name, events) -> {
             for (ABIDefinition abiDefinition : events) {
                 ABIObjectFactory abiObjectFactory = new ABIObjectFactory();
                 ABIObject outputObject =
@@ -191,6 +156,35 @@ public class TransactionDecoderService implements TransactionDecoderInterface {
                     }
                 }
             }
+        });*/
+        for (Map.Entry<String, List<ABIDefinition>> entry : eventsMap.entrySet()) {
+            String name = entry.getKey();
+            List<ABIDefinition> events = entry.getValue();
+            for (ABIDefinition abiDefinition : events) {
+                ABIObjectFactory abiObjectFactory = new ABIObjectFactory();
+                ABIObject outputObject = abiObjectFactory.createEventInputObject(abiDefinition);
+                ABICodecObject abiCodecObject = new ABICodecObject();
+                for (Logs log : logs) {
+                    String eventSignature =
+                            eventEncoder.buildEventSignature(decodeMethodSign(abiDefinition));
+                    if (log.getTopics().isEmpty() || !log.getTopics().contains(eventSignature)) {
+                        continue;
+                    }
+                    try {
+                        List<Object> list =
+                                abiCodecObject.decodeJavaObject(outputObject, log.getData());
+                        if (result.containsKey(name)) {
+                            result.get(name).add(list);
+                        } else {
+                            List<List<Object>> l = new ArrayList<>();
+                            l.add(list);
+                            result.put(name, l);
+                        }
+                    } catch (Exception e) {
+                        logger.error(" exception in decodeEventToObject : {}", e.getMessage());
+                    }
+                }
+            }
         }
         return result;
     }
@@ -212,16 +206,12 @@ public class TransactionDecoderService implements TransactionDecoderInterface {
         return methodSign.toString();
     }
 
-    /**
-     * @return the cryptoSuite
-     */
+    /** @return the cryptoSuite */
     public CryptoSuite getCryptoSuite() {
         return cryptoSuite;
     }
 
-    /**
-     * @param cryptoSuite the cryptoSuite to set
-     */
+    /** @param cryptoSuite the cryptoSuite to set */
     public void setCryptoSuite(CryptoSuite cryptoSuite) {
         this.cryptoSuite = cryptoSuite;
     }

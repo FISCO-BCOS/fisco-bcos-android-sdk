@@ -15,6 +15,10 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
@@ -26,11 +30,6 @@ import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader> {
     private static Logger logger = LoggerFactory.getLogger(BcosBlockHeader.class);
@@ -48,8 +47,7 @@ public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader
         private String index;
         private String signature;
 
-        public Signature() {
-        }
+        public Signature() {}
 
         public String getIndex() {
             return index;
@@ -278,7 +276,7 @@ public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader
             if (o == null || getClass() != o.getClass()) return false;
             BlockHeader that = (BlockHeader) o;
             return Objects.equals(
-                    Numeric.decodeQuantity(number), Numeric.decodeQuantity(that.number))
+                            Numeric.decodeQuantity(number), Numeric.decodeQuantity(that.number))
                     && Objects.equals(hash, that.hash)
                     && Objects.equals(parentHash, that.parentHash)
                     && Objects.equals(logsBloom, that.logsBloom)

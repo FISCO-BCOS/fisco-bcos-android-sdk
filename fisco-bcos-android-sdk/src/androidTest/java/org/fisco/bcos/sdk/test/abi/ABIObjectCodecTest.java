@@ -1,7 +1,8 @@
 package org.fisco.bcos.sdk.test.abi;
 
 import android.util.Base64;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.wrapper.ABICodecJsonWrapper;
 import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
 import org.fisco.bcos.sdk.abi.wrapper.ABIObject;
@@ -9,9 +10,6 @@ import org.fisco.bcos.sdk.abi.wrapper.ABIObjectFactory;
 import org.fisco.bcos.sdk.abi.wrapper.ContractABIDefinition;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ABIObjectCodecTest {
     String abiDesc =
@@ -594,7 +592,12 @@ public class ABIObjectCodecTest {
             Assert.assertEquals(args.get(i), decodeArgs.get(i));
         }
 
-        byte[] decode = Base64.decode(decodeArgs.get(args.size() - 1).substring(ABICodecJsonWrapper.Base64EncodedDataPrefix.length()), Base64.NO_WRAP);
+        byte[] decode =
+                Base64.decode(
+                        decodeArgs
+                                .get(args.size() - 1)
+                                .substring(ABICodecJsonWrapper.Base64EncodedDataPrefix.length()),
+                        Base64.NO_WRAP);
 
         Assert.assertEquals(new String(decode), bytesValue);
     }

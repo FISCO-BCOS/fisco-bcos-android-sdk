@@ -22,8 +22,7 @@ final class SecureRandomUtils {
         SECURE_RANDOM = new SecureRandom();
     }
 
-    private SecureRandomUtils() {
-    }
+    private SecureRandomUtils() {}
 
     static SecureRandom secureRandom() {
         return SECURE_RANDOM;

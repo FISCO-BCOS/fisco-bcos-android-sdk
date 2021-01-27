@@ -1,5 +1,9 @@
 package org.fisco.bcos.sdk.abi;
 
+import static org.fisco.bcos.sdk.abi.datatypes.Type.MAX_BYTE_LENGTH;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.abi.datatypes.Array;
 import org.fisco.bcos.sdk.abi.datatypes.Bool;
@@ -15,19 +19,13 @@ import org.fisco.bcos.sdk.abi.datatypes.Uint;
 import org.fisco.bcos.sdk.abi.datatypes.Utf8String;
 import org.fisco.bcos.sdk.utils.Numeric;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-
-import static org.fisco.bcos.sdk.abi.datatypes.Type.MAX_BYTE_LENGTH;
-
 /**
  * Ethereum Contract Application Binary Interface (ABI) encoding for types. Further details are
  * available <a href= "https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI">here</a>.
  */
 public class TypeEncoder {
 
-    private TypeEncoder() {
-    }
+    private TypeEncoder() {}
 
     @SuppressWarnings("unchecked")
     public static String encode(Type parameter) {

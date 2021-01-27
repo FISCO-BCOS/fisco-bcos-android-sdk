@@ -20,13 +20,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
-/**
- * String utility functions.
- */
+/** String utility functions. */
 public class StringUtils {
 
-    private StringUtils() {
-    }
+    private StringUtils() {}
 
     public static String capitaliseFirstLetter(String string) {
         if (string == null || string.length() == 0) {
@@ -315,6 +312,8 @@ public class StringUtils {
     }
 
     public static String joinAll(String delimiter, List<String> src) {
-        return src == null ? null : org.apache.commons.lang3.StringUtils.join(src.toArray(new String[0]), delimiter);
+        return src == null
+                ? null
+                : org.apache.commons.lang3.StringUtils.join(src.toArray(new String[0]), delimiter);
     }
 }

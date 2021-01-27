@@ -13,13 +13,10 @@
  */
 package org.fisco.bcos.sdk.rlp;
 
+import java.util.ArrayList;
 import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
 
-import java.util.ArrayList;
-
-/**
- * Recursive Length Prefix (RLP) decoder.
- */
+/** Recursive Length Prefix (RLP) decoder. */
 public final class RlpDecoder {
     /**
      * [0x80] If a string is 0-55 bytes long, the RLP encoding consists of a single byte with value

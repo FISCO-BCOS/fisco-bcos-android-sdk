@@ -14,14 +14,13 @@
  */
 package org.fisco.bcos.sdk.transaction.tools;
 
+import java.util.Collections;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.FunctionReturnDecoder;
 import org.fisco.bcos.sdk.abi.TypeReference;
 import org.fisco.bcos.sdk.abi.datatypes.Function;
 import org.fisco.bcos.sdk.abi.datatypes.Type;
 import org.fisco.bcos.sdk.abi.datatypes.Utf8String;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * ReceiptStatusUtil @Description: ReceiptStatusUtil
@@ -38,8 +37,7 @@ public class ReceiptStatusUtil {
                     new Function(
                             "Error",
                             Collections.emptyList(),
-                            Collections.singletonList(new TypeReference<Utf8String>() {
-                            }));
+                            Collections.singletonList(new TypeReference<Utf8String>() {}));
             List<Type> r =
                     FunctionReturnDecoder.decode(
                             output.substring(10), function.getOutputParameters());

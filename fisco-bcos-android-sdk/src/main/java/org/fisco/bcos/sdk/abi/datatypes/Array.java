@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Fixed size array.
- */
+/** Fixed size array. */
 public abstract class Array<T extends Type> implements Type<List<T>> {
 
     protected final List<T> value;

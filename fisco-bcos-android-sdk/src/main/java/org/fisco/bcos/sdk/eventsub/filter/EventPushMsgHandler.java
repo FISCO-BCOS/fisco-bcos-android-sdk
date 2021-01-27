@@ -16,7 +16,9 @@
 package org.fisco.bcos.sdk.eventsub.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+import io.netty.channel.ChannelHandlerContext;
+import java.io.IOException;
+import java.util.List;
 import org.fisco.bcos.sdk.eventsub.EventCallback;
 import org.fisco.bcos.sdk.model.EventLog;
 import org.fisco.bcos.sdk.model.Message;
@@ -26,14 +28,7 @@ import org.fisco.bcos.sdk.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.List;
-
-import io.netty.channel.ChannelHandlerContext;
-
-/**
- * EventPushMsgHandler is the type of EVENT_LOG_PUSH message handler.
- */
+/** EventPushMsgHandler is the type of EVENT_LOG_PUSH message handler. */
 public class EventPushMsgHandler implements MsgHandler {
     private static final Logger logger = LoggerFactory.getLogger(EventPushMsgHandler.class);
     FilterManager filterManager;

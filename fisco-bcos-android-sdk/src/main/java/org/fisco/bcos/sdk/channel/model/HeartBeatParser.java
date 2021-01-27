@@ -3,10 +3,8 @@ package org.fisco.bcos.sdk.channel.model;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
-import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
-
 import java.io.IOException;
+import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
 public class HeartBeatParser {
 
@@ -29,16 +27,18 @@ public class HeartBeatParser {
         byte[] result = null;
 
         switch (getVersion()) {
-            case VERSION_1: {
-                result = value.getBytes();
-            }
-            break;
-            default: {
-                NodeHeartbeat nodeHeartbeat = new NodeHeartbeat();
-                nodeHeartbeat.setHeartBeat(Integer.parseInt(value));
-                result = ObjectMapperFactory.getObjectMapper().writeValueAsBytes(nodeHeartbeat);
-            }
-            break;
+            case VERSION_1:
+                {
+                    result = value.getBytes();
+                }
+                break;
+            default:
+                {
+                    NodeHeartbeat nodeHeartbeat = new NodeHeartbeat();
+                    nodeHeartbeat.setHeartBeat(Integer.parseInt(value));
+                    result = ObjectMapperFactory.getObjectMapper().writeValueAsBytes(nodeHeartbeat);
+                }
+                break;
         }
 
         return result;
@@ -49,16 +49,18 @@ public class HeartBeatParser {
         NodeHeartbeat nodeHeartbeat = new NodeHeartbeat();
 
         switch (getVersion()) {
-            case VERSION_1: {
-                nodeHeartbeat.setHeartBeat(Integer.parseInt(data));
-            }
-            break;
-            default: {
-                nodeHeartbeat =
-                        ObjectMapperFactory.getObjectMapper()
-                                .readValue(data, NodeHeartbeat.class);
-            }
-            break;
+            case VERSION_1:
+                {
+                    nodeHeartbeat.setHeartBeat(Integer.parseInt(data));
+                }
+                break;
+            default:
+                {
+                    nodeHeartbeat =
+                            ObjectMapperFactory.getObjectMapper()
+                                    .readValue(data, NodeHeartbeat.class);
+                }
+                break;
         }
 
         return nodeHeartbeat;

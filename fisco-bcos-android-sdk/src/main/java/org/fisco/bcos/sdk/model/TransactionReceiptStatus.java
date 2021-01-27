@@ -14,11 +14,10 @@
  */
 package org.fisco.bcos.sdk.model;
 
-import org.fisco.bcos.sdk.utils.Numeric;
-
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import org.fisco.bcos.sdk.utils.Numeric;
 
 public class TransactionReceiptStatus {
     public static final RetCode Success = new RetCode(0, "Success");

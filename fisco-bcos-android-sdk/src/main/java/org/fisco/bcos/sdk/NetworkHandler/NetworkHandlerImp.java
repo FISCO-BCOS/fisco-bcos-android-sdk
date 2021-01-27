@@ -1,16 +1,14 @@
 package org.fisco.bcos.sdk.NetworkHandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.ConnectException;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NetworkHandlerImp implements NetworkHandlerInterface {
 
@@ -30,10 +28,7 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
         String URL = ipPort + "Bcos-node-proxy/rpc/v1";
         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
         RequestBody requestBody = RequestBody.create(JSON, requestBodyJsonStr);
-        Request request = new Request.Builder()
-                .url(URL)
-                .post(requestBody)
-                .build();
+        Request request = new Request.Builder().url(URL).post(requestBody).build();
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {

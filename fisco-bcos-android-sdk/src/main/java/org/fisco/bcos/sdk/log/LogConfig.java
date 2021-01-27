@@ -1,5 +1,6 @@
 package org.fisco.bcos.sdk.log;
 
+import java.io.IOException;
 import org.apache.log4j.Layout;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -7,9 +8,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
 import org.apache.log4j.helpers.LogLog;
-
-import java.io.IOException;
-
 
 /**
  * 源自 android-logging-log4j-1.0.3.jar
@@ -20,31 +18,27 @@ public class LogConfig {
     private Level rootLevel = Level.DEBUG;
     /**
      * ### log文件的格式
-     * <p>
-     * ### 输出格式解释：
-     * ### [%-d{yyyy-MM-dd HH:mm:ss}][Class: %c.%M(%F:%L)] %n[Level: %-5p] - Msg: %m%n
-     * <p>
-     * ### %d{yyyy-MM-dd HH:mm:ss}: 时间，大括号内是时间格式
-     * ### %c: 全类名
-     * ### %M: 调用的方法名称
-     * ### %F:%L  类名:行号（在控制台可以追踪代码）
-     * ### %n: 换行
-     * ### %p: 日志级别，这里%-5p是指定的5个字符的日志名称，为的是格式整齐
-     * ### %m: 日志信息
-     * <p>
-     * ### 输出的信息大概如下：
-     * ### [时间{时间格式}][信息所在的class.method(className：lineNumber)] 换行
-     * ### [Level: 5个字符的等级名称] - Msg: 输出信息 换行
+     *
+     * <p>### 输出格式解释： ### [%-d{yyyy-MM-dd HH:mm:ss}][Class: %c.%M(%F:%L)] %n[Level: %-5p] - Msg:
+     * %m%n
+     *
+     * <p>### %d{yyyy-MM-dd HH:mm:ss}: 时间，大括号内是时间格式 ### %c: 全类名 ### %M: 调用的方法名称 ### %F:%L
+     * 类名:行号（在控制台可以追踪代码） ### %n: 换行 ### %p: 日志级别，这里%-5p是指定的5个字符的日志名称，为的是格式整齐 ### %m: 日志信息
+     *
+     * <p>### 输出的信息大概如下： ### [时间{时间格式}][信息所在的class.method(className：lineNumber)] 换行 ### [Level:
+     * 5个字符的等级名称] - Msg: 输出信息 换行
      */
-    private String filePattern = "[%-d{yyyy-MM-dd HH:mm:ss}][Class: %c.%M(%F:%L)] %n[Level: %-5p] - Msg: %m%n";
+    private String filePattern =
+            "[%-d{yyyy-MM-dd HH:mm:ss}][Class: %c.%M(%F:%L)] %n[Level: %-5p] - Msg: %m%n";
 
     /**
      * ### LogCat控制台输出格式
-     * <p>
-     * ### [Class: 信息所在的class.method(className：lineNumber)] 换行
-     * ### [Level: 5个字符的等级名称] - Msg: 输出信息 换行
+     *
+     * <p>### [Class: 信息所在的class.method(className：lineNumber)] 换行 ### [Level: 5个字符的等级名称] - Msg: 输出信息
+     * 换行
      */
     private String logCatPattern = "[Class: %c.%M(%F:%L)] %n[Level: %-5p] - Msg: %m%n";
+
     private String fileName = "android-log4j.log";
     private int maxBackupSize = 5;
     private long maxFileSize = 1024 * 1024 * 5L;
@@ -54,8 +48,7 @@ public class LogConfig {
     private boolean resetConfiguration = true;
     private boolean internalDebugging = false;
 
-    public LogConfig() {
-    }
+    public LogConfig() {}
 
     public LogConfig(String fileName) {
         setFileName(fileName);
@@ -72,7 +65,12 @@ public class LogConfig {
         setFilePattern(filePattern);
     }
 
-    public LogConfig(String fileName, int maxBackupSize, long maxFileSize, String filePattern, Level rootLevel) {
+    public LogConfig(
+            String fileName,
+            int maxBackupSize,
+            long maxFileSize,
+            String filePattern,
+            Level rootLevel) {
         this(fileName, rootLevel, filePattern);
         setMaxBackupSize(maxBackupSize);
         setMaxFileSize(maxFileSize);

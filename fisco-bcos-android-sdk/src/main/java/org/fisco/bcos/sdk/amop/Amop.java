@@ -15,14 +15,13 @@
 
 package org.fisco.bcos.sdk.amop;
 
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import org.fisco.bcos.sdk.amop.topic.TopicManager;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
-
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * AMOP module interface.
@@ -34,7 +33,7 @@ public interface Amop {
      * Create a Amop object.
      *
      * @param channel the channel to send/receive message
-     * @param config  the config object
+     * @param config the config object
      * @return Amop instance
      */
     static Amop build(Channel channel, ConfigOption config) {
@@ -55,16 +54,16 @@ public interface Amop {
      * Subscribe a normal topic.
      *
      * @param topicName the topic name
-     * @param callback  callback is called when receive a msg relate to this topic
+     * @param callback callback is called when receive a msg relate to this topic
      */
     void subscribeTopic(String topicName, AmopCallback callback);
 
     /**
      * Subscribe a private topic which need verify.
      *
-     * @param topicName      the topic name
+     * @param topicName the topic name
      * @param privateKeyTool the private key you used to prove your identity.
-     * @param callback       callback is called when receive a msg relate to this topic
+     * @param callback callback is called when receive a msg relate to this topic
      */
     void subscribePrivateTopics(String topicName, KeyTool privateKeyTool, AmopCallback callback);
 
@@ -74,7 +73,7 @@ public interface Amop {
      * Config a topic which is need verification, after that user can send message to verified
      * subscriber.
      *
-     * @param topicName      the topic name
+     * @param topicName the topic name
      * @param publicKeyTools the public keys of the target organizations that you want to
      */
     void publishPrivateTopic(String topicName, List<KeyTool> publicKeyTools);
@@ -91,7 +90,7 @@ public interface Amop {
     /**
      * Send amop msg
      *
-     * @param content  the sent message
+     * @param content the sent message
      * @param callback the callback that will be called when receive the AMOP response
      */
     void sendAmopMsg(AmopMsgOut content, AmopResponseCallback callback);
@@ -117,14 +116,10 @@ public interface Amop {
      */
     void setCallback(AmopCallback cb);
 
-    /**
-     * Start.
-     */
+    /** Start. */
     void start();
 
-    /**
-     * Stop.
-     */
+    /** Stop. */
     void stop();
 
     TopicManager getTopicManager();

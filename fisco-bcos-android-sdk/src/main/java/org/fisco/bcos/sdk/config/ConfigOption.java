@@ -16,7 +16,6 @@
 package org.fisco.bcos.sdk.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 import org.fisco.bcos.sdk.config.model.AccountConfig;
 import org.fisco.bcos.sdk.config.model.AmopConfig;
@@ -40,9 +39,7 @@ public class ConfigOption {
     private ThreadPoolConfig threadPoolConfig;
     private ConfigProperty configProperty;
 
-    public ConfigOption() {
-
-    }
+    public ConfigOption() {}
 
     public ConfigOption(ConfigProperty configProperty) throws ConfigException {
         this(configProperty, CryptoType.ECDSA_TYPE);

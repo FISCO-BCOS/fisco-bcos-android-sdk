@@ -15,19 +15,16 @@
 
 package org.fisco.bcos.sdk.eventsub;
 
-import org.fisco.bcos.sdk.model.Message;
-
-import java.io.UnsupportedEncodingException;
-
 import io.netty.buffer.ByteBuf;
+import java.io.UnsupportedEncodingException;
+import org.fisco.bcos.sdk.model.Message;
 
 public class EventMsg extends Message {
 
     private static final long serialVersionUID = -7276897518418560354L;
     private String topic;
 
-    public EventMsg() {
-    }
+    public EventMsg() {}
 
     public EventMsg(Message msg) {
         length = msg.getLength();

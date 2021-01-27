@@ -15,15 +15,6 @@
 
 package org.fisco.bcos.sdk.amop.topic;
 
-import org.fisco.bcos.sdk.amop.AmopCallback;
-import org.fisco.bcos.sdk.amop.AmopMsgOut;
-import org.fisco.bcos.sdk.crypto.CryptoSuite;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
-import org.fisco.bcos.sdk.model.CryptoType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,6 +23,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.fisco.bcos.sdk.amop.AmopCallback;
+import org.fisco.bcos.sdk.amop.AmopMsgOut;
+import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
+import org.fisco.bcos.sdk.model.CryptoType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TopicManager {
     public static final String verifyChannelPrefix = "#!$VerifyChannel_";

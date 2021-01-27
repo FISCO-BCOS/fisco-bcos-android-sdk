@@ -15,7 +15,7 @@ package org.fisco.bcos.sdk.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.Map;
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerInterface;
 import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
@@ -24,8 +24,6 @@ import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 public class JsonRpcServiceForProxy extends JsonRpcService {
 
@@ -36,9 +34,11 @@ public class JsonRpcServiceForProxy extends JsonRpcService {
         this.networkHandle = networkHandle;
     }
 
-    public <T extends JsonRpcResponse> NetworkResponse<T> sendRequestToGroupByProxy(JsonRpcRequest request, Class<T> responseType) {
+    public <T extends JsonRpcResponse> NetworkResponse<T> sendRequestToGroupByProxy(
+            JsonRpcRequest request, Class<T> responseType) {
         try {
-            String requestBodyJsonStr = ObjectMapperFactory.getObjectMapper().writeValueAsString(request);
+            String requestBodyJsonStr =
+                    ObjectMapperFactory.getObjectMapper().writeValueAsString(request);
             String responseBodyJsonStr = networkHandle.onRPCRequest(requestBodyJsonStr);
             return parseNetworkResponse(request, responseBodyJsonStr, responseType);
         } catch (JsonProcessingException e) {
@@ -47,7 +47,8 @@ public class JsonRpcServiceForProxy extends JsonRpcService {
         return null;
     }
 
-    private <T extends JsonRpcResponse> NetworkResponse<T> parseNetworkResponse(JsonRpcRequest request, String responseStr, Class<T> responseType) {
+    private <T extends JsonRpcResponse> NetworkResponse<T> parseNetworkResponse(
+            JsonRpcRequest request, String responseStr, Class<T> responseType) {
         int code = NetworkResponseCode.SuccessCode;
         String message = NetworkResponseCode.SuccessMessage;
         T entity = null;
@@ -58,12 +59,22 @@ public class JsonRpcServiceForProxy extends JsonRpcService {
             message = (String) responseMap.get(NetworkResponseCode.MESSAGE);
             if (code == NetworkResponseCode.SuccessCode) {
                 Map dataMap = (Map) responseMap.get(NetworkResponseCode.DATA);
-                entity = objectMapper.readValue(objectMapper.writeValueAsString(dataMap), responseType);
+                entity =
+                        objectMapper.readValue(
+                                objectMapper.writeValueAsString(dataMap), responseType);
             } else {
-                logger.error("parseNetworkResponse failed for request " + request.getMethod() + ", error info: " + message);
+                logger.error(
+                        "parseNetworkResponse failed for request "
+                                + request.getMethod()
+                                + ", error info: "
+                                + message);
             }
         } catch (Exception e) {
-            logger.error("parseNetworkResponse failed for request " + request.getMethod() + ", exception info: " + e.getMessage());
+            logger.error(
+                    "parseNetworkResponse failed for request "
+                            + request.getMethod()
+                            + ", exception info: "
+                            + e.getMessage());
         }
 
         return new NetworkResponse(code, message, entity);

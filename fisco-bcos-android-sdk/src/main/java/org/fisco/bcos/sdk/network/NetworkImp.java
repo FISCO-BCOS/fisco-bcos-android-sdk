@@ -15,19 +15,17 @@
 
 package org.fisco.bcos.sdk.network;
 
+import io.netty.channel.ChannelHandlerContext;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.fisco.bcos.sdk.model.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * An implementation of Network
@@ -60,10 +58,10 @@ public class NetworkImp implements Network {
     public void broadcast(Message out) {
         Map<String, ChannelHandlerContext> conns = connManager.getAvailableConnections();
         /*conns.forEach(
-                (peer, ctx) -> {
-                    ctx.writeAndFlush(out);
-                    logger.trace("send message to  {} success ", peer);
-                });*/
+        (peer, ctx) -> {
+            ctx.writeAndFlush(out);
+            logger.trace("send message to  {} success ", peer);
+        });*/
         for (Map.Entry<String, ChannelHandlerContext> entry : conns.entrySet()) {
             String peer = entry.getKey();
             ChannelHandlerContext ctx = entry.getValue();

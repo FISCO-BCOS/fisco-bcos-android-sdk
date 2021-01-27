@@ -17,9 +17,7 @@ package org.fisco.bcos.sdk.client.protocol.response;
 
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-/**
- * getSystemConfigByKey
- */
+/** getSystemConfigByKey */
 public class SystemConfig extends JsonRpcResponse<String> {
     public String getSystemConfig() {
         return getResult();

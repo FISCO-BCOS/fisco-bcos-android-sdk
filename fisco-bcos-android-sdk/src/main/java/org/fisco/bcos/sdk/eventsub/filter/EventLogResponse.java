@@ -15,9 +15,8 @@
 
 package org.fisco.bcos.sdk.eventsub.filter;
 
-import org.fisco.bcos.sdk.model.EventLog;
-
 import java.util.List;
+import org.fisco.bcos.sdk.model.EventLog;
 
 public class EventLogResponse {
     private int result;

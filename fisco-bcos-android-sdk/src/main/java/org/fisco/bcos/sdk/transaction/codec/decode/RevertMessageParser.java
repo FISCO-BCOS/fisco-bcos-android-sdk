@@ -24,6 +24,9 @@ contract Revert {
 "c703cb12": "Error(string)" // SM Method
 */
 
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.FunctionReturnDecoder;
 import org.fisco.bcos.sdk.abi.TypeReference;
 import org.fisco.bcos.sdk.abi.datatypes.Function;
@@ -36,10 +39,6 @@ import org.fisco.bcos.sdk.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.List;
-
 public class RevertMessageParser {
 
     public static final String RevertMethod = "08c379a0";
@@ -51,8 +50,7 @@ public class RevertMessageParser {
             new Function(
                     "Error",
                     Collections.<Type>emptyList(),
-                    Collections.singletonList(new TypeReference<Utf8String>() {
-                    }));
+                    Collections.singletonList(new TypeReference<Utf8String>() {}));
     private static final Logger logger = LoggerFactory.getLogger(RevertMessageParser.class);
 
     /**

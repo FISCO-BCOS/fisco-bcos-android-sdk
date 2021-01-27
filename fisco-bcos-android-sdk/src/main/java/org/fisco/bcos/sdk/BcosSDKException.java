@@ -13,9 +13,7 @@
  */
 package org.fisco.bcos.sdk;
 
-/**
- * Exceptioned when calling BcosSDK.
- */
+/** Exceptioned when calling BcosSDK. */
 public class BcosSDKException extends RuntimeException {
     public BcosSDKException(String message) {
         super(message);

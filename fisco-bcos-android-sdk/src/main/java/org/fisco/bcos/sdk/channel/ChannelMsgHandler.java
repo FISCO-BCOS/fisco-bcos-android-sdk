@@ -17,7 +17,13 @@ package org.fisco.bcos.sdk.channel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.AttributeKey;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.fisco.bcos.sdk.channel.model.ChannelHandshake;
 import org.fisco.bcos.sdk.channel.model.ChannelMessageError;
 import org.fisco.bcos.sdk.channel.model.ChannelPrococolExceiption;
@@ -35,15 +41,6 @@ import org.fisco.bcos.sdk.utils.ChannelUtils;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.AttributeKey;
 
 /**
  * An implementation of channel.

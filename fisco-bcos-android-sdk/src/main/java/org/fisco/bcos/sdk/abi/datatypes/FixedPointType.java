@@ -2,9 +2,7 @@ package org.fisco.bcos.sdk.abi.datatypes;
 
 import java.math.BigInteger;
 
-/**
- * Common fixed-point type properties.
- */
+/** Common fixed-point type properties. */
 public abstract class FixedPointType extends NumericType {
 
     static final int DEFAULT_BIT_LENGTH = MAX_BIT_LENGTH >> 1;

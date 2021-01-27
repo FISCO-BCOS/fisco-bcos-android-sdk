@@ -13,6 +13,7 @@
  */
 package org.fisco.bcos.sdk;
 
+import java.util.concurrent.ConcurrentHashMap;
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerImp;
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerInterface;
 import org.fisco.bcos.sdk.client.Client;
@@ -21,8 +22,6 @@ import org.fisco.bcos.sdk.config.model.ProxyConfig;
 import org.fisco.bcos.sdk.model.ConstantConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.ConcurrentHashMap;
 
 public class BcosSDKForProxy {
 
@@ -67,11 +66,9 @@ public class BcosSDKForProxy {
         checkGroupId(groupId);
         if (!groupToClient.containsKey(groupId)) {
             // create a new client for the specified group
-            JsonRpcServiceForProxy jsonRpcServiceForProxy = new JsonRpcServiceForProxy(this.networkHandler);
-            Client client =
-                    Client.build(groupId,
-                            jsonRpcServiceForProxy,
-                            this.proxyConfig);
+            JsonRpcServiceForProxy jsonRpcServiceForProxy =
+                    new JsonRpcServiceForProxy(this.networkHandler);
+            Client client = Client.build(groupId, jsonRpcServiceForProxy, this.proxyConfig);
             if (client == null) {
                 throw new BcosSDKException(
                         "create client for group "
