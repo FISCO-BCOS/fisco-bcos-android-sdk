@@ -14,6 +14,7 @@
  */
 package org.fisco.bcos.sdk.transaction.manager;
 
+import java.math.BigInteger;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
@@ -30,8 +31,6 @@ import org.fisco.bcos.sdk.transaction.model.gas.DefaultGasProvider;
 import org.fisco.bcos.sdk.transaction.model.po.RawTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigInteger;
 
 public class TransactionProcessor implements TransactionProcessorInterface {
     protected static Logger log = LoggerFactory.getLogger(TransactionProcessor.class);

@@ -1,13 +1,12 @@
 package org.fisco.bcos.sdk.test.abi;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.model.EventLog;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ABIEventTest {
     private static final String abi =

@@ -1,5 +1,8 @@
 package org.fisco.bcos.sdk.test.abi;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.Utf8String;
 import org.fisco.bcos.sdk.abi.datatypes.generated.Uint256;
 import org.fisco.bcos.sdk.abi.wrapper.ABICodecJsonWrapper;
@@ -9,10 +12,6 @@ import org.fisco.bcos.sdk.abi.wrapper.ABIObjectFactory;
 import org.fisco.bcos.sdk.abi.wrapper.ContractABIDefinition;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 public class TableTest {
     /*

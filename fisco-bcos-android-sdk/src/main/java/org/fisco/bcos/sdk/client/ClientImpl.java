@@ -13,6 +13,10 @@
  */
 package org.fisco.bcos.sdk.client;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Semaphore;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.client.protocol.request.GenerateGroupParam;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
@@ -58,11 +62,6 @@ import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.service.GroupManagerService;
 import org.fisco.bcos.sdk.utils.Numeric;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Semaphore;
-
 public class ClientImpl implements Client {
     protected JsonRpcService jsonRpcService;
     protected Integer groupId;
@@ -97,8 +96,7 @@ public class ClientImpl implements Client {
         this.groupManagerService = null;
     }
 
-    public ClientImpl() {
-    }
+    public ClientImpl() {}
 
     @Override
     public GroupManagerService getGroupManagerService() {
@@ -1000,8 +998,7 @@ public class ClientImpl implements Client {
     }
 
     @Override
-    public void start() {
-    }
+    public void start() {}
 
     @Override
     public void stop() {

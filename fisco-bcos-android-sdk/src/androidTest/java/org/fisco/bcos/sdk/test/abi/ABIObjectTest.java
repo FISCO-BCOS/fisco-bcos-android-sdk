@@ -1,5 +1,9 @@
 package org.fisco.bcos.sdk.test.abi;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.math.BigInteger;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.abi.datatypes.Bool;
 import org.fisco.bcos.sdk.abi.datatypes.Bytes;
@@ -17,11 +21,6 @@ import org.fisco.bcos.sdk.abi.wrapper.ABIObject.ObjectType;
 import org.fisco.bcos.sdk.abi.wrapper.ABIObjectFactory;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.math.BigInteger;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ABIObjectTest {
 
@@ -497,10 +496,10 @@ public class ABIObjectTest {
 
         assertThat(
                 new ABIObject(
-                        new Uint256(
-                                new BigInteger(
-                                        "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe",
-                                        16)))
+                                new Uint256(
+                                        new BigInteger(
+                                                "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe",
+                                                16)))
                         .encode(),
                 is("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"));
     }
@@ -536,12 +535,12 @@ public class ABIObjectTest {
 
     @Test
     public void testStaticBytesEncode() {
-        Bytes staticBytes = new Bytes6(new byte[]{0, 1, 2, 3, 4, 5});
+        Bytes staticBytes = new Bytes6(new byte[] {0, 1, 2, 3, 4, 5});
         assertThat(
                 new ABIObject(staticBytes).encode(),
                 is("0001020304050000000000000000000000000000000000000000000000000000"));
 
-        Bytes empty = new Bytes1(new byte[]{0});
+        Bytes empty = new Bytes1(new byte[] {0});
         assertThat(
                 new ABIObject(empty).encode(),
                 is("0000000000000000000000000000000000000000000000000000000000000000"));
@@ -554,14 +553,14 @@ public class ABIObjectTest {
 
     @Test
     public void testDynamicBytesEncode() {
-        DynamicBytes dynamicBytes = new DynamicBytes(new byte[]{0, 1, 2, 3, 4, 5});
+        DynamicBytes dynamicBytes = new DynamicBytes(new byte[] {0, 1, 2, 3, 4, 5});
         assertThat(
                 new ABIObject(dynamicBytes).encode(),
                 is(
                         "0000000000000000000000000000000000000000000000000000000000000006"
                                 + "0001020304050000000000000000000000000000000000000000000000000000"));
 
-        DynamicBytes empty = new DynamicBytes(new byte[]{0});
+        DynamicBytes empty = new DynamicBytes(new byte[] {0});
         assertThat(
                 new ABIObject(empty).encode(),
                 is(
@@ -578,12 +577,12 @@ public class ABIObjectTest {
         DynamicBytes loremIpsum =
                 new DynamicBytes(
                         ("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-                                + "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim "
-                                + "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex "
-                                + "ea commodo consequat. Duis aute irure dolor in reprehenderit in "
-                                + "voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur "
-                                + "sint occaecat cupidatat non proident, sunt in culpa qui officia "
-                                + "deserunt mollit anim id est laborum.")
+                                        + "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim "
+                                        + "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex "
+                                        + "ea commodo consequat. Duis aute irure dolor in reprehenderit in "
+                                        + "voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur "
+                                        + "sint occaecat cupidatat non proident, sunt in culpa qui officia "
+                                        + "deserunt mollit anim id est laborum.")
                                 .getBytes());
         assertThat(
                 new ABIObject(loremIpsum).encode(),

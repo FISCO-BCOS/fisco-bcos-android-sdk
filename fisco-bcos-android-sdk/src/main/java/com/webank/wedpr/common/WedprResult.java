@@ -2,15 +2,11 @@
 
 package com.webank.wedpr.common;
 
-/**
- * Base result class used by WeDPR Java SDK.
- */
+/** Base result class used by WeDPR Java SDK. */
 public class WedprResult {
     public String wedprErrorMessage;
 
-    /**
-     * Checks whether any error occurred.
-     */
+    /** Checks whether any error occurred. */
     public boolean hasError() {
         return wedprErrorMessage != null;
     }

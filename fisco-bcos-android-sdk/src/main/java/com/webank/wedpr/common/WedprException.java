@@ -2,9 +2,7 @@
 
 package com.webank.wedpr.common;
 
-/**
- * Base exception class used by WeDPR Java SDK.
- */
+/** Base exception class used by WeDPR Java SDK. */
 public class WedprException extends Exception {
 
     public WedprException() {

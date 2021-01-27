@@ -13,23 +13,6 @@
  */
 package org.fisco.bcos.sdk.crypto.keystore;
 
-import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
-import org.fisco.bcos.sdk.utils.Numeric;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.spongycastle.crypto.params.ECDomainParameters;
-import org.spongycastle.crypto.params.ECPrivateKeyParameters;
-import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
-import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
-import org.spongycastle.jcajce.provider.asymmetric.util.EC5Util;
-import org.spongycastle.jce.ECNamedCurveTable;
-import org.spongycastle.jce.provider.BouncyCastleProvider;
-import org.spongycastle.jce.spec.ECNamedCurveParameterSpec;
-import org.spongycastle.jce.spec.ECNamedCurveSpec;
-import org.spongycastle.jce.spec.ECPrivateKeySpec;
-import org.spongycastle.util.io.pem.PemObject;
-import org.spongycastle.util.io.pem.PemWriter;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -53,6 +36,22 @@ import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Collections;
+import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
+import org.fisco.bcos.sdk.utils.Numeric;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.spongycastle.crypto.params.ECDomainParameters;
+import org.spongycastle.crypto.params.ECPrivateKeyParameters;
+import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
+import org.spongycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
+import org.spongycastle.jcajce.provider.asymmetric.util.EC5Util;
+import org.spongycastle.jce.ECNamedCurveTable;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.jce.spec.ECNamedCurveParameterSpec;
+import org.spongycastle.jce.spec.ECNamedCurveSpec;
+import org.spongycastle.jce.spec.ECPrivateKeySpec;
+import org.spongycastle.util.io.pem.PemObject;
+import org.spongycastle.util.io.pem.PemWriter;
 
 public abstract class KeyTool {
     protected static Logger logger = LoggerFactory.getLogger(KeyTool.class);
@@ -66,7 +65,7 @@ public abstract class KeyTool {
      * constructor for the P12: with password
      *
      * @param keyStoreFile the path of the keystore file
-     * @param password     password to read the keystore file
+     * @param password password to read the keystore file
      */
     public KeyTool(final String keyStoreFile, final String password) {
         this.keyStoreFile = keyStoreFile;
@@ -88,7 +87,7 @@ public abstract class KeyTool {
      * constructor for the P12: with password and key file input stream
      *
      * @param keyStoreFileInputStream the input stream of the keystore file
-     * @param password                password to read the keystore file
+     * @param password password to read the keystore file
      */
     public KeyTool(InputStream keyStoreFileInputStream, final String password) {
         this.keyStoreFile = null;
@@ -126,7 +125,7 @@ public abstract class KeyTool {
      * convert hexed string into PrivateKey type storePublicKeyWithPem
      *
      * @param hexedPrivateKey the hexed privateKey
-     * @param curveName       the curve name
+     * @param curveName the curve name
      * @return the converted privateKey
      * @throws LoadKeyStoreException convert exception, return exception information
      */
@@ -329,9 +328,7 @@ public abstract class KeyTool {
 
     protected abstract void load(InputStream in);
 
-    /**
-     * load information from the keyStoreFile
-     */
+    /** load information from the keyStoreFile */
     protected void load() {
         try {
             InputStream keyStoreFileInputStream = new FileInputStream(keyStoreFile);

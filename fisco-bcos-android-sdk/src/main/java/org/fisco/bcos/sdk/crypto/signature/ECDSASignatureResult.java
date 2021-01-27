@@ -13,15 +13,14 @@
  */
 package org.fisco.bcos.sdk.crypto.signature;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.fisco.bcos.sdk.crypto.exceptions.SignatureException;
 import org.fisco.bcos.sdk.rlp.RlpString;
 import org.fisco.bcos.sdk.rlp.RlpType;
 import org.fisco.bcos.sdk.utils.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ECDSASignatureResult extends SignatureResult {
     protected static Logger logger = LoggerFactory.getLogger(SignatureResult.class);

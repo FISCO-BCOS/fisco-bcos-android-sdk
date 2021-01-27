@@ -16,14 +16,12 @@ package org.fisco.bcos.sdk.transaction.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.sdk.abi.wrapper.ABIObject;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * TransactionResponse @Description: TransactionResponse
@@ -44,7 +42,7 @@ public class TransactionResponse extends CommonResponse {
     }
 
     /**
-     * @param returnCode    the return code of the receipt
+     * @param returnCode the return code of the receipt
      * @param returnMessage the return message of the receipt
      */
     public TransactionResponse(int returnCode, String returnMessage) {
@@ -56,44 +54,32 @@ public class TransactionResponse extends CommonResponse {
         this.transactionReceipt = tr;
     }
 
-    /**
-     * @return the bcosTransactionReceipt
-     */
+    /** @return the bcosTransactionReceipt */
     public TransactionReceipt getTransactionReceipt() {
         return transactionReceipt;
     }
 
-    /**
-     * @param transactionReceipt the transactionReceipt to set
-     */
+    /** @param transactionReceipt the transactionReceipt to set */
     public void setTransactionReceipt(TransactionReceipt transactionReceipt) {
         this.transactionReceipt = transactionReceipt;
     }
 
-    /**
-     * @return the contractAddress
-     */
+    /** @return the contractAddress */
     public String getContractAddress() {
         return contractAddress;
     }
 
-    /**
-     * @param contractAddress the contractAddress to set
-     */
+    /** @param contractAddress the contractAddress to set */
     public void setContractAddress(String contractAddress) {
         this.contractAddress = contractAddress;
     }
 
-    /**
-     * @return the values
-     */
+    /** @return the values */
     public String getValues() {
         return values;
     }
 
-    /**
-     * @param values the values to set
-     */
+    /** @param values the values to set */
     public void setValues(String values) {
         this.values = values;
     }
@@ -102,20 +88,15 @@ public class TransactionResponse extends CommonResponse {
         if (StringUtils.isEmpty(values)) {
             return null;
         }
-        return JsonUtils.fromJson(values, new TypeReference<List<Object>>() {
-        });
+        return JsonUtils.fromJson(values, new TypeReference<List<Object>>() {});
     }
 
-    /**
-     * @return the events
-     */
+    /** @return the events */
     public String getEvents() {
         return events;
     }
 
-    /**
-     * @param events the events to set
-     */
+    /** @param events the events to set */
     public void setEvents(String events) {
         this.events = events;
     }
@@ -125,20 +106,15 @@ public class TransactionResponse extends CommonResponse {
         if (StringUtils.isEmpty(events)) {
             return null;
         }
-        return JsonUtils.fromJson(events, new TypeReference<Map<String, List<List<Object>>>>() {
-        });
+        return JsonUtils.fromJson(events, new TypeReference<Map<String, List<List<Object>>>>() {});
     }
 
-    /**
-     * @return the receiptMessages
-     */
+    /** @return the receiptMessages */
     public String getReceiptMessages() {
         return receiptMessages;
     }
 
-    /**
-     * @param receiptMessages the receiptMessages to set
-     */
+    /** @param receiptMessages the receiptMessages to set */
     public void setReceiptMessages(String receiptMessages) {
         this.receiptMessages = receiptMessages;
     }

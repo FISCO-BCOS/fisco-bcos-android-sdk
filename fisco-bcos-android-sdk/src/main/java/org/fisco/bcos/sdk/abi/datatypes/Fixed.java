@@ -2,9 +2,7 @@ package org.fisco.bcos.sdk.abi.datatypes;
 
 import java.math.BigInteger;
 
-/**
- * Signed fixed type.
- */
+/** Signed fixed type. */
 public class Fixed extends FixedPointType {
 
     public static final String TYPE_NAME = "fixed";

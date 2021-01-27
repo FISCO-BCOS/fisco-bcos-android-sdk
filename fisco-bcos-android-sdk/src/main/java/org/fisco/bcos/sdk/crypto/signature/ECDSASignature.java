@@ -14,10 +14,8 @@
 package org.fisco.bcos.sdk.crypto.signature;
 
 import android.util.Base64;
-
 import com.webank.wedpr.crypto.CryptoResult;
 import com.webank.wedpr.crypto.NativeInterface;
-
 import org.fisco.bcos.sdk.crypto.exceptions.SignatureException;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.utils.Hex;
@@ -48,10 +46,10 @@ public class ECDSASignature implements Signature {
     public String signWithStringSignature(final String message, final CryptoKeyPair keyPair) {
         String inputMessage = Numeric.cleanHexPrefix(message);
         checkInputMessage(inputMessage);
-        String input1 = Base64.encodeToString(Hex.decode(keyPair.getHexPrivateKey()), Base64.NO_WRAP);
+        String input1 =
+                Base64.encodeToString(Hex.decode(keyPair.getHexPrivateKey()), Base64.NO_WRAP);
         String input2 = Base64.encodeToString(Hex.decode(inputMessage), Base64.NO_WRAP);
-        CryptoResult signatureResult =
-                NativeInterface.secp256k1Sign(input1, input2);
+        CryptoResult signatureResult = NativeInterface.secp256k1Sign(input1, input2);
         // call secp256k1Sign failed
         if (signatureResult.wedprErrorMessage != null
                 && !signatureResult.wedprErrorMessage.isEmpty()) {
@@ -76,8 +74,7 @@ public class ECDSASignature implements Signature {
         // System.out.println("input1: " + input1);
         // System.out.println("input2: " + input2);
         // System.out.println("input3: " + input3);
-        CryptoResult verifyResult =
-                NativeInterface.secp256k1Verify(input1, input2, input3);
+        CryptoResult verifyResult = NativeInterface.secp256k1Verify(input1, input2, input3);
         // call secp256k1verify failed
         if (verifyResult.wedprErrorMessage != null && !verifyResult.wedprErrorMessage.isEmpty()) {
             throw new SignatureException(

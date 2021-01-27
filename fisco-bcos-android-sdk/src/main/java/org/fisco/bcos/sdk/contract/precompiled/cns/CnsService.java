@@ -16,7 +16,8 @@ package org.fisco.bcos.sdk.contract.precompiled.cns;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import java.io.IOException;
+import java.util.List;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledAddress;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledVersionCheck;
@@ -25,9 +26,6 @@ import org.fisco.bcos.sdk.model.RetCode;
 import org.fisco.bcos.sdk.transaction.codec.decode.ReceiptParser;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
-
-import java.io.IOException;
-import java.util.List;
 
 public class CnsService {
     private final CNSPrecompiled cnsPrecompiled;
@@ -50,8 +48,7 @@ public class CnsService {
         try {
             String cnsInfo = cnsPrecompiled.selectByName(contractName);
             return ObjectMapperFactory.getObjectMapper()
-                    .readValue(cnsInfo, new TypeReference<List<CnsInfo>>() {
-                    });
+                    .readValue(cnsInfo, new TypeReference<List<CnsInfo>>() {});
         } catch (JsonProcessingException e) {
             throw new ContractException(
                     "CnsService: failed to call selectByName interface, error message: "
@@ -70,8 +67,7 @@ public class CnsService {
         try {
             cnsInfo = cnsPrecompiled.selectByNameAndVersion(contractName, contractVersion);
             return ObjectMapperFactory.getObjectMapper()
-                    .readValue(cnsInfo, new TypeReference<List<CnsInfo>>() {
-                    });
+                    .readValue(cnsInfo, new TypeReference<List<CnsInfo>>() {});
         } catch (JsonProcessingException e) {
             throw new ContractException(
                     "CnsService: failed to call selectByNameAndVersion interface, error message: "

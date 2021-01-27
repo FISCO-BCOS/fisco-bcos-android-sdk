@@ -16,12 +16,10 @@
 package org.fisco.bcos.sdk.config;
 
 import com.moandjiezana.toml.Toml;
-
+import java.io.File;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 import org.fisco.bcos.sdk.config.model.ConfigProperty;
 import org.fisco.bcos.sdk.model.CryptoType;
-
-import java.io.File;
 
 /**
  * Config is to load config file and verify.
@@ -36,7 +34,7 @@ public class Config {
 
     /**
      * @param tomlConfigFile the toml configuration file path
-     * @param cryptoType     the type of crypto function
+     * @param cryptoType the type of crypto function
      * @return ConfigOption the configuration object
      * @throws ConfigException the configuration exception
      */

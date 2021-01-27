@@ -1,10 +1,9 @@
 package org.fisco.bcos.sdk.transaction.model.bo;
 
-import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
 
 public class AbiInfo {
 
@@ -14,7 +13,7 @@ public class AbiInfo {
     /**
      * create the AbiInfo object
      *
-     * @param contractFuncAbis     maps between the contract name and the contract abi
+     * @param contractFuncAbis maps between the contract name and the contract abi
      * @param contractConstructAbi maps between the contract name and the constructor abi
      */
     public AbiInfo(

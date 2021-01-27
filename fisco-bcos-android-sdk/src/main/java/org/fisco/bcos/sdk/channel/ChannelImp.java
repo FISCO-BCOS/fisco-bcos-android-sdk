@@ -16,7 +16,20 @@
 package org.fisco.bcos.sdk.channel;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+import io.netty.channel.ChannelException;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.HashedWheelTimer;
+import io.netty.util.Timeout;
+import io.netty.util.Timer;
+import io.netty.util.TimerTask;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import org.fisco.bcos.sdk.channel.model.ChannelMessageError;
 import org.fisco.bcos.sdk.channel.model.ChannelPrococolExceiption;
 import org.fisco.bcos.sdk.channel.model.HeartBeatParser;
@@ -37,22 +50,6 @@ import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-
-import io.netty.channel.ChannelException;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.HashedWheelTimer;
-import io.netty.util.Timeout;
-import io.netty.util.Timer;
-import io.netty.util.TimerTask;
 
 /**
  * An implementation of channel.
@@ -200,12 +197,12 @@ public class ChannelImp implements Channel {
     @Override
     public void broadcast(Message out) {
         /*msgHandler
-                .getAvailablePeer()
-                .forEach(
-                        (peer, ctx) -> {
-                            ctx.writeAndFlush(out);
-                            logger.trace("send message to {} success ", peer);
-                        });*/
+        .getAvailablePeer()
+        .forEach(
+                (peer, ctx) -> {
+                    ctx.writeAndFlush(out);
+                    logger.trace("send message to {} success ", peer);
+                });*/
         Map<String, ChannelHandlerContext> ctxs = msgHandler.getAvailablePeer();
         for (Map.Entry<String, ChannelHandlerContext> entry : ctxs.entrySet()) {
             String peer = entry.getKey();
@@ -332,11 +329,11 @@ public class ChannelImp implements Channel {
     public List<String> getAvailablePeer() {
         List<String> peerList = new ArrayList<>();
         /*msgHandler
-                .getAvailablePeer()
-                .forEach(
-                        (peer, ctx) -> {
-                            peerList.add(peer);
-                        });*/
+        .getAvailablePeer()
+        .forEach(
+                (peer, ctx) -> {
+                    peerList.add(peer);
+                });*/
         Map<String, ChannelHandlerContext> ctxs = msgHandler.getAvailablePeer();
         for (Map.Entry<String, ChannelHandlerContext> entry : ctxs.entrySet()) {
             peerList.add(entry.getKey());
@@ -347,12 +344,12 @@ public class ChannelImp implements Channel {
     private void broadcastHeartbeat() {
         try {
             /*msgHandler
-                    .getAvailablePeer()
-                    .forEach(
-                            (peer, ctx) -> {
-                                sendHeartbeatMessage(ctx);
-                                logger.trace("broadcastHeartbeat to {} success ", peer);
-                            });*/
+            .getAvailablePeer()
+            .forEach(
+                    (peer, ctx) -> {
+                        sendHeartbeatMessage(ctx);
+                        logger.trace("broadcastHeartbeat to {} success ", peer);
+                    });*/
             Map<String, ChannelHandlerContext> ctxs = msgHandler.getAvailablePeer();
             for (Map.Entry<String, ChannelHandlerContext> entry : ctxs.entrySet()) {
                 String peer = entry.getKey();

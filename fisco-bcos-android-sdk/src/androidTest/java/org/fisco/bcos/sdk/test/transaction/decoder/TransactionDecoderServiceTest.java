@@ -15,7 +15,10 @@
 package org.fisco.bcos.sdk.test.transaction.decoder;
 
 import com.google.common.collect.Lists;
-
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.model.ConstantConfig;
@@ -29,11 +32,6 @@ import org.fisco.bcos.sdk.transaction.tools.ContractLoader;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * TransactionDecoderServiceTest @Description: TransactionDecoderServiceTest
  *
@@ -41,8 +39,7 @@ import java.util.Map;
  * @data Sep 17, 2020 10:36:56 AM
  */
 public class TransactionDecoderServiceTest {
-    private static final String configFile =
-            "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
+    private static final String configFile = "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
     private static final String abiFile = "/sdcard/javasdk/contract/abi/";
     private static final String binFile = "/sdcard/javasdk/contract/bin/";
     private static final String contractName = "ComplexSol";

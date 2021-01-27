@@ -13,10 +13,9 @@
  */
 package org.fisco.bcos.sdk.transaction.model.exception;
 
+import java.util.Objects;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
-
-import java.util.Objects;
 
 public class ContractException extends Exception {
     private Call.CallOutput responseOutput = null;

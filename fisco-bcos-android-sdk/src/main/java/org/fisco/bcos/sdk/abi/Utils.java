@@ -1,5 +1,11 @@
 package org.fisco.bcos.sdk.abi;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import org.fisco.bcos.sdk.abi.datatypes.DynamicArray;
 import org.fisco.bcos.sdk.abi.datatypes.DynamicBytes;
 import org.fisco.bcos.sdk.abi.datatypes.Fixed;
@@ -10,19 +16,9 @@ import org.fisco.bcos.sdk.abi.datatypes.Ufixed;
 import org.fisco.bcos.sdk.abi.datatypes.Uint;
 import org.fisco.bcos.sdk.abi.datatypes.Utf8String;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-/**
- * Utility functions.
- */
+/** Utility functions. */
 public class Utils {
-    private Utils() {
-    }
+    private Utils() {}
 
     public static <T extends Type> String getTypeName(TypeReference<T> typeReference) {
         return getTypeName(typeReference.getType());
@@ -161,9 +157,9 @@ public class Utils {
     public static List<TypeReference<Type>> convert(List<TypeReference<?>> input) {
         List<TypeReference<Type>> result = new ArrayList<>(input.size());
         /*result.addAll(
-                input.stream()
-                        .map(typeReference -> (TypeReference<Type>) typeReference)
-                        .collect(Collectors.toList()));*/
+        input.stream()
+                .map(typeReference -> (TypeReference<Type>) typeReference)
+                .collect(Collectors.toList()));*/
         List<TypeReference<Type>> ret = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
             ret.add((TypeReference<Type>) input.get(i));

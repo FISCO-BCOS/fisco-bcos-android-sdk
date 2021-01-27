@@ -1,9 +1,8 @@
 package org.fisco.bcos.sdk.transaction.model.po;
 
-import org.fisco.bcos.sdk.utils.Numeric;
-
 import java.io.Serializable;
 import java.math.BigInteger;
+import org.fisco.bcos.sdk.utils.Numeric;
 
 /**
  * Transaction class used for signing transactions locally.<br>

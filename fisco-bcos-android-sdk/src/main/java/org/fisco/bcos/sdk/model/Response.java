@@ -15,9 +15,8 @@
 
 package org.fisco.bcos.sdk.model;
 
-import java.nio.charset.StandardCharsets;
-
 import io.netty.channel.ChannelHandlerContext;
+import java.nio.charset.StandardCharsets;
 
 public class Response {
     private Integer errorCode;

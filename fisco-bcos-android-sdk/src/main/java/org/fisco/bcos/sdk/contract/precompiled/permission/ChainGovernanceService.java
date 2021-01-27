@@ -15,7 +15,9 @@
 package org.fisco.bcos.sdk.contract.precompiled.permission;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledAddress;
@@ -25,10 +27,6 @@ import org.fisco.bcos.sdk.model.PrecompiledRetCode;
 import org.fisco.bcos.sdk.model.RetCode;
 import org.fisco.bcos.sdk.transaction.codec.decode.ReceiptParser;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.List;
 
 public class ChainGovernanceService {
     private final ChainGovernancePrecompiled chainGovernancePrecompiled;

@@ -15,11 +15,10 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
-import org.fisco.bcos.sdk.model.JsonRpcResponse;
-import org.fisco.bcos.sdk.utils.Numeric;
-
 import java.math.BigInteger;
 import java.util.Objects;
+import org.fisco.bcos.sdk.model.JsonRpcResponse;
+import org.fisco.bcos.sdk.utils.Numeric;
 
 /**
  * RPC response of ledger call
@@ -70,8 +69,8 @@ public class Call extends JsonRpcResponse<Call.CallOutput> {
             if (o == null || getClass() != o.getClass()) return false;
             CallOutput that = (CallOutput) o;
             return Objects.equals(
-                    Numeric.decodeQuantity(currentBlockNumber),
-                    Numeric.decodeQuantity(that.currentBlockNumber))
+                            Numeric.decodeQuantity(currentBlockNumber),
+                            Numeric.decodeQuantity(that.currentBlockNumber))
                     && Objects.equals(status, that.status)
                     && Objects.equals(output, that.output);
         }

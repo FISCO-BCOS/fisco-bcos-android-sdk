@@ -14,9 +14,10 @@
 package org.fisco.bcos.sdk.crypto.keypair;
 
 import android.util.Base64;
-
 import com.webank.wedpr.crypto.CryptoResult;
-
+import java.io.File;
+import java.math.BigInteger;
+import java.security.KeyPair;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.crypto.exceptions.KeyPairException;
 import org.fisco.bcos.sdk.crypto.hash.Hash;
@@ -29,10 +30,6 @@ import org.fisco.bcos.sdk.utils.StringUtils;
 import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.math.BigInteger;
-import java.security.KeyPair;
 
 public abstract class CryptoKeyPair {
     public static final int ADDRESS_SIZE = 160;
@@ -66,8 +63,7 @@ public abstract class CryptoKeyPair {
     protected String p12KeyStoreFilePath = "";
     protected String signatureAlgorithm;
 
-    public CryptoKeyPair() {
-    }
+    public CryptoKeyPair() {}
 
     /**
      * init CryptoKeyPair from the keyPair
@@ -87,7 +83,8 @@ public abstract class CryptoKeyPair {
      * @param nativeResult
      */
     CryptoKeyPair(final CryptoResult nativeResult) {
-        this.hexPrivateKey = Hex.toHexString(Base64.decode(nativeResult.privateKey, Base64.NO_WRAP));
+        this.hexPrivateKey =
+                Hex.toHexString(Base64.decode(nativeResult.privateKey, Base64.NO_WRAP));
         this.hexPublicKey = Hex.toHexString(Base64.decode(nativeResult.publicKey, Base64.NO_WRAP));
     }
 
@@ -95,7 +92,7 @@ public abstract class CryptoKeyPair {
         String publicKeyNoPrefix = Numeric.cleanHexPrefix(publicKeyStr);
         if (publicKeyNoPrefix.startsWith(UNCOMPRESSED_PUBLICKEY_FLAG_STR)
                 && publicKeyNoPrefix.length()
-                == PUBLIC_KEY_LENGTH_IN_HEX + UNCOMPRESSED_PUBLICKEY_FLAG_STR.length()) {
+                        == PUBLIC_KEY_LENGTH_IN_HEX + UNCOMPRESSED_PUBLICKEY_FLAG_STR.length()) {
             publicKeyNoPrefix =
                     publicKeyNoPrefix.substring(UNCOMPRESSED_PUBLICKEY_FLAG_STR.length());
         }
@@ -111,7 +108,7 @@ public abstract class CryptoKeyPair {
     /**
      * calculate the address according to the given public key
      *
-     * @param publicKey     the Hexed publicKey that need to calculate address
+     * @param publicKey the Hexed publicKey that need to calculate address
      * @param hashInterface the hash implement, support SM3Hash and Keccak256 now
      * @return the account address
      */

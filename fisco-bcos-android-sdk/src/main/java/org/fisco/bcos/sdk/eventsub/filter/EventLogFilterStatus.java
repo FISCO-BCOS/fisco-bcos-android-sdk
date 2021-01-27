@@ -25,8 +25,7 @@ public enum EventLogFilterStatus {
 
     private int status;
 
-    private EventLogFilterStatus(int i) {
-    }
+    private EventLogFilterStatus(int i) {}
 
     public int getStatus() {
         return status;

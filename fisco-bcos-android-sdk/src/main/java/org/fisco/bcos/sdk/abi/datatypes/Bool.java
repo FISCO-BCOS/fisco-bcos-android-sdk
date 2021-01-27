@@ -1,8 +1,6 @@
 package org.fisco.bcos.sdk.abi.datatypes;
 
-/**
- * Boolean type.
- */
+/** Boolean type. */
 public class Bool implements Type<Boolean> {
 
     public static final String TYPE_NAME = "bool";

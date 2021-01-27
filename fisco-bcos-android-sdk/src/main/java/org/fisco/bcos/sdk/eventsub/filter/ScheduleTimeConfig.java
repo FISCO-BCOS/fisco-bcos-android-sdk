@@ -15,9 +15,7 @@
 
 package org.fisco.bcos.sdk.eventsub.filter;
 
-/**
- * Resend task time cofing
- */
+/** Resend task time cofing */
 public class ScheduleTimeConfig {
     public static long resendFrequency = (long) 10000;
 }

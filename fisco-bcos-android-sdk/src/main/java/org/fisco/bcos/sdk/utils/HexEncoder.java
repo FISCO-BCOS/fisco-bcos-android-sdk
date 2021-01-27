@@ -16,15 +16,25 @@ package org.fisco.bcos.sdk.utils;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * A streaming Hex encoder.
- */
+/** A streaming Hex encoder. */
 public class HexEncoder {
     protected final byte[] encodingTable = {
-            (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
-            (byte) '7',
-            (byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
-            (byte) 'f'
+        (byte) '0',
+        (byte) '1',
+        (byte) '2',
+        (byte) '3',
+        (byte) '4',
+        (byte) '5',
+        (byte) '6',
+        (byte) '7',
+        (byte) '8',
+        (byte) '9',
+        (byte) 'a',
+        (byte) 'b',
+        (byte) 'c',
+        (byte) 'd',
+        (byte) 'e',
+        (byte) 'f'
     };
 
     /*
@@ -60,10 +70,10 @@ public class HexEncoder {
     /**
      * encode the input data producing a Hex output stream.
      *
-     * @param data   the input byte array
-     * @param off    the offset of the data to be converted
+     * @param data the input byte array
+     * @param off the offset of the data to be converted
      * @param length the length of the data to be converted
-     * @param out    the output stream
+     * @param out the output stream
      * @return the number of bytes produced.
      * @throws IOException the I/O exception
      */
@@ -82,10 +92,10 @@ public class HexEncoder {
      * decode the Hex encoded byte data writing it to the given output stream, whitespace characters
      * will be ignored.
      *
-     * @param data   the input byte array
-     * @param off    the offset of the data to be converted
+     * @param data the input byte array
+     * @param off the offset of the data to be converted
      * @param length the length of the data to be converted
-     * @param out    the output stream
+     * @param out the output stream
      * @return the number of bytes produced.
      * @throws IOException the I/O exception
      */
@@ -134,7 +144,7 @@ public class HexEncoder {
      * characters will be ignored.
      *
      * @param data the input byte array
-     * @param out  the output stream
+     * @param out the output stream
      * @return the number of bytes produced.
      * @throws IOException the I/O exception
      */

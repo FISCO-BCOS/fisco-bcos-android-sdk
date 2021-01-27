@@ -15,11 +15,9 @@
 package org.fisco.bcos.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.fisco.bcos.sdk.utils.Numeric;
-
 import java.math.BigInteger;
 import java.util.List;
+import org.fisco.bcos.sdk.utils.Numeric;
 
 public class EventLog {
     private boolean removed;
@@ -33,8 +31,7 @@ public class EventLog {
     private String type;
     private List<String> topics;
 
-    public EventLog() {
-    }
+    public EventLog() {}
 
     public EventLog(
             boolean removed,
@@ -229,8 +226,8 @@ public class EventLog {
         result =
                 31 * result
                         + (getTransactionIndexRaw() != null
-                        ? getTransactionIndexRaw().hashCode()
-                        : 0);
+                                ? getTransactionIndexRaw().hashCode()
+                                : 0);
         result = 31 * result + (getTransactionHash() != null ? getTransactionHash().hashCode() : 0);
         result = 31 * result + (getBlockHash() != null ? getBlockHash().hashCode() : 0);
         result = 31 * result + (getBlockNumberRaw() != null ? getBlockNumberRaw().hashCode() : 0);

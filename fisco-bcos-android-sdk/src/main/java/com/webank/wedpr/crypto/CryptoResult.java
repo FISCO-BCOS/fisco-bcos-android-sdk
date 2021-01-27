@@ -19,9 +19,7 @@ public class CryptoResult extends WedprResult {
     public String encryptedData;
     public String decryptedData;
 
-    /**
-     * Expects no error occurred, otherwise throws an Exception.
-     */
+    /** Expects no error occurred, otherwise throws an Exception. */
     public CryptoResult expectNoError() throws WedprException {
         if (hasError()) {
             throw new WedprException(wedprErrorMessage);

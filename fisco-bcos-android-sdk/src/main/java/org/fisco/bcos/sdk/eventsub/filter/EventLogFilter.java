@@ -16,21 +16,16 @@
 package org.fisco.bcos.sdk.eventsub.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+import io.netty.channel.ChannelHandlerContext;
+import java.math.BigInteger;
+import java.util.List;
 import org.fisco.bcos.sdk.eventsub.EventCallback;
 import org.fisco.bcos.sdk.eventsub.EventLogParams;
 import org.fisco.bcos.sdk.eventsub.EventSubscribe;
 import org.fisco.bcos.sdk.model.EventLog;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
-import java.math.BigInteger;
-import java.util.List;
-
-import io.netty.channel.ChannelHandlerContext;
-
-/**
- * An event log filter is a subscription.
- */
+/** An event log filter is a subscription. */
 public class EventLogFilter {
     private String registerID;
     private String filterID;

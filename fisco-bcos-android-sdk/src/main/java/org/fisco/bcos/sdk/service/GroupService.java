@@ -44,7 +44,7 @@ public interface GroupService {
      * update the latest block number of the specified group
      *
      * @param peerIpAndPort the node that notify the block number info
-     * @param blockNumber   the notified block number
+     * @param blockNumber the notified block number
      */
     void updatePeersBlockNumberInfo(String peerIpAndPort, BigInteger blockNumber);
 

@@ -17,9 +17,7 @@ package org.fisco.bcos.sdk.network;
 
 import org.fisco.bcos.sdk.utils.Host;
 
-/**
- * Connection information.
- */
+/** Connection information. */
 public class ConnectionInfo {
 
     private String ip = "";

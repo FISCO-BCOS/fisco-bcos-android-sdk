@@ -16,7 +16,8 @@ package org.fisco.bcos.sdk.contract.precompiled.permission;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.io.IOException;
+import java.util.List;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledAddress;
 import org.fisco.bcos.sdk.contract.precompiled.model.PrecompiledVersionCheck;
@@ -26,9 +27,6 @@ import org.fisco.bcos.sdk.model.RetCode;
 import org.fisco.bcos.sdk.transaction.codec.decode.ReceiptParser;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
-
-import java.io.IOException;
-import java.util.List;
 
 public class PermissionService {
     private final PermissionPrecompiled permissionPrecompiled;

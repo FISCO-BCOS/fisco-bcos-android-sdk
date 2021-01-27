@@ -15,14 +15,12 @@ package org.fisco.bcos.sdk.crypto.keypair;
 
 import com.webank.wedpr.crypto.CryptoResult;
 import com.webank.wedpr.crypto.NativeInterface;
-
+import java.math.BigInteger;
+import java.security.KeyPair;
 import org.fisco.bcos.sdk.crypto.hash.Hash;
 import org.fisco.bcos.sdk.crypto.hash.Keccak256;
 import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
-
-import java.math.BigInteger;
-import java.security.KeyPair;
 
 public class ECDSAKeyPair extends CryptoKeyPair {
     public static Hash DefaultHashAlgorithm = new Keccak256();

@@ -13,6 +13,9 @@
  */
 package org.fisco.bcos.sdk;
 
+import io.netty.channel.ChannelException;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.fisco.bcos.sdk.amop.Amop;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.client.Client;
@@ -27,11 +30,6 @@ import org.fisco.bcos.sdk.service.GroupManagerServiceImpl;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import io.netty.channel.ChannelException;
 
 public class BcosSDK {
     public static final String ECDSA_TYPE_STR = "ecdsa";

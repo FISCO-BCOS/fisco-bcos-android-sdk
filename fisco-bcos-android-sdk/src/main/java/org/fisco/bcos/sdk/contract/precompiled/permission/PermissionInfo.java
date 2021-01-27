@@ -15,7 +15,6 @@
 package org.fisco.bcos.sdk.contract.precompiled.permission;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class PermissionInfo {
