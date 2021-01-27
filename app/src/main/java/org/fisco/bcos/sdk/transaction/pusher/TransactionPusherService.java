@@ -14,6 +14,9 @@
  */
 package org.fisco.bcos.sdk.transaction.pusher;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
@@ -57,6 +60,7 @@ public class TransactionPusherService implements TransactionPusherInterface {
         client.sendRawTransactionAndGetReceiptAsync(signedTransactionData, callback);
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public CompletableFuture<TransactionReceipt> pushAsync(String signedTransaction) {
         CompletableFuture<TransactionReceipt> future =

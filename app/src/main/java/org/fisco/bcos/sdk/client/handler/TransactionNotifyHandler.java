@@ -14,6 +14,9 @@
  */
 package org.fisco.bcos.sdk.client.handler;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import org.fisco.bcos.sdk.channel.ChannelVersionNegotiation;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.model.MsgType;
@@ -38,6 +41,7 @@ public class TransactionNotifyHandler implements MsgHandler {
         logger.debug("onConnect, endpoint: {}", ChannelVersionNegotiation.getPeerHost(ctx));
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public void onMessage(ChannelHandlerContext ctx, Message msg) {
         if (msg.getType() != MsgType.TRANSACTION_NOTIFY.getType()) {
