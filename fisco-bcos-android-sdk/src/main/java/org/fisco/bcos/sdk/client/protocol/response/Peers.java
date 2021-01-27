@@ -16,15 +16,11 @@
 package org.fisco.bcos.sdk.client.protocol.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.fisco.bcos.sdk.model.JsonRpcResponse;
-
 import java.util.List;
 import java.util.Objects;
+import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-/**
- * getPeers
- */
+/** getPeers */
 public class Peers extends JsonRpcResponse<List<Peers.PeerInfo>> {
     public List<Peers.PeerInfo> getPeers() {
         return getResult();

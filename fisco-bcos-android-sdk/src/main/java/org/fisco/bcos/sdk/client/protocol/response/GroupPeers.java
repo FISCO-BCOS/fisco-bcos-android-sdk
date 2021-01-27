@@ -15,13 +15,10 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
+import java.util.List;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-import java.util.List;
-
-/**
- * getGroupPeers
- */
+/** getGroupPeers */
 public class GroupPeers extends JsonRpcResponse<List<String>> {
     public List<String> getGroupPeers() {
         return getResult();

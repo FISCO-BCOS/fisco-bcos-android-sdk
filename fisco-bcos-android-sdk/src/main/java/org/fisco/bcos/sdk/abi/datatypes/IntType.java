@@ -2,9 +2,7 @@ package org.fisco.bcos.sdk.abi.datatypes;
 
 import java.math.BigInteger;
 
-/**
- * Common integer properties.
- */
+/** Common integer properties. */
 public abstract class IntType extends NumericType {
 
     public IntType(String typePrefix, int bitSize, BigInteger value) {

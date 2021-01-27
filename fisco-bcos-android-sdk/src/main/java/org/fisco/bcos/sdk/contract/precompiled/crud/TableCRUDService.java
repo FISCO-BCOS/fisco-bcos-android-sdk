@@ -16,7 +16,11 @@ package org.fisco.bcos.sdk.contract.precompiled.crud;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.channel.model.ChannelPrococolExceiption;
 import org.fisco.bcos.sdk.channel.model.EnumNodeVersion;
@@ -38,12 +42,6 @@ import org.fisco.bcos.sdk.transaction.codec.decode.ReceiptParser;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.StringUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TableCRUDService {
     private static final String ValueFieldsDelimiter = ",";
@@ -70,7 +68,9 @@ public class TableCRUDService {
             throws JsonProcessingException {
         ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
         try {
-            return objectMapper.readValue(selectResult, objectMapper.getTypeFactory().constructCollectionType(List.class, Map.class));
+            return objectMapper.readValue(
+                    selectResult,
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, Map.class));
         } catch (IOException e) {
             return null;
         }

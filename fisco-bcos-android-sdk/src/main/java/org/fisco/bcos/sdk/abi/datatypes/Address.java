@@ -1,13 +1,10 @@
 package org.fisco.bcos.sdk.abi.datatypes;
 
+import java.math.BigInteger;
 import org.fisco.bcos.sdk.abi.datatypes.generated.Uint160;
 import org.fisco.bcos.sdk.utils.Numeric;
 
-import java.math.BigInteger;
-
-/**
- * Address type, which is equivalent to uint160.
- */
+/** Address type, which is equivalent to uint160. */
 public class Address implements Type<String> {
 
     public static final String TYPE_NAME = "address";

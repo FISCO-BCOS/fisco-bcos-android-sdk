@@ -14,7 +14,6 @@
 package org.fisco.bcos.sdk.client.protocol.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public class GenerateGroupParam {

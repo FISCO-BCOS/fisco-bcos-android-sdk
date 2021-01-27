@@ -15,9 +15,8 @@
 
 package org.fisco.bcos.sdk.network;
 
-import org.fisco.bcos.sdk.model.Message;
-
 import io.netty.channel.ChannelHandlerContext;
+import org.fisco.bcos.sdk.model.Message;
 
 /**
  * Message handler interface Each module which would like to get notified by the "network" module

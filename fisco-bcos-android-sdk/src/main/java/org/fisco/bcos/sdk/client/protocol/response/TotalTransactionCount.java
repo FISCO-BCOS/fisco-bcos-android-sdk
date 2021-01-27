@@ -15,13 +15,10 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
+import java.util.Objects;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 
-import java.util.Objects;
-
-/**
- * getTotalTransactionCount
- */
+/** getTotalTransactionCount */
 public class TotalTransactionCount
         extends JsonRpcResponse<TotalTransactionCount.TransactionCountInfo> {
     public TransactionCountInfo getTotalTransactionCount() {

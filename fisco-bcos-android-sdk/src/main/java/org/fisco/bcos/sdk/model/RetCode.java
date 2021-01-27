@@ -21,8 +21,7 @@ public class RetCode {
     private TransactionReceipt transactionReceipt;
     private String message;
 
-    public RetCode() {
-    }
+    public RetCode() {}
 
     public RetCode(int code, String message) {
         this.code = code;

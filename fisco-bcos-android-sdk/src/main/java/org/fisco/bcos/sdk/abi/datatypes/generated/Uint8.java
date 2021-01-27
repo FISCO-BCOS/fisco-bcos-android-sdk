@@ -1,8 +1,7 @@
 package org.fisco.bcos.sdk.abi.datatypes.generated;
 
-import org.fisco.bcos.sdk.abi.datatypes.Uint;
-
 import java.math.BigInteger;
+import org.fisco.bcos.sdk.abi.datatypes.Uint;
 
 /**
  * Auto generated code.

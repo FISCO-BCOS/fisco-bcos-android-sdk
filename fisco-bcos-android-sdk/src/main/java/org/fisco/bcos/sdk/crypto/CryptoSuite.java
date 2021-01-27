@@ -13,6 +13,7 @@
  */
 package org.fisco.bcos.sdk.crypto;
 
+import java.security.KeyPair;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.config.model.AccountConfig;
 import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
@@ -30,8 +31,6 @@ import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.security.KeyPair;
 
 public class CryptoSuite {
 

@@ -1,9 +1,8 @@
 package org.fisco.bcos.sdk.abi;
 
-import org.fisco.bcos.sdk.abi.datatypes.Array;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import org.fisco.bcos.sdk.abi.datatypes.Array;
 
 /**
  * Type wrapper to get around limitations of Java's type erasure. This is so that we can pass around

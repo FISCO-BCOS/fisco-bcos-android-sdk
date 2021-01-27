@@ -14,6 +14,7 @@
  */
 package org.fisco.bcos.sdk.transaction.codec.decode;
 
+import java.math.BigInteger;
 import org.fisco.bcos.sdk.abi.datatypes.generated.tuples.generated.Tuple2;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.model.PrecompiledRetCode;
@@ -25,13 +26,10 @@ import org.fisco.bcos.sdk.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
-
 public class ReceiptParser {
     private static final Logger logger = LoggerFactory.getLogger(ReceiptParser.class);
 
-    private ReceiptParser() {
-    }
+    private ReceiptParser() {}
 
     public static RetCode parseTransactionReceipt(TransactionReceipt receipt)
             throws ContractException {
@@ -110,10 +108,10 @@ public class ReceiptParser {
             }
             int statusValue =
                     new BigInteger(
-                            callResult
-                                    .getOutput()
-                                    .substring(2, callResult.getOutput().length()),
-                            16)
+                                    callResult
+                                            .getOutput()
+                                            .substring(2, callResult.getOutput().length()),
+                                    16)
                             .intValue();
             RetCode ret =
                     PrecompiledRetCode.getPrecompiledResponse(

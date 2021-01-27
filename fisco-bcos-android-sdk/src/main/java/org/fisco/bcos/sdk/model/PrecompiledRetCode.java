@@ -196,8 +196,7 @@ public class PrecompiledRetCode {
         }
     }
 
-    private PrecompiledRetCode() {
-    }
+    private PrecompiledRetCode() {}
 
     public static RetCode getPrecompiledResponse(int responseCode, String message) {
         if (codeToMessage.containsKey(responseCode)) {

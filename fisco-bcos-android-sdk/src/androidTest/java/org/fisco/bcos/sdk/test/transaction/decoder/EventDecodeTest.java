@@ -15,7 +15,8 @@
 package org.fisco.bcos.sdk.test.transaction.decoder;
 
 import com.google.common.collect.Lists;
-
+import java.util.List;
+import java.util.Map;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.client.Client;
@@ -28,9 +29,6 @@ import org.fisco.bcos.sdk.transaction.model.dto.TransactionResponse;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * EventDecodeTest @Description: EventDecodeTest
  *
@@ -39,8 +37,7 @@ import java.util.Map;
  */
 public class EventDecodeTest {
 
-    private static final String configFile =
-            "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
+    private static final String configFile = "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
     private static final String abiFile = "/sdcard/javasdk/contract/abi/";
     private static final String binFile = "/sdcard/javasdk/contract/bin/";
     private final String abi =

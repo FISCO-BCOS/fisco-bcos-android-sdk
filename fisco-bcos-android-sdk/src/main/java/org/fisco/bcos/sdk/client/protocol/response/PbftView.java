@@ -15,14 +15,11 @@
 
 package org.fisco.bcos.sdk.client.protocol.response;
 
+import java.math.BigInteger;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.utils.Numeric;
 
-import java.math.BigInteger;
-
-/**
- * getPbftView
- */
+/** getPbftView */
 public class PbftView extends JsonRpcResponse<String> {
     public BigInteger getPbftView() {
         return Numeric.decodeQuantity(getResult());

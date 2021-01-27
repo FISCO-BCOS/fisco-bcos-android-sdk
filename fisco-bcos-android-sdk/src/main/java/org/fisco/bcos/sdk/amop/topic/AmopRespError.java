@@ -1,9 +1,7 @@
 package org.fisco.bcos.sdk.amop.topic;
 
 public enum AmopRespError {
-    /**
-     * Error code from node.
-     */
+    /** Error code from node. */
     // nodes unreachable
     NODES_UNREACHABLE(99),
     // send failed after N times retry

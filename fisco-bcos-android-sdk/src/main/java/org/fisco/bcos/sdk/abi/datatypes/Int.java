@@ -1,12 +1,9 @@
 package org.fisco.bcos.sdk.abi.datatypes;
 
+import java.math.BigInteger;
 import org.fisco.bcos.sdk.abi.Constant;
 
-import java.math.BigInteger;
-
-/**
- * Integer type.
- */
+/** Integer type. */
 public class Int extends IntType {
 
     public static final String TYPE_NAME = "int";

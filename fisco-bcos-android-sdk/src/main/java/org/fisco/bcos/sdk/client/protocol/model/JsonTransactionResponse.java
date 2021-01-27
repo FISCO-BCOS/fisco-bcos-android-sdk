@@ -14,6 +14,10 @@
  */
 package org.fisco.bcos.sdk.client.protocol.model;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.signature.ECDSASignatureResult;
@@ -27,11 +31,6 @@ import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class JsonTransactionResponse {
     private static Logger logger = LoggerFactory.getLogger(JsonTransactionResponse.class);
@@ -54,8 +53,7 @@ public class JsonTransactionResponse {
     private String extraData;
     private SignatureResponse signature;
 
-    public JsonTransactionResponse() {
-    }
+    public JsonTransactionResponse() {}
 
     public String getBlockHash() {
         return blockHash;
@@ -263,8 +261,8 @@ public class JsonTransactionResponse {
         JsonTransactionResponse that = (JsonTransactionResponse) o;
         return Objects.equals(blockHash, that.blockHash)
                 && Objects.equals(
-                Numeric.decodeQuantity(blockNumber),
-                Numeric.decodeQuantity(that.blockNumber))
+                        Numeric.decodeQuantity(blockNumber),
+                        Numeric.decodeQuantity(that.blockNumber))
                 && Objects.equals(from, that.from)
                 && Objects.equals(gas, that.gas)
                 && Objects.equals(hash, that.hash)
@@ -361,8 +359,7 @@ public class JsonTransactionResponse {
         private String v;
         private String signature;
 
-        public SignatureResponse() {
-        }
+        public SignatureResponse() {}
 
         public String getR() {
             return r;

@@ -36,16 +36,12 @@ public class TransactionSignerServcie implements TransactionSignerInterface {
         return signature.sign(hash, cryptoKeyPair);
     }
 
-    /**
-     * @return the signature
-     */
+    /** @return the signature */
     public Signature getSignature() {
         return signature;
     }
 
-    /**
-     * @param signature the signature to set
-     */
+    /** @param signature the signature to set */
     public void setSignature(Signature signature) {
         this.signature = signature;
     }

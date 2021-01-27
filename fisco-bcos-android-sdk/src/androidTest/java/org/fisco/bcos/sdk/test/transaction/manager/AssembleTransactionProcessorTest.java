@@ -15,7 +15,12 @@
 package org.fisco.bcos.sdk.test.transaction.manager;
 
 import com.google.common.collect.Lists;
-
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import org.apache.commons.lang3.StringUtils;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.abi.ABICodecException;
@@ -36,13 +41,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
 /**
  * TransactionProcessorTest @Description: TransactionProcessorTest
  *
@@ -51,8 +49,7 @@ import java.util.concurrent.CompletableFuture;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AssembleTransactionProcessorTest {
-    private static final String configFile =
-            "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
+    private static final String configFile = "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
     private static final String abiFile = "/sdcard/javasdk/contract/abi/";
     private static final String binFile = "/sdcard/javasdk/contract/bin/";
     private final String abi =
@@ -80,8 +77,8 @@ public class AssembleTransactionProcessorTest {
         Assert.assertTrue(
                 StringUtils.isNotBlank(response.getContractAddress())
                         && !StringUtils.equalsIgnoreCase(
-                        helloWorldAddrss,
-                        "0x0000000000000000000000000000000000000000000000000000000000000000"));
+                                helloWorldAddrss,
+                                "0x0000000000000000000000000000000000000000000000000000000000000000"));
         // call
         CallResponse callResponse1 =
                 transactionProcessor.sendCallByContractLoader(
@@ -153,8 +150,8 @@ public class AssembleTransactionProcessorTest {
         Assert.assertTrue(
                 StringUtils.isNotBlank(response.getContractAddress())
                         && !StringUtils.equalsIgnoreCase(
-                        contractAddress,
-                        "0x0000000000000000000000000000000000000000000000000000000000000000"));
+                                contractAddress,
+                                "0x0000000000000000000000000000000000000000000000000000000000000000"));
         // System.out.println(JsonUtils.toJson(response));
         Map<String, List<List<Object>>> map = response.getEventResultMap();
         Assert.assertEquals("test2", map.get("LogInit").get(0).get(1));

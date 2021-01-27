@@ -2,7 +2,13 @@ package org.fisco.bcos.sdk.abi;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
 import org.fisco.bcos.sdk.abi.datatypes.Array;
 import org.fisco.bcos.sdk.abi.datatypes.Bool;
@@ -21,14 +27,6 @@ import org.fisco.bcos.sdk.abi.datatypes.Uint;
 import org.fisco.bcos.sdk.abi.datatypes.Utf8String;
 import org.fisco.bcos.sdk.abi.datatypes.generated.Uint160;
 import org.fisco.bcos.sdk.utils.Numeric;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
 
 /**
  * Ethereum Contract Application Binary Interface (ABI) decoding for types. Decoding is not
@@ -175,11 +173,11 @@ public class TypeDecoder {
     /**
      * Decode the staticArray Static array length cannot be passed as a type
      *
-     * @param input  the staticArray need to be decoded
+     * @param input the staticArray need to be decoded
      * @param offset the size of the staticArray need to be decoded
-     * @param type   the type of the result
+     * @param type the type of the result
      * @param length the length of array
-     * @param <T>    the generic type
+     * @param <T> the generic type
      * @return the decoded result
      */
     @TargetApi(Build.VERSION_CODES.N)
@@ -292,7 +290,9 @@ public class TypeDecoder {
 
         } catch (ClassNotFoundException e) {
             throw new UnsupportedOperationException(
-                    "Unable to access parameterized type " + type.toString().substring("class ".length()), e);
+                    "Unable to access parameterized type "
+                            + type.toString().substring("class ".length()),
+                    e);
         }
     }
 }

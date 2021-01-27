@@ -2,9 +2,7 @@ package org.fisco.bcos.sdk.abi.datatypes;
 
 import java.util.Arrays;
 
-/**
- * Binary sequence of bytes.
- */
+/** Binary sequence of bytes. */
 public abstract class BytesType implements Type<byte[]> {
 
     private byte[] value;

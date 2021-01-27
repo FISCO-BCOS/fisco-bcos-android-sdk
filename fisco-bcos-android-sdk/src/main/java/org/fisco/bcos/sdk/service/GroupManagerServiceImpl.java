@@ -15,7 +15,21 @@ package org.fisco.bcos.sdk.service;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-
+import io.netty.util.HashedWheelTimer;
+import io.netty.util.Timeout;
+import io.netty.util.Timer;
+import io.netty.util.TimerTask;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import org.fisco.bcos.sdk.amop.Amop;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.channel.PeerSelectRule;
@@ -48,23 +62,6 @@ import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
-
-import io.netty.util.HashedWheelTimer;
-import io.netty.util.Timeout;
-import io.netty.util.Timer;
-import io.netty.util.TimerTask;
 
 public class GroupManagerServiceImpl implements GroupManagerService {
     public static final String SM_CRYPTO_STR = "gm";
@@ -290,8 +287,8 @@ public class GroupManagerServiceImpl implements GroupManagerService {
      * Get the blockNumber notify message from the AMOP module, parse the package and update the
      * latest block height of each group
      *
-     * @param version                  the EnumChannelProtocolVersion instance
-     * @param peerIpAndPort            Node ip and port
+     * @param version the EnumChannelProtocolVersion instance
+     * @param peerIpAndPort Node ip and port
      * @param blockNumberNotifyMessage the blockNumber notify message
      */
     protected void onReceiveBlockNotifyImpl(
@@ -426,9 +423,7 @@ public class GroupManagerServiceImpl implements GroupManagerService {
         return this.channel;
     }
 
-    /**
-     * Stop group list fetching thread
-     */
+    /** Stop group list fetching thread */
     @Override
     public void stop() {
         if (!running.get()) {
@@ -443,9 +438,7 @@ public class GroupManagerServiceImpl implements GroupManagerService {
         running.set(false);
     }
 
-    /**
-     * start the thread to obtain group list information periodically
-     */
+    /** start the thread to obtain group list information periodically */
     protected void start() {
         if (running.get()) {
             logger.warn("GroupManagerService has already been started!");

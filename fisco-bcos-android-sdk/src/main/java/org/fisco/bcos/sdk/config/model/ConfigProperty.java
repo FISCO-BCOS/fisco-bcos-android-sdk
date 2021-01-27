@@ -16,7 +16,6 @@
 package org.fisco.bcos.sdk.config.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.io.File;
 import java.net.URL;
 import java.util.List;

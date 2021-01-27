@@ -17,16 +17,13 @@ package org.fisco.bcos.sdk.client.handler;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-
+import io.netty.channel.ChannelHandlerContext;
+import java.util.function.Consumer;
 import org.fisco.bcos.sdk.channel.ChannelVersionNegotiation;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.network.MsgHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.function.Consumer;
-
-import io.netty.channel.ChannelHandlerContext;
 
 public class GetNodeVersionHandler implements MsgHandler {
     private static Logger logger = LoggerFactory.getLogger(GetNodeVersionHandler.class);
@@ -45,8 +42,7 @@ public class GetNodeVersionHandler implements MsgHandler {
     }
 
     @Override
-    public void onMessage(ChannelHandlerContext ctx, Message msg) {
-    }
+    public void onMessage(ChannelHandlerContext ctx, Message msg) {}
 
     @Override
     public void onDisconnect(ChannelHandlerContext ctx) {

@@ -16,17 +16,13 @@
 package org.fisco.bcos.sdk.client.protocol.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.util.List;
+import java.util.Objects;
 import org.fisco.bcos.sdk.client.protocol.model.JsonTransactionResponse;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.model.MerkleProofUnit;
 
-import java.util.List;
-import java.util.Objects;
-
-/**
- * getTransactionWithProof.
- */
+/** getTransactionWithProof. */
 public class TransactionWithProof
         extends JsonRpcResponse<TransactionWithProof.TransactionAndProof> {
     public TransactionWithProof.TransactionAndProof getTransactionWithProof() {

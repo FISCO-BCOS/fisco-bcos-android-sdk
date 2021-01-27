@@ -1,5 +1,9 @@
 package org.fisco.bcos.sdk.contract.precompiled.contractmgr;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.fisco.bcos.sdk.abi.FunctionReturnDecoder;
 import org.fisco.bcos.sdk.abi.TypeReference;
 import org.fisco.bcos.sdk.abi.datatypes.Address;
@@ -20,11 +24,6 @@ import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.utils.StringUtils;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 @SuppressWarnings("unchecked")
 public class ContractLifeCyclePrecompiled extends Contract {
     public static final String[] BINARY_ARRAY = {};
@@ -36,7 +35,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
     public static final String SM_BINARY = StringUtils.joinAll("", SM_BINARY_ARRAY);
 
     public static final String[] ABI_ARRAY = {
-            "[{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getStatus\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"},{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"contractAddr\",\"type\":\"address\"},{\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"revokeManager\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"unfreeze\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"freeze\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"contractAddr\",\"type\":\"address\"},{\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"grantManager\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"listManager\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"},{\"name\":\"\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+        "[{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getStatus\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"},{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"contractAddr\",\"type\":\"address\"},{\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"revokeManager\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"unfreeze\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"freeze\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"contractAddr\",\"type\":\"address\"},{\"name\":\"userAddr\",\"type\":\"address\"}],\"name\":\"grantManager\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"listManager\",\"outputs\":[{\"name\":\"\",\"type\":\"int256\"},{\"name\":\"\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
     };
 
     public static final String ABI = StringUtils.joinAll("", ABI_ARRAY);
@@ -83,10 +82,8 @@ public class ContractLifeCyclePrecompiled extends Contract {
                         FUNC_GETSTATUS,
                         Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Address(addr)),
                         Arrays.<TypeReference<?>>asList(
-                                new TypeReference<Int256>() {
-                                },
-                                new TypeReference<Utf8String>() {
-                                }));
+                                new TypeReference<Int256>() {},
+                                new TypeReference<Utf8String>() {}));
         List<Type> results = executeCallWithMultipleValueReturn(function);
         return new Tuple2<BigInteger, String>(
                 (BigInteger) results.get(0).getValue(), (String) results.get(1).getValue());
@@ -132,9 +129,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                         FUNC_REVOKEMANAGER,
                         Arrays.<Type>asList(),
                         Arrays.<TypeReference<?>>asList(
-                                new TypeReference<Address>() {
-                                }, new TypeReference<Address>() {
-                                }));
+                                new TypeReference<Address>() {}, new TypeReference<Address>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple2<String, String>(
                 (String) results.get(0).getValue(), (String) results.get(1).getValue());
@@ -146,8 +141,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                 new Function(
                         FUNC_REVOKEMANAGER,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
-                        }));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -185,8 +179,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                 new Function(
                         FUNC_UNFREEZE,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
-                        }));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -197,8 +190,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                 new Function(
                         FUNC_UNFREEZE,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
-                        }));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -236,8 +228,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                 new Function(
                         FUNC_FREEZE,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
-                        }));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<String>((String) results.get(0).getValue());
     }
@@ -248,8 +239,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                 new Function(
                         FUNC_FREEZE,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
-                        }));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -294,9 +284,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                         FUNC_GRANTMANAGER,
                         Arrays.<Type>asList(),
                         Arrays.<TypeReference<?>>asList(
-                                new TypeReference<Address>() {
-                                }, new TypeReference<Address>() {
-                                }));
+                                new TypeReference<Address>() {}, new TypeReference<Address>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple2<String, String>(
                 (String) results.get(0).getValue(), (String) results.get(1).getValue());
@@ -308,8 +296,7 @@ public class ContractLifeCyclePrecompiled extends Contract {
                 new Function(
                         FUNC_GRANTMANAGER,
                         Arrays.<Type>asList(),
-                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {
-                        }));
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
     }
@@ -320,10 +307,8 @@ public class ContractLifeCyclePrecompiled extends Contract {
                         FUNC_LISTMANAGER,
                         Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Address(addr)),
                         Arrays.<TypeReference<?>>asList(
-                                new TypeReference<Int256>() {
-                                },
-                                new TypeReference<DynamicArray<Address>>() {
-                                }));
+                                new TypeReference<Int256>() {},
+                                new TypeReference<DynamicArray<Address>>() {}));
         List<Type> results = executeCallWithMultipleValueReturn(function);
         return new Tuple2<BigInteger, List<String>>(
                 (BigInteger) results.get(0).getValue(),

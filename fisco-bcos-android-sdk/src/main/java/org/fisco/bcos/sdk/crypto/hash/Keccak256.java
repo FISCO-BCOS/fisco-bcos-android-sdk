@@ -14,10 +14,8 @@
 package org.fisco.bcos.sdk.crypto.hash;
 
 import android.util.Base64;
-
 import com.webank.wedpr.crypto.CryptoResult;
 import com.webank.wedpr.crypto.NativeInterface;
-
 import org.fisco.bcos.sdk.crypto.exceptions.HashException;
 import org.fisco.bcos.sdk.utils.Hex;
 

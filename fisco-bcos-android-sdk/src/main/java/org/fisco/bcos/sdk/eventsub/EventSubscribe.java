@@ -15,11 +15,10 @@
 
 package org.fisco.bcos.sdk.eventsub;
 
-import org.fisco.bcos.sdk.eventsub.filter.EventLogFilter;
-import org.fisco.bcos.sdk.service.GroupManagerService;
-
 import java.util.List;
 import java.util.UUID;
+import org.fisco.bcos.sdk.eventsub.filter.EventLogFilter;
+import org.fisco.bcos.sdk.service.GroupManagerService;
 
 /**
  * Event subscribe interface.
@@ -31,8 +30,8 @@ public interface EventSubscribe {
      * Create a Event Subscraibe instance
      *
      * @param groupManagerService the groupManager Service instance
-     * @param groupId             the id of group
-     * @param eventResource       the eventResource instance
+     * @param groupId the id of group
+     * @param eventResource the eventResource instance
      * @return EventSubscribe Object
      */
     static EventSubscribe build(
@@ -48,7 +47,7 @@ public interface EventSubscribe {
     /**
      * Subscribe event
      *
-     * @param params   the EventLogParams instance
+     * @param params the EventLogParams instance
      * @param callback the EventCallback instance
      * @return registerId of event
      */
@@ -58,7 +57,7 @@ public interface EventSubscribe {
      * Unsubscribe events
      *
      * @param registerID the ID of register
-     * @param callback   the EventCallback instance
+     * @param callback the EventCallback instance
      */
     void unsubscribeEvent(String registerID, EventCallback callback);
 
@@ -76,13 +75,9 @@ public interface EventSubscribe {
      */
     EventResource getEventResource();
 
-    /**
-     * Start
-     */
+    /** Start */
     void start();
 
-    /**
-     * Stop
-     */
+    /** Stop */
     void stop();
 }

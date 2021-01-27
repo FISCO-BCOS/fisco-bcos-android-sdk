@@ -1,15 +1,14 @@
 package org.fisco.bcos.sdk.abi.wrapper;
 
-import org.fisco.bcos.sdk.abi.FunctionEncoder;
-import org.fisco.bcos.sdk.crypto.CryptoSuite;
-import org.fisco.bcos.sdk.utils.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.fisco.bcos.sdk.abi.FunctionEncoder;
+import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.utils.StringUtils;
 
 /**
  * ABIDefinition wrapper
@@ -38,8 +37,7 @@ public class ABIDefinition {
     private List<NamedType> inputs;
     private List<NamedType> outputs;
 
-    public ABIDefinition() {
-    }
+    public ABIDefinition() {}
 
     public ABIDefinition(
             String name,
@@ -346,8 +344,7 @@ public class ABIDefinition {
         private boolean indexed;
         private List<NamedType> components;
 
-        public NamedType() {
-        }
+        public NamedType() {}
 
         public NamedType(String name, String type) {
             this(name, type, false);

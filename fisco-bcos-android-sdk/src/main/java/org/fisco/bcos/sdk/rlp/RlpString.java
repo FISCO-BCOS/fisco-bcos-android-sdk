@@ -13,16 +13,13 @@
  */
 package org.fisco.bcos.sdk.rlp;
 
-import org.fisco.bcos.sdk.utils.Numeric;
-
 import java.math.BigInteger;
 import java.util.Arrays;
+import org.fisco.bcos.sdk.utils.Numeric;
 
-/**
- * RLP string type.
- */
+/** RLP string type. */
 public final class RlpString implements RlpType {
-    private static final byte[] EMPTY = new byte[]{};
+    private static final byte[] EMPTY = new byte[] {};
 
     public final byte[] value;
 
@@ -35,7 +32,7 @@ public final class RlpString implements RlpType {
     }
 
     public static RlpString create(byte value) {
-        return new RlpString(new byte[]{value});
+        return new RlpString(new byte[] {value});
     }
 
     public static RlpString create(BigInteger value) {

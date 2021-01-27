@@ -5,12 +5,10 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectReader;
-
+import java.io.IOException;
 import org.fisco.bcos.sdk.client.protocol.model.JsonTransactionResponse;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
-
-import java.io.IOException;
 
 public class BcosTransaction extends JsonRpcResponse<JsonTransactionResponse> {
     public JsonTransactionResponse getTransaction() {

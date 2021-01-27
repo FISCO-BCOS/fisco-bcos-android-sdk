@@ -15,12 +15,6 @@
 
 package org.fisco.bcos.sdk.network;
 
-import org.fisco.bcos.sdk.model.Message;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.ExecutorService;
-
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -28,10 +22,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.ssl.SslCloseCompletionEvent;
 import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 import io.netty.handler.timeout.IdleStateEvent;
+import java.util.concurrent.ExecutorService;
+import org.fisco.bcos.sdk.model.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Channel handler process inbound message.
- */
+/** Channel handler process inbound message. */
 @Sharable
 public class ChannelHandler extends SimpleChannelInboundHandler<Message> {
     private static Logger logger = LoggerFactory.getLogger(ChannelHandler.class);

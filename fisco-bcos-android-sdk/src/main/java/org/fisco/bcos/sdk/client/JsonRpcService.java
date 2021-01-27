@@ -15,7 +15,7 @@ package org.fisco.bcos.sdk.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.io.IOException;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.channel.ResponseCallback;
 import org.fisco.bcos.sdk.channel.model.Options;
@@ -32,8 +32,6 @@ import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 public class JsonRpcService {
     private static Logger logger = LoggerFactory.getLogger(JsonRpcService.class);
     protected final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
@@ -41,8 +39,7 @@ public class JsonRpcService {
     protected GroupManagerService groupManagerService;
     protected Integer groupId;
 
-    public JsonRpcService() {
-    }
+    public JsonRpcService() {}
 
     public JsonRpcService(
             GroupManagerService groupManagerService, Channel channel, Integer groupId) {
@@ -246,11 +243,8 @@ public class JsonRpcService {
                             + e.getMessage(),
                     e);
         } catch (IOException e) {
-            logger.error(
-                    "IOException, errorMessage: {}",
-                    e.getMessage());
-            throw new ClientException(
-                    "IOException, error message:" + e.getMessage());
+            logger.error("IOException, errorMessage: {}", e.getMessage());
+            throw new ClientException("IOException, error message:" + e.getMessage());
         }
     }
 

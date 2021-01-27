@@ -13,6 +13,11 @@
  */
 package org.fisco.bcos.sdk.client;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
@@ -26,12 +31,6 @@ import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
-
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class ClientImplForProxy extends ClientImpl {
 
@@ -71,11 +70,11 @@ public class ClientImplForProxy extends ClientImpl {
     }
 
     public NetworkResponse<NodeVersion> getNodeVersionByProxy() {
-        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
-                JsonRpcMethods.GET_NODE_VERSION,
-                Arrays.asList(groupId));
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(JsonRpcMethods.GET_NODE_VERSION, Arrays.asList(groupId));
 
-        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, NodeVersion.class);
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, NodeVersion.class);
     }
 
     @Override
@@ -86,11 +85,11 @@ public class ClientImplForProxy extends ClientImpl {
     }
 
     public NetworkResponse<BlockNumber> getBlockNumberByProxy() {
-        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
-                JsonRpcMethods.GET_BLOCK_NUMBER,
-                Arrays.asList(groupId));
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(JsonRpcMethods.GET_BLOCK_NUMBER, Arrays.asList(groupId));
 
-        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BlockNumber.class);
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, BlockNumber.class);
     }
 
     private void updateBlockNumber() {
@@ -109,17 +108,25 @@ public class ClientImplForProxy extends ClientImpl {
 
     @Override
     public TransactionReceipt sendRawTransactionAndGetReceipt(String signedTransactionData) {
-        NetworkResponse<TransactionReceipt> networkResponse = sendRawTransactionAndGetReceiptByProxy(signedTransactionData);
+        NetworkResponse<TransactionReceipt> networkResponse =
+                sendRawTransactionAndGetReceiptByProxy(signedTransactionData);
         return networkResponse.getResult();
     }
 
-    public NetworkResponse<TransactionReceipt> sendRawTransactionAndGetReceiptByProxy(String signedTransactionData) {
-        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
-                JsonRpcMethods.SEND_RAWTRANSACTION,
-                Arrays.asList(this.groupId, signedTransactionData));
+    public NetworkResponse<TransactionReceipt> sendRawTransactionAndGetReceiptByProxy(
+            String signedTransactionData) {
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(
+                        JsonRpcMethods.SEND_RAWTRANSACTION,
+                        Arrays.asList(this.groupId, signedTransactionData));
 
-        NetworkResponse<BcosTransactionReceipt> receipt = this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BcosTransactionReceipt.class);
-        return new NetworkResponse(receipt.getCode(), receipt.getMessage(), receipt.getResult().getTransactionReceipt());
+        NetworkResponse<BcosTransactionReceipt> receipt =
+                this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                        jsonRpcRequest, BcosTransactionReceipt.class);
+        return new NetworkResponse(
+                receipt.getCode(),
+                receipt.getMessage(),
+                receipt.getResult().getTransactionReceipt());
     }
 
     @Override
@@ -129,39 +136,45 @@ public class ClientImplForProxy extends ClientImpl {
     }
 
     public NetworkResponse<Call> callByProxy(Transaction transaction) {
-        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
-                JsonRpcMethods.CALL,
-                Arrays.asList(this.groupId, transaction));
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(JsonRpcMethods.CALL, Arrays.asList(this.groupId, transaction));
 
         return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, Call.class);
     }
 
     @Override
     public BcosTransaction getTransactionByHash(String transactionHash) {
-        NetworkResponse<BcosTransaction> networkResponse = getTransactionByHashByProxy(transactionHash);
+        NetworkResponse<BcosTransaction> networkResponse =
+                getTransactionByHashByProxy(transactionHash);
         return networkResponse.getResult();
     }
 
     public NetworkResponse<BcosTransaction> getTransactionByHashByProxy(String transactionHash) {
-        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
-                JsonRpcMethods.GET_TRANSACTION_BY_HASH,
-                Arrays.asList(this.groupId, transactionHash));
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(
+                        JsonRpcMethods.GET_TRANSACTION_BY_HASH,
+                        Arrays.asList(this.groupId, transactionHash));
 
-        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BcosTransaction.class);
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, BcosTransaction.class);
     }
 
     @Override
     public BcosTransactionReceipt getTransactionReceipt(String transactionHash) {
-        NetworkResponse<BcosTransactionReceipt> networkResponse = getTransactionReceiptByProxy(transactionHash);
+        NetworkResponse<BcosTransactionReceipt> networkResponse =
+                getTransactionReceiptByProxy(transactionHash);
         return networkResponse.getResult();
     }
 
-    public NetworkResponse<BcosTransactionReceipt> getTransactionReceiptByProxy(String transactionHash) {
-        JsonRpcRequest jsonRpcRequest = new JsonRpcRequest(
-                JsonRpcMethods.GET_TRANSACTIONRECEIPT,
-                Arrays.asList(this.groupId, transactionHash));
+    public NetworkResponse<BcosTransactionReceipt> getTransactionReceiptByProxy(
+            String transactionHash) {
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(
+                        JsonRpcMethods.GET_TRANSACTIONRECEIPT,
+                        Arrays.asList(this.groupId, transactionHash));
 
-        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(jsonRpcRequest, BcosTransactionReceipt.class);
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, BcosTransactionReceipt.class);
     }
 
     @Override

@@ -15,30 +15,6 @@
 
 package org.fisco.bcos.sdk.network;
 
-import org.fisco.bcos.sdk.config.ConfigOption;
-import org.fisco.bcos.sdk.model.RetCode;
-import org.fisco.bcos.sdk.utils.ThreadPoolService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.security.Security;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLException;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -56,6 +32,27 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.security.Security;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLException;
+import org.fisco.bcos.sdk.config.ConfigOption;
+import org.fisco.bcos.sdk.model.RetCode;
+import org.fisco.bcos.sdk.utils.ThreadPoolService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Maintain peer connections. Start a schedule to reconnect failed peers.
@@ -362,13 +359,14 @@ public class ConnectionManager {
         if (availableConnections.get(endpoint) == null) {
             return;
         }
-        //Boolean result = availableConnections.remove(endpoint, ctx);
+        // Boolean result = availableConnections.remove(endpoint, ctx);
         Boolean result = false;
-        Iterator<Map.Entry<String, ChannelHandlerContext>> it = availableConnections.entrySet().iterator();
+        Iterator<Map.Entry<String, ChannelHandlerContext>> it =
+                availableConnections.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, ChannelHandlerContext> tempentry = it.next();
-            if (tempentry.getKey() == endpoint &&
-                    Objects.equals(availableConnections.get(endpoint), ctx)) {
+            if (tempentry.getKey() == endpoint
+                    && Objects.equals(availableConnections.get(endpoint), ctx)) {
                 result = true;
                 it.remove();
             }

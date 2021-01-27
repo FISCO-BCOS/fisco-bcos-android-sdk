@@ -15,6 +15,14 @@
 
 package org.fisco.bcos.sdk.test.precompiled;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.HelloWorld;
 import org.fisco.bcos.sdk.client.Client;
@@ -42,19 +50,9 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
-
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PrecompiledTest {
-    private static final String configFile =
-            "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
+    private static final String configFile = "/sdcard/javasdk/" + ConstantConfig.CONFIG_FILE_NAME;
     public AtomicLong receiptCount = new AtomicLong();
 
     @Test
