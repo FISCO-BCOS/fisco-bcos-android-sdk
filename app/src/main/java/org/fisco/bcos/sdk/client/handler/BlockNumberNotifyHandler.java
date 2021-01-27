@@ -15,6 +15,9 @@
 
 package org.fisco.bcos.sdk.client.handler;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import org.fisco.bcos.sdk.channel.ChannelVersionNegotiation;
 import org.fisco.bcos.sdk.channel.model.ChannelProtocol;
 import org.fisco.bcos.sdk.channel.model.EnumChannelProtocolVersion;
@@ -90,6 +93,7 @@ public class BlockNumberNotifyHandler implements MsgHandler {
         blockNumberUpdater.OnReceiveBlockNotify(channelProtocolVersion, peerIpAndPort, amopMsg);
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public void onDisconnect(ChannelHandlerContext ctx) {
         String peerIpAndPort = ChannelVersionNegotiation.getPeerHost(ctx);

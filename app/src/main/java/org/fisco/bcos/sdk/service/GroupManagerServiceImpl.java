@@ -13,6 +13,9 @@
  */
 package org.fisco.bcos.sdk.service;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
 import org.fisco.bcos.sdk.amop.Amop;
 import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.channel.PeerSelectRule;
@@ -152,6 +155,7 @@ public class GroupManagerServiceImpl implements GroupManagerService {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     public void registerGetNodeVersionHandler() {
         GetNodeVersionHandler handler =
                 new GetNodeVersionHandler(
@@ -207,6 +211,7 @@ public class GroupManagerServiceImpl implements GroupManagerService {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     public void registerBlockNumberNotifyHandler() {
         OnReceiveBlockNotifyFunc onReceiveBlockNotifyFunc =
                 (version, peerIpAndPort, blockNumberNotifyMessage) ->
@@ -258,6 +263,7 @@ public class GroupManagerServiceImpl implements GroupManagerService {
         logger.info("registerBlockNumberNotifyHandler");
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     public void registerTransactionNotifyHandler() {
         TransactionNotifyHandler handler =
                 new TransactionNotifyHandler(
