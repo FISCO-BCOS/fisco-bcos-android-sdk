@@ -22,7 +22,7 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
 
     @Override
     public String onRPCRequest(String requestBodyJsonStr) {
-        logger.trace("onRPCRequest http request body: " + requestBodyJsonStr);
+        // logger.trace("onRPCRequest http request body: " + requestBodyJsonStr);
 
         OkHttpClient okHttpClient = new OkHttpClient();
         String URL = ipPort + "Bcos-node-proxy/rpc/v1";
@@ -33,7 +33,7 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 String responseBodyJsonStr = response.body().string();
-                logger.trace("onRPCRequest http response body: " + responseBodyJsonStr);
+                // logger.trace("onRPCRequest http response body: " + responseBodyJsonStr);
                 return responseBodyJsonStr;
             }
         } catch (ConnectException e) {
