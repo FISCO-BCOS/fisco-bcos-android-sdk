@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerInterface;
 import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
+import org.fisco.bcos.sdk.client.exceptions.ClientException;
+import org.fisco.bcos.sdk.client.exceptions.NetworkHandlerException;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.model.NetworkResponse;
@@ -39,7 +41,18 @@ public class JsonRpcServiceForProxy extends JsonRpcService {
         try {
             String requestBodyJsonStr =
                     ObjectMapperFactory.getObjectMapper().writeValueAsString(request);
+            logger.info("sendRequestToGroupByProxy, request body: " + requestBodyJsonStr);
             String responseBodyJsonStr = networkHandle.onRPCRequest(requestBodyJsonStr);
+            logger.info("sendRequestToGroupByProxy, response body: " + responseBodyJsonStr);
+            if (responseBodyJsonStr == null) {
+                NetworkResponseCode errorInfo =
+                        new NetworkResponseCode(
+                                NetworkResponseCode.RespNullCode,
+                                NetworkResponseCode.RespNullMessage);
+                String errorStr =
+                        ObjectMapperFactory.getObjectMapper().writeValueAsString(errorInfo);
+                throw new NetworkHandlerException(errorStr);
+            }
             return parseNetworkResponse(request, responseBodyJsonStr, responseType);
         } catch (JsonProcessingException e) {
             logger.error("serialize request failed, error info: " + e.getMessage());
@@ -68,9 +81,18 @@ public class JsonRpcServiceForProxy extends JsonRpcService {
                                 + request.getMethod()
                                 + ", error info: "
                                 + message);
+                NetworkResponseCode errorInfo = new NetworkResponseCode(code, message);
+                String errorStr =
+                        ObjectMapperFactory.getObjectMapper().writeValueAsString(errorInfo);
+                throw new NetworkHandlerException(errorStr);
             }
         } catch (Exception e) {
             logger.error(
+                    "parseNetworkResponse failed for request "
+                            + request.getMethod()
+                            + ", exception info: "
+                            + e.getMessage());
+            throw new ClientException(
                     "parseNetworkResponse failed for request "
                             + request.getMethod()
                             + ", exception info: "
