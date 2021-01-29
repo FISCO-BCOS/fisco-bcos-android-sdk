@@ -1,13 +1,15 @@
 # fisco-bcos-android-sdk
-android sdk for FISCO BCOS
+android sdk for FISCO-BCOS
 
-- 用户使用`fisco-bcos-android-sdk`前，需部署 [节点接入代理服务 bcos-node-proxy](https://github.com/FISCO-BCOS/bcos-node-proxy/tree/feature_mobile_http) ，android sdk 通过节点代理与 FISCO-BCOS 节点进行通信。
+- 用户使用`fisco-bcos-android-sdk`前，需部署 [节点接入代理服务 bcos-node-proxy](https://github.com/FISCO-BCOS/bcos-node-proxy/tree/feature_mobile_http) ，android sdk 通过节点代理与区块链节点进行通信。
 
 - `fisco-bcos-android-sdk`支持`armeabi-v7a`和`arm64-v8a`两种架构，兼容的最低 Android 版本`minSdkVersion`为**21**，需获取**读写权限**及**网络访问权限**。
 
 - `fisco-bcos-android-sdk`提供的接口均为**同步接口**，与区块链节点进行交互的接口涉及 http/https 请求，用户使用 android sdk 过程中需留意线程切换的影响。
 
-## 使用说明
+## 如何基于 fisco-bcos-android-sdk 开发区块链应用
+
+关于如何安装 Android 集成开发环境及如何创建一个 Android 应用，请参考[Android 开发者手册](https://developer.android.google.cn/studio/intro)，此处不再赘述。本章节重点描述如何在一个应用中使用`fisco-bcos-android-sdk`与区块链节点进行交互。
 
 ### 1. 获取权限
 
@@ -94,10 +96,10 @@ dependencies {
 
 | 设置项             | 是否可选 | 说明                                                           | 
 | ----------------- | ------- | --------------------------------------------------------------|
-| chainId           | 必选    | 链标识，需与 FISCO BCOS 节点配置的一致                             |
-| crytoType         | 必选    | 是否使用国密，需与 FISCO BCOS 节点配置的一致，目前支持 ECDSA_TYPE（0）|
-| hexPrivateKey     | 必选    | 发交易进行签名使用的私钥                                           |
-| networkHandlerImp | 可选    | http请求实现，如不存入，采用 sdk 内部实现                           |
+| chainId           | 必选    | 链标识，需与 FISCO-BCOS 节点配置的一致                             |
+| crytoType         | 必选    | 是否使用国密，需与 FISCO-BCOS 节点配置的一致，目前支持 ECDSA_TYPE（0）|
+| hexPrivateKey     | 必选    | 发交易进行签名使用的私钥，用户可从文件或数据库中读取                   |
+| networkHandlerImp | 可选    | http/https 请求实现，用户可自行实现并传入，如不传入，采用 sdk 内部实现  |
 
 ### 4. 编译合约
 
@@ -105,9 +107,9 @@ dependencies {
 
 - 使用`java -version`查询 JDK 版本，要求版本大于等于1.8，推荐使用 JDK 14；
 - 在`tool/`目录执行`bash get_console.sh`下载控制台，下载完成后在当前目录下生成`console/`目录；
-- 将需编译的合约放于`tool/console/contracts/solidity`目录；
+- 将需编译的合约放于`tool/console/contracts/solidity`目录（该目录已内置一些合约，如`Helloworld.sol`）；
 - 在`tool/console/`目录执行`bash sol2java.sh org.fisco.bcos.sdk`，脚本`org.fisco.bcos.sdk`指定生成的 Java 类的包名；
-- 编译生成的 Java 文件放置于`tool/console/contracts/sdk/java`目录。
+- 编译生成的 Java 文件（如`Helloworld.java`）放置于`tool/console/contracts/sdk/java`目录。
 
 ### 5. 部署及调用合约
 
@@ -125,6 +127,10 @@ try {
     logger.info("send, receipt: " + JsonUtils.toJson(ret1));
     String ret2 = sol.get();
     logger.info("call to return string, result: " + ret2);
+    BcosTransaction transaction = client.getTransactionByHash(ret1.getTransactionHash());
+    logger.info("getTransactionByHash, result: " + JsonUtils.toJson(transaction.getResult()));
+    BcosTransactionReceipt receipt = client.getTransactionReceipt(ret1.getTransactionHash());
+    logger.info("getTransactionReceipt, result: " + JsonUtils.toJson(receipt.getResult()));
 } catch (Exception e) {
     logger.error("error info: " + e.getMessage());
 }
