@@ -1,11 +1,17 @@
 # fisco-bcos-android-sdk
 android sdk for FISCO BCOS
 
+- 用户使用`fisco-bcos-android-sdk`前，需部署 [节点接入代理服务 bcos-node-proxy](https://github.com/FISCO-BCOS/bcos-node-proxy/tree/feature_mobile_http) ，android sdk 通过节点代理与 FISCO-BCOS 节点进行通信。
+
+- `fisco-bcos-android-sdk`支持`armeabi-v7a`和`arm64-v8a`两种架构，兼容的最低 Android 版本`minSdkVersion`为**21**，需获取**读写权限**及**网络访问权限**。
+
+- `fisco-bcos-android-sdk`提供的接口均为**同步接口**，与区块链节点进行交互的接口涉及 http/https 请求，用户使用 android sdk 过程中需留意线程切换的影响。
+
 ## 使用说明
 
-1. 用户需提前部署 [bcos-node-proxy](https://github.com/FISCO-BCOS/bcos-node-proxy/tree/feature_mobile_http) 节点接入代理服务，android sdk 通过节点代理与 FISCO BCOS 节点进行通信。
+### 1. 获取权限
 
-2. 引入 android sdk 的项目要求`minSdkVersion`不少于**21**，也需获取**读写权限**及**网络权限**，用户可在`app/src/main/AndroidManifest.xml`中增加以下内容获取相应权限。
+对于引入 android sdk 的项目，用户可在项目的配置文件`app/src/main/AndroidManifest.xml`中增加以下内容获取读写权限及网络访问权限。
 
 ```java
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +29,9 @@ android sdk for FISCO BCOS
 </manifest>
 ```
 
-3. 修改`app/build.gradle`，添加以下源和依赖。
+### 2. 添加依赖
+
+修改项目的`app/build.gradle`，添加以下源和依赖。
 
 ```java
 allprojects {
@@ -67,9 +75,9 @@ dependencies {
 }
 ```
 
-4. 初始化 sdk
+### 3. 初始化 sdk
 
-初始化`fisco-bcos-android-sdk`时参考以下实现，需提供表格中的内容。
+项目初始化`fisco-bcos-android-sdk`的示例如下。
 
 ```java
     ProxyConfig proxyConfig = new ProxyConfig();
@@ -82,6 +90,8 @@ dependencies {
     BcosSDKForProxy sdk = BcosSDKForProxy.build(proxyConfig);
 ```
 
+上述的`ProxyConfig`作为初始化 android sdk 的配置项，包括以下内容。
+
 | 设置项             | 是否可选 | 说明                                                           | 
 | ----------------- | ------- | --------------------------------------------------------------|
 | chainId           | 必选    | 链标识，需与 FISCO BCOS 节点配置的一致                             |
@@ -89,17 +99,19 @@ dependencies {
 | hexPrivateKey     | 必选    | 发交易进行签名使用的私钥                                           |
 | networkHandlerImp | 可选    | http请求实现，如不存入，采用 sdk 内部实现                           |
 
-5. 合约编译
+### 4. 编译合约
 
-- 确认JDK版本：要求JDK版本大于等于1.8，推荐使用JDK 14；
-- 下载控制台：`curl -#LO https://github.com/FISCO-BCOS/console/releases/download/v2.7.1/download_console.sh && bash download_console.sh`；
-- 将需编译的合约放于`console/contracts/solidity`目录；
-- 在`console/`目录执行`./sol2java.sh org.fisco.bcos.sdk`，脚本参数唯一，指定生成的 Java 文件的包名；
-- 编译生成的 Java 文件放置于`console/contracts/sdk/java`目录。
+用户基于智能合约开发具体应用前，需基于合约编译生成一个与合约同名的 Java 类。编译 Java 类的过程如下。
 
-6. 合约调用
+- 使用`java -version`查询 JDK 版本，要求版本大于等于1.8，推荐使用 JDK 14；
+- 在`tool/`目录执行`bash get_console.sh`下载控制台，下载完成后在当前目录下生成`console/`目录；
+- 将需编译的合约放于`tool/console/contracts/solidity`目录；
+- 在`tool/console/`目录执行`bash sol2java.sh org.fisco.bcos.sdk`，脚本`org.fisco.bcos.sdk`指定生成的 Java 类的包名；
+- 编译生成的 Java 文件放置于`tool/console/contracts/sdk/java`目录。
 
-以`console/contracts/sdk/java`中的`Helloworld.java`为例说明如何部署、加载及调用合约。需先将`Helloworld.java`引入项目中。
+### 5. 部署及调用合约
+
+以`tool/console/contracts/sdk/java`中的`Helloworld.java`为例说明如何部署、加载及调用合约。调用以下代码前需先将`Helloworld.java`引入项目中。
 
 ```Java
 try {
