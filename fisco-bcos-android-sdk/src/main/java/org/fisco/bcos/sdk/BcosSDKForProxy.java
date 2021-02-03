@@ -38,7 +38,7 @@ public class BcosSDKForProxy {
             if (networkHandler == null) {
                 networkHandler = (new NetworkHandlerImp());
             }
-            this.networkHandler = (NetworkHandlerImp) networkHandler;
+            this.networkHandler = (NetworkHandlerInterface) networkHandler;
             logger.info("create BcosSDKForProxy successfully");
         } catch (Exception e) {
             stopAll();
