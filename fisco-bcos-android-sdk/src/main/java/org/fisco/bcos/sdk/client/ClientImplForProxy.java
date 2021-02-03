@@ -26,6 +26,8 @@ import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
 import org.fisco.bcos.sdk.client.protocol.response.BcosTransactionReceipt;
 import org.fisco.bcos.sdk.client.protocol.response.BlockNumber;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
+import org.fisco.bcos.sdk.client.protocol.response.ObserverList;
+import org.fisco.bcos.sdk.client.protocol.response.SealerList;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.model.NodeVersion;
@@ -175,6 +177,34 @@ public class ClientImplForProxy extends ClientImpl {
 
         return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
                 jsonRpcRequest, BcosTransactionReceipt.class);
+    }
+
+    @Override
+    public SealerList getSealerList() {
+        NetworkResponse<SealerList> sealerList = getSealerListByProxy();
+        return sealerList.getResult();
+    }
+
+    public NetworkResponse<SealerList> getSealerListByProxy() {
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(JsonRpcMethods.GET_SEALER_LIST, Arrays.asList(this.groupId));
+
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, SealerList.class);
+    }
+
+    @Override
+    public ObserverList getObserverList() {
+        NetworkResponse<ObserverList> sealerList = getObserverListByProxy();
+        return sealerList.getResult();
+    }
+
+    public NetworkResponse<ObserverList> getObserverListByProxy() {
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(JsonRpcMethods.GET_OBSERVER_LIST, Arrays.asList(this.groupId));
+
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, ObserverList.class);
     }
 
     @Override
