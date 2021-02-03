@@ -26,8 +26,10 @@ import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
 import org.fisco.bcos.sdk.client.protocol.response.BcosTransactionReceipt;
 import org.fisco.bcos.sdk.client.protocol.response.BlockNumber;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
+import org.fisco.bcos.sdk.client.protocol.response.NodeIDList;
 import org.fisco.bcos.sdk.client.protocol.response.ObserverList;
 import org.fisco.bcos.sdk.client.protocol.response.SealerList;
+import org.fisco.bcos.sdk.client.protocol.response.SystemConfig;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.model.NodeVersion;
@@ -205,6 +207,35 @@ public class ClientImplForProxy extends ClientImpl {
 
         return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
                 jsonRpcRequest, ObserverList.class);
+    }
+
+    @Override
+    public NodeIDList getNodeIDList() {
+        NetworkResponse<NodeIDList> nodeIDList = getNodeIDListByProxy();
+        return nodeIDList.getResult();
+    }
+
+    public NetworkResponse<NodeIDList> getNodeIDListByProxy() {
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(JsonRpcMethods.GET_NODEIDLIST, Arrays.asList(this.groupId));
+
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, NodeIDList.class);
+    }
+
+    @Override
+    public SystemConfig getSystemConfigByKey(String key) {
+        NetworkResponse<SystemConfig> systemConfig = getSystemConfigByKeyByProxy(key);
+        return systemConfig.getResult();
+    }
+
+    public NetworkResponse<SystemConfig> getSystemConfigByKeyByProxy(String key) {
+        JsonRpcRequest jsonRpcRequest =
+                new JsonRpcRequest(
+                        JsonRpcMethods.GET_SYSTEM_CONFIG_BY_KEY, Arrays.asList(this.groupId, key));
+
+        return this.jsonRpcServiceForProxy.sendRequestToGroupByProxy(
+                jsonRpcRequest, SystemConfig.class);
     }
 
     @Override
