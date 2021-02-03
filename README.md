@@ -81,6 +81,19 @@ dependencies {
 
 项目初始化`fisco-bcos-android-sdk`的示例如下。
 
+初始化 android sdk 时需提供`ProxyConfig`配置信息，包括以下内容。
+
+| 设置项             | 是否可选 | 说明                                                           | 
+| ----------------- | ------- | --------------------------------------------------------------|
+| chainId           | 必选    | 链标识，需与 FISCO-BCOS 节点配置的一致                             |
+| crytoType         | 必选    | 是否使用国密，需与 FISCO-BCOS 节点配置的一致，目前支持 ECDSA_TYPE（0）|
+| hexPrivateKey     | 必选    | 发交易进行签名使用的私钥，用户可从文件或数据库中读取                   |
+| networkHandler    | 可选    | http/https 请求实现，用户可自行实现并传入，如不传入，采用 sdk 内部实现  |
+
+上述的`networkHandler`提供了`http`和`https`两种传输协议的内置实现。其中，`NetworkHandlerImp`实现`http`请求，直接访问`Bcos-node-proxy`；`NetworkHandlerHttpsImp`实现`https`请求，通过 Nginx 访问`Bcos-node-proxy`，需新建`assets`目录放置 Nginx 的证书。
+
+基于`NetworkHandlerImp`初始化 android sdk 例子如下。
+
 ```java
     ProxyConfig proxyConfig = new ProxyConfig();
     proxyConfig.setChainId("1");
@@ -92,14 +105,21 @@ dependencies {
     BcosSDKForProxy sdk = BcosSDKForProxy.build(proxyConfig);
 ```
 
-上述的`ProxyConfig`作为初始化 android sdk 的配置项，包括以下内容。
+基于`NetworkHandlerHttpsImp`初始化 android sdk 例子如下。
 
-| 设置项             | 是否可选 | 说明                                                           | 
-| ----------------- | ------- | --------------------------------------------------------------|
-| chainId           | 必选    | 链标识，需与 FISCO-BCOS 节点配置的一致                             |
-| crytoType         | 必选    | 是否使用国密，需与 FISCO-BCOS 节点配置的一致，目前支持 ECDSA_TYPE（0）|
-| hexPrivateKey     | 必选    | 发交易进行签名使用的私钥，用户可从文件或数据库中读取                   |
-| networkHandlerImp | 可选    | http/https 请求实现，用户可自行实现并传入，如不传入，采用 sdk 内部实现  |
+```java
+    ProxyConfig proxyConfig = new ProxyConfig();
+    proxyConfig.setChainId("1");
+    proxyConfig.setCryptoType(CryptoType.ECDSA_TYPE);
+    proxyConfig.setHexPrivateKey("65c70b77051903d7876c63256d9c165cd372ec7df813d0b45869c56fcf5fd564");
+    NetworkHandlerHttpsImp networkHandlerImp = new NetworkHandlerHttpsImp();
+    networkHandlerImp.setIpAndPort("https://127.0.0.1:8180/");
+    CertInfo certInfo = new CertInfo("nginx.crt");
+    networkHandlerImp.setCertInfo(certInfo);
+    networkHandlerImp.setContext(getApplicationContext());
+    proxyConfig.setNetworkHandler(networkHandlerImp);
+    BcosSDKForProxy sdk = BcosSDKForProxy.build(proxyConfig);
+```
 
 ### 4. 编译合约
 
