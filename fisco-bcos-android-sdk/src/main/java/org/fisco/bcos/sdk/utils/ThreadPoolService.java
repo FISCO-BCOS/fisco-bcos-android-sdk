@@ -61,6 +61,14 @@ public class ThreadPoolService {
                         new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
+    public ExecutorService getThreadPool() {
+        return threadPool;
+    }
+
+    public void stop() {
+        stopThreadPool(threadPool);
+    }
+
     public static void stopThreadPool(ExecutorService threadPool) {
         threadPool.shutdown();
         try {
@@ -72,13 +80,5 @@ public class ThreadPoolService {
             threadPool.shutdownNow();
             Thread.currentThread().interrupt();
         }
-    }
-
-    public ExecutorService getThreadPool() {
-        return threadPool;
-    }
-
-    public void stop() {
-        stopThreadPool(threadPool);
     }
 }

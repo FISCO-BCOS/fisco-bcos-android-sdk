@@ -27,10 +27,11 @@ import org.slf4j.LoggerFactory;
 /** ContractAbiUtil. */
 public class ContractAbiUtil {
 
+    private static final Logger logger = LoggerFactory.getLogger(ContractAbiUtil.class);
+
     public static final String TYPE_CONSTRUCTOR = "constructor";
     public static final String TYPE_FUNCTION = "function";
     public static final String TYPE_EVENT = "event";
-    private static final Logger logger = LoggerFactory.getLogger(ContractAbiUtil.class);
 
     /**
      * @param contractAbi the contract abi

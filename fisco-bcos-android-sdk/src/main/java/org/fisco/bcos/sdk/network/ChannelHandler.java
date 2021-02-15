@@ -35,13 +35,13 @@ public class ChannelHandler extends SimpleChannelInboundHandler<Message> {
     private ConnectionManager connectionManager;
     private ExecutorService msgHandleThreadPool;
 
+    public void setMsgHandleThreadPool(ExecutorService msgHandleThreadPool) {
+        this.msgHandleThreadPool = msgHandleThreadPool;
+    }
+
     public ChannelHandler(ConnectionManager connManager, MsgHandler msgHandler) {
         this.msgHandler = msgHandler;
         this.connectionManager = connManager;
-    }
-
-    public void setMsgHandleThreadPool(ExecutorService msgHandleThreadPool) {
-        this.msgHandleThreadPool = msgHandleThreadPool;
     }
 
     @Override

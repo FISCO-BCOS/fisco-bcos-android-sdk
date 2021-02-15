@@ -60,19 +60,6 @@ public class AmopMsgHandler implements MsgHandler {
         this.channel = channel;
     }
 
-    public static boolean isPrivateTopic(String topic) {
-        return topic.length() > topicNeedVerifyPrefix.length()
-                && topicNeedVerifyPrefix.equals(topic.substring(0, topicNeedVerifyPrefix.length()));
-    }
-
-    public static String removePrivateTopicPrefix(String topic) {
-        if (isPrivateTopic(topic)) {
-            return topic.substring(topicNeedVerifyPrefix.length());
-        } else {
-            return topic;
-        }
-    }
-
     public void setIsRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
@@ -256,6 +243,19 @@ public class AmopMsgHandler implements MsgHandler {
         return amopMsg.getTopic().length() > verifyChannelPrefix.length()
                 && verifyChannelPrefix.equals(
                         amopMsg.getTopic().substring(0, verifyChannelPrefix.length()));
+    }
+
+    public static boolean isPrivateTopic(String topic) {
+        return topic.length() > topicNeedVerifyPrefix.length()
+                && topicNeedVerifyPrefix.equals(topic.substring(0, topicNeedVerifyPrefix.length()));
+    }
+
+    public static String removePrivateTopicPrefix(String topic) {
+        if (isPrivateTopic(topic)) {
+            return topic.substring(topicNeedVerifyPrefix.length());
+        } else {
+            return topic;
+        }
     }
 
     private String getSimpleTopic(String fullTopic) {

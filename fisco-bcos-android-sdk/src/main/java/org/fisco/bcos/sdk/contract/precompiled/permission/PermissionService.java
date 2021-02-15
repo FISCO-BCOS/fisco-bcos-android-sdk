@@ -39,6 +39,18 @@ public class PermissionService {
         this.currentVersion = client.getClientNodeVersion().getNodeVersion().getSupportedVersion();
     }
 
+    public RetCode grantPermission(String tableName, String userAddress) throws ContractException {
+        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
+        return ReceiptParser.parseTransactionReceipt(
+                this.permissionPrecompiled.insert(tableName, userAddress));
+    }
+
+    public RetCode revokePermission(String tableName, String userAddress) throws ContractException {
+        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
+        return ReceiptParser.parseTransactionReceipt(
+                this.permissionPrecompiled.remove(tableName, userAddress));
+    }
+
     public static List<PermissionInfo> parsePermissionInfo(String permissionInfo)
             throws JsonProcessingException {
         ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
@@ -51,18 +63,6 @@ public class PermissionService {
         } catch (IOException e) {
             return null;
         }
-    }
-
-    public RetCode grantPermission(String tableName, String userAddress) throws ContractException {
-        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
-        return ReceiptParser.parseTransactionReceipt(
-                this.permissionPrecompiled.insert(tableName, userAddress));
-    }
-
-    public RetCode revokePermission(String tableName, String userAddress) throws ContractException {
-        PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
-        return ReceiptParser.parseTransactionReceipt(
-                this.permissionPrecompiled.remove(tableName, userAddress));
     }
 
     public List<PermissionInfo> queryPermission(String contractAddress) throws ContractException {
@@ -128,7 +128,6 @@ public class PermissionService {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
         return queryPermissionByTableName(PrecompiledConstant.SYS_TABLE);
     }
-
     // permission interfaces for _sys_table_access_
     public RetCode grantPermissionManager(String userAddress) throws ContractException {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
@@ -160,7 +159,6 @@ public class PermissionService {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
         return queryPermissionByTableName(PrecompiledConstant.SYS_CONSENSUS);
     }
-
     // permission interfaces for _sys_cns_
     public RetCode grantCNSManager(String userAddress) throws ContractException {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
@@ -176,7 +174,6 @@ public class PermissionService {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);
         return queryPermissionByTableName(PrecompiledConstant.SYS_CNS);
     }
-
     // permission interfaces for _sys_config_
     public RetCode grantSysConfigManager(String userAddress) throws ContractException {
         PrecompiledVersionCheck.TABLE_PERMISSION_PRECOMPILED_VERSION.checkVersion(currentVersion);

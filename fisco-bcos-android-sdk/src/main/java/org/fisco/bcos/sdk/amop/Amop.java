@@ -41,16 +41,6 @@ public interface Amop {
     }
 
     /**
-     * generate message sequence string
-     *
-     * @return Sequence string
-     */
-    static String newSeq() {
-        String seq = UUID.randomUUID().toString().replaceAll("-", "");
-        return seq;
-    }
-
-    /**
      * Subscribe a normal topic.
      *
      * @param topicName the topic name
@@ -121,6 +111,16 @@ public interface Amop {
 
     /** Stop. */
     void stop();
+
+    /**
+     * generate message sequence string
+     *
+     * @return Sequence string
+     */
+    static String newSeq() {
+        String seq = UUID.randomUUID().toString().replaceAll("-", "");
+        return seq;
+    }
 
     TopicManager getTopicManager();
 

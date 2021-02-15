@@ -32,9 +32,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BcosSDK {
+    private static Logger logger = LoggerFactory.getLogger(BcosSDK.class);
     public static final String ECDSA_TYPE_STR = "ecdsa";
     public static final String SM_TYPE_STR = "sm";
-    private static Logger logger = LoggerFactory.getLogger(BcosSDK.class);
+
     private final ConfigOption config;
     private final Channel channel;
     private final GroupManagerService groupManagerService;
@@ -43,6 +44,16 @@ public class BcosSDK {
     private Amop amop;
     private EventResource eventResource;
     private ThreadPoolService threadPoolService;
+
+    public static BcosSDK build(String tomlConfigFilePath) throws BcosSDKException {
+        try {
+            ConfigOption configOption = Config.load(tomlConfigFilePath);
+            logger.info("create BcosSDK, configPath: {}", tomlConfigFilePath);
+            return new BcosSDK(configOption);
+        } catch (ConfigException e) {
+            throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
+        }
+    }
 
     public BcosSDK(ConfigOption configOption) throws BcosSDKException {
         try {
@@ -81,16 +92,6 @@ public class BcosSDK {
             eventResource = new EventResource();
         } catch (ChannelException | ConfigException e) {
             stopAll();
-            throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
-        }
-    }
-
-    public static BcosSDK build(String tomlConfigFilePath) throws BcosSDKException {
-        try {
-            ConfigOption configOption = Config.load(tomlConfigFilePath);
-            logger.info("create BcosSDK, configPath: {}", tomlConfigFilePath);
-            return new BcosSDK(configOption);
-        } catch (ConfigException e) {
             throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
         }
     }

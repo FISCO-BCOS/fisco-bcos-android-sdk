@@ -33,9 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TopicManager {
-    public static final String verifyChannelPrefix = "#!$VerifyChannel_";
-    public static final String pushChannelPrefix = "#!$PushChannel_";
-    public static final String topicNeedVerifyPrefix = "#!$TopicNeedVerify_";
     private static Logger logger = LoggerFactory.getLogger(TopicManager.class);
     private CryptoSuite cryptoSuite = new CryptoSuite(CryptoType.ECDSA_TYPE);
     private Map<String, CryptoKeyPair> topic2PrivateKey = new ConcurrentHashMap<>();
@@ -45,6 +42,10 @@ public class TopicManager {
     private Set<String> topics = Collections.synchronizedSet(new HashSet<>());
     private Map<String, Set<String>> peer2BlockNotify = new ConcurrentHashMap<>();
     private AmopCallback callback;
+
+    public static final String verifyChannelPrefix = "#!$VerifyChannel_";
+    public static final String pushChannelPrefix = "#!$PushChannel_";
+    public static final String topicNeedVerifyPrefix = "#!$TopicNeedVerify_";
 
     public void addTopic(String topicString, AmopCallback callback) {
         topics.add(topicString);

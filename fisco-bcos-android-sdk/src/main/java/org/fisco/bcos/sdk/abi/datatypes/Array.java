@@ -7,8 +7,8 @@ import java.util.List;
 /** Fixed size array. */
 public abstract class Array<T extends Type> implements Type<List<T>> {
 
-    protected final List<T> value;
     private String type;
+    protected final List<T> value;
 
     @SafeVarargs
     Array(String type, T... values) {

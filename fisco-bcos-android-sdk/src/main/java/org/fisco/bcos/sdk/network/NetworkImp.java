@@ -87,6 +87,27 @@ public class NetworkImp implements Network {
         return connManager.getConnectionInfoList();
     }
 
+    private class CheckCertExistenceResult {
+        private boolean checkPassed = true;
+        private String errorMessage = "";
+
+        public boolean isCheckPassed() {
+            return checkPassed;
+        }
+
+        public void setCheckPassed(boolean checkPassed) {
+            this.checkPassed = checkPassed;
+        }
+
+        public String getErrorMessage() {
+            return errorMessage;
+        }
+
+        public void setErrorMessage(String errorMessage) {
+            this.errorMessage = errorMessage;
+        }
+    }
+
     private CheckCertExistenceResult checkCertExistence(boolean isSM) {
 
         CheckCertExistenceResult result = new CheckCertExistenceResult();
@@ -212,26 +233,5 @@ public class NetworkImp implements Network {
         connManager.stopReconnectSchedule();
         connManager.stopNetty();
         return;
-    }
-
-    private class CheckCertExistenceResult {
-        private boolean checkPassed = true;
-        private String errorMessage = "";
-
-        public boolean isCheckPassed() {
-            return checkPassed;
-        }
-
-        public void setCheckPassed(boolean checkPassed) {
-            this.checkPassed = checkPassed;
-        }
-
-        public String getErrorMessage() {
-            return errorMessage;
-        }
-
-        public void setErrorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
-        }
     }
 }

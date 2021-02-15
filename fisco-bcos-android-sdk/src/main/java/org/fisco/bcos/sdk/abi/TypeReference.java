@@ -34,21 +34,6 @@ public abstract class TypeReference<T extends org.fisco.bcos.sdk.abi.datatypes.T
         this.indexed = indexed;
     }
 
-    public static <T extends org.fisco.bcos.sdk.abi.datatypes.Type> TypeReference<T> create(
-            Class<T> cls) {
-        return create(cls, false);
-    }
-
-    public static <T extends org.fisco.bcos.sdk.abi.datatypes.Type> TypeReference<T> create(
-            Class<T> cls, boolean indexed) {
-        return new TypeReference<T>(indexed) {
-            @Override
-            public Type getType() {
-                return cls;
-            }
-        };
-    }
-
     public int compareTo(TypeReference<T> o) {
         // taken from the blog post comments - this results in an errror if the
         // type parameter is left out.
@@ -73,5 +58,20 @@ public abstract class TypeReference<T extends org.fisco.bcos.sdk.abi.datatypes.T
     @SuppressWarnings("unchecked")
     public Class<T> getClassType() throws ClassNotFoundException {
         return Utils.getClassType(getType());
+    }
+
+    public static <T extends org.fisco.bcos.sdk.abi.datatypes.Type> TypeReference<T> create(
+            Class<T> cls) {
+        return create(cls, false);
+    }
+
+    public static <T extends org.fisco.bcos.sdk.abi.datatypes.Type> TypeReference<T> create(
+            Class<T> cls, boolean indexed) {
+        return new TypeReference<T>(indexed) {
+            @Override
+            public Type getType() {
+                return cls;
+            }
+        };
     }
 }

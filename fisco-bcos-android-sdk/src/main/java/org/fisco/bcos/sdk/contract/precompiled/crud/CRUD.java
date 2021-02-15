@@ -58,14 +58,6 @@ public class CRUD extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public static CRUD load(String contractAddress, Client client, CryptoKeyPair credential) {
-        return new CRUD(contractAddress, client, credential);
-    }
-
-    public static CRUD deploy(Client client, CryptoKeyPair credential) throws ContractException {
-        return deploy(CRUD.class, client, credential, getBinary(client.getCryptoSuite()), "");
-    }
-
     public TransactionReceipt update(
             String tableName, String key, String entry, String condition, String param4) {
         final Function function =
@@ -328,5 +320,13 @@ public class CRUD extends Contract {
                         Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
+    }
+
+    public static CRUD load(String contractAddress, Client client, CryptoKeyPair credential) {
+        return new CRUD(contractAddress, client, credential);
+    }
+
+    public static CRUD deploy(Client client, CryptoKeyPair credential) throws ContractException {
+        return deploy(CRUD.class, client, credential, getBinary(client.getCryptoSuite()), "");
     }
 }

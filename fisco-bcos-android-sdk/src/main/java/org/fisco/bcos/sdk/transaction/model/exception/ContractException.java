@@ -55,16 +55,16 @@ public class ContractException extends Exception {
         return this.responseOutput;
     }
 
-    public void setResponseOutput(Call.CallOutput responseOutput) {
-        this.responseOutput = responseOutput;
-    }
-
     public int getErrorCode() {
         return errorCode;
     }
 
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
+    }
+
+    public void setResponseOutput(Call.CallOutput responseOutput) {
+        this.responseOutput = responseOutput;
     }
 
     public TransactionReceipt getReceipt() {

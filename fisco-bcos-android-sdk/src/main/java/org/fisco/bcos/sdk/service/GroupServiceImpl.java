@@ -27,10 +27,11 @@ import org.slf4j.LoggerFactory;
 public class GroupServiceImpl implements GroupService {
 
     private static Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
-    private final Integer groupId;
+
     private ConcurrentHashMap<String, BigInteger> groupNodeToBlockNumber =
             new ConcurrentHashMap<>();
     private Set<String> groupNodeSet = new CopyOnWriteArraySet<>();
+    private final Integer groupId;
     private AtomicLong latestBlockNumber = new AtomicLong(0);
     private List<String> nodeWithLatestBlockNumber = new CopyOnWriteArrayList<String>();
 

@@ -33,10 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JsonRpcService {
-    private static Logger logger = LoggerFactory.getLogger(JsonRpcService.class);
     protected final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-    public Channel channel;
+    private static Logger logger = LoggerFactory.getLogger(JsonRpcService.class);
     protected GroupManagerService groupManagerService;
+    public Channel channel;
     protected Integer groupId;
 
     public JsonRpcService() {}

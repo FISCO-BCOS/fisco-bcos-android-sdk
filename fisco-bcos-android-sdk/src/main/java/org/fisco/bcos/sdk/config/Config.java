@@ -31,7 +31,6 @@ public class Config {
         // default load ECDSA config
         return load(tomlConfigFile, CryptoType.ECDSA_TYPE);
     }
-
     /**
      * @param tomlConfigFile the toml configuration file path
      * @param cryptoType the type of crypto function

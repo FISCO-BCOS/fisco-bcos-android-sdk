@@ -55,6 +55,81 @@ public class JsonTransactionResponse {
 
     public JsonTransactionResponse() {}
 
+    public static class SignatureResponse {
+        private String r;
+        private String s;
+        private String v;
+        private String signature;
+
+        public SignatureResponse() {}
+
+        public String getR() {
+            return r;
+        }
+
+        public void setR(String r) {
+            this.r = r;
+        }
+
+        public String getS() {
+            return s;
+        }
+
+        public void setS(String s) {
+            this.s = s;
+        }
+
+        public String getV() {
+            return v;
+        }
+
+        public void setV(String v) {
+            this.v = v;
+        }
+
+        public String getSignature() {
+            return signature;
+        }
+
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
+
+        @Override
+        public String toString() {
+            return "{"
+                    + "r='"
+                    + r
+                    + '\''
+                    + ", s='"
+                    + s
+                    + '\''
+                    + ", v='"
+                    + v
+                    + '\''
+                    + ", signature='"
+                    + signature
+                    + '\''
+                    + '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            SignatureResponse that = (SignatureResponse) o;
+            return Objects.equals(r, that.r)
+                    && Objects.equals(s, that.s)
+                    && Objects.equals(v, that.v)
+                    && Objects.equals(signature, that.signature);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(r, s, v, signature);
+        }
+    }
+
     public String getBlockHash() {
         return blockHash;
     }
@@ -351,80 +426,5 @@ public class JsonTransactionResponse {
                 + ", signature="
                 + signature
                 + '}';
-    }
-
-    public static class SignatureResponse {
-        private String r;
-        private String s;
-        private String v;
-        private String signature;
-
-        public SignatureResponse() {}
-
-        public String getR() {
-            return r;
-        }
-
-        public void setR(String r) {
-            this.r = r;
-        }
-
-        public String getS() {
-            return s;
-        }
-
-        public void setS(String s) {
-            this.s = s;
-        }
-
-        public String getV() {
-            return v;
-        }
-
-        public void setV(String v) {
-            this.v = v;
-        }
-
-        public String getSignature() {
-            return signature;
-        }
-
-        public void setSignature(String signature) {
-            this.signature = signature;
-        }
-
-        @Override
-        public String toString() {
-            return "{"
-                    + "r='"
-                    + r
-                    + '\''
-                    + ", s='"
-                    + s
-                    + '\''
-                    + ", v='"
-                    + v
-                    + '\''
-                    + ", signature='"
-                    + signature
-                    + '\''
-                    + '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            SignatureResponse that = (SignatureResponse) o;
-            return Objects.equals(r, that.r)
-                    && Objects.equals(s, that.s)
-                    && Objects.equals(v, that.v)
-                    && Objects.equals(signature, that.signature);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(r, s, v, signature);
-        }
     }
 }

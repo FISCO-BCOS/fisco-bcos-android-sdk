@@ -67,8 +67,8 @@ public class Hex {
      *
      * @param data the byte array
      * @param out the output stream
-     * @return the number of bytes produced.
      * @throws IOException the I/O exception
+     * @return the number of bytes produced.
      */
     public static int encode(byte[] data, OutputStream out) throws IOException {
         return encoder.encode(data, 0, data.length, out);
@@ -81,8 +81,8 @@ public class Hex {
      * @param off the offset of the data to be converted
      * @param length the length of the data to be converted
      * @param out the output stream
-     * @return the number of bytes produced.
      * @throws IOException the I/O exception
+     * @return the number of bytes produced.
      */
     public static int encode(byte[] data, int off, int length, OutputStream out)
             throws IOException {
@@ -131,8 +131,8 @@ public class Hex {
      *
      * @param data the input byte array
      * @param out the output stream
-     * @return the number of bytes produced.
      * @throws IOException the I/O exception
+     * @return the number of bytes produced.
      */
     public static int decode(String data, OutputStream out) throws IOException {
         return encoder.decode(data, out);

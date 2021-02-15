@@ -14,10 +14,6 @@ public class Int extends IntType {
         this(MAX_BIT_LENGTH, value);
     }
 
-    protected Int(int bitSize, BigInteger value) {
-        super(TYPE_NAME, bitSize, value);
-    }
-
     /**
      * check if value between MIN_INT256 ~ MIN_INT256
      *
@@ -32,6 +28,10 @@ public class Int extends IntType {
     @Override
     boolean valid(int bitSize, BigInteger value) {
         return super.valid(bitSize, value) && validInt(value);
+    }
+
+    protected Int(int bitSize, BigInteger value) {
+        super(TYPE_NAME, bitSize, value);
     }
 
     @Override

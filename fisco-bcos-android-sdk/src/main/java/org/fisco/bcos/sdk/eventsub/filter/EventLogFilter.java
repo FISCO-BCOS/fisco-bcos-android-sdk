@@ -54,13 +54,49 @@ public class EventLogFilter {
         return content;
     }
 
+    public class EventLogRequestParams extends EventLogParams {
+        private String groupID;
+        private String filterID;
+        private int timeout = 0;
+
+        public EventLogRequestParams(EventLogParams params, String groupID, String filterID) {
+            this.setFromBlock(params.getFromBlock());
+            this.setToBlock(params.getToBlock());
+            this.setAddresses(params.getAddresses());
+            this.setTopics(params.getTopics());
+            this.setGroupID(groupID);
+            this.setFilterID(filterID);
+        }
+
+        public void setGroupID(String groupID) {
+            this.groupID = groupID;
+        }
+
+        public void setFilterID(String filterID) {
+            this.filterID = filterID;
+        }
+
+        public String getGroupID() {
+            return this.groupID;
+        }
+
+        public String getFilterID() {
+            return this.filterID;
+        }
+
+        public String toJsonString() throws JsonProcessingException {
+            String content = ObjectMapperFactory.getObjectMapper().writeValueAsString(this);
+            return content;
+        }
+    }
+
     private EventLogParams generateNewParams() {
         EventLogParams params = new EventLogParams();
         params.setToBlock(getParams().getToBlock());
         params.setAddresses(getParams().getAddresses());
         params.setTopics(getParams().getTopics());
         if (lastBlockNumber == null) {
-            params.setFromBlock(params.getFromBlock());
+            params.setFromBlock(getParams().getFromBlock());
         } else {
             params.setFromBlock(lastBlockNumber.toString());
         }
@@ -129,41 +165,5 @@ public class EventLogFilter {
 
     public void setCtx(ChannelHandlerContext ctx) {
         this.ctx = ctx;
-    }
-
-    public class EventLogRequestParams extends EventLogParams {
-        private String groupID;
-        private String filterID;
-        private int timeout = 0;
-
-        public EventLogRequestParams(EventLogParams params, String groupID, String filterID) {
-            this.setFromBlock(params.getFromBlock());
-            this.setToBlock(params.getToBlock());
-            this.setAddresses(params.getAddresses());
-            this.setTopics(params.getTopics());
-            this.setGroupID(groupID);
-            this.setFilterID(filterID);
-        }
-
-        public String getGroupID() {
-            return this.groupID;
-        }
-
-        public void setGroupID(String groupID) {
-            this.groupID = groupID;
-        }
-
-        public String getFilterID() {
-            return this.filterID;
-        }
-
-        public void setFilterID(String filterID) {
-            this.filterID = filterID;
-        }
-
-        public String toJsonString() throws JsonProcessingException {
-            String content = ObjectMapperFactory.getObjectMapper().writeValueAsString(this);
-            return content;
-        }
     }
 }

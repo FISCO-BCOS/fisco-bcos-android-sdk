@@ -8,7 +8,6 @@ public class Uint extends IntType {
 
     public static final String TYPE_NAME = "uint";
     public static final Uint DEFAULT = new Uint(BigInteger.ZERO);
-
     /** This constructor is required by the {@link Address} type. */
     Uint(String typePrefix, int bitSize, BigInteger value) {
         super(typePrefix, bitSize, value);

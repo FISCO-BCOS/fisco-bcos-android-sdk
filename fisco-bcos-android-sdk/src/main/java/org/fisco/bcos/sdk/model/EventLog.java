@@ -74,26 +74,26 @@ public class EventLog {
         return convert(logIndex);
     }
 
-    public void setLogIndex(String logIndex) {
-        this.logIndex = logIndex;
-    }
-
     @JsonIgnore
     public String getLogIndexRaw() {
         return logIndex;
+    }
+
+    public void setLogIndex(String logIndex) {
+        this.logIndex = logIndex;
     }
 
     public BigInteger getTransactionIndex() {
         return convert(transactionIndex);
     }
 
-    public void setTransactionIndex(String transactionIndex) {
-        this.transactionIndex = transactionIndex;
-    }
-
     @JsonIgnore
     public String getTransactionIndexRaw() {
         return transactionIndex;
+    }
+
+    public void setTransactionIndex(String transactionIndex) {
+        this.transactionIndex = transactionIndex;
     }
 
     public String getTransactionHash() {
@@ -116,13 +116,13 @@ public class EventLog {
         return convert(blockNumber);
     }
 
-    public void setBlockNumber(String blockNumber) {
-        this.blockNumber = blockNumber;
-    }
-
     @JsonIgnore
     public String getBlockNumberRaw() {
         return blockNumber;
+    }
+
+    public void setBlockNumber(String blockNumber) {
+        this.blockNumber = blockNumber;
     }
 
     public String getAddress() {

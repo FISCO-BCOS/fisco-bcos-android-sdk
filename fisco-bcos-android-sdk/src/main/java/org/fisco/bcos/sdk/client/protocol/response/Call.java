@@ -26,14 +26,6 @@ import org.fisco.bcos.sdk.utils.Numeric;
  * @author Maggie
  */
 public class Call extends JsonRpcResponse<Call.CallOutput> {
-    public void setResult(CallOutput result) {
-        super.setResult(result);
-    }
-
-    public CallOutput getCallResult() {
-        return getResult();
-    }
-
     public static class CallOutput {
         private String currentBlockNumber;
         private String status;
@@ -94,5 +86,13 @@ public class Call extends JsonRpcResponse<Call.CallOutput> {
                     + '\''
                     + '}';
         }
+    }
+
+    public void setResult(CallOutput result) {
+        super.setResult(result);
+    }
+
+    public CallOutput getCallResult() {
+        return getResult();
     }
 }

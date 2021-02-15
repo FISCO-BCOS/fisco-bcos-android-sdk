@@ -45,6 +45,27 @@ public class TransactionEncoderService implements TransactionEncoderInterface {
         this.transactionSignerService = new TransactionSignerServcie(signature);
     }
 
+    @Override
+    public String encodeAndSign(RawTransaction rawTransaction, CryptoKeyPair cryptoKeyPair) {
+        return Numeric.toHexString(encodeAndSignBytes(rawTransaction, cryptoKeyPair));
+    }
+
+    @Override
+    public byte[] encodeAndSignBytes(RawTransaction rawTransaction, CryptoKeyPair cryptoKeyPair) {
+        byte[] encodedTransaction = encode(rawTransaction, null);
+        byte[] hash = cryptoSuite.hash(encodedTransaction);
+        SignatureResult result =
+                transactionSignerService.sign(Hex.toHexString(hash), cryptoKeyPair);
+        return encode(rawTransaction, result);
+    }
+
+    @Override
+    public byte[] encode(RawTransaction transaction, SignatureResult signature) {
+        List<RlpType> values = asRlpValues(transaction, signature);
+        RlpList rlpList = new RlpList(values);
+        return RlpEncoder.encode(rlpList);
+    }
+
     public static List<RlpType> asRlpValues(
             RawTransaction rawTransaction, SignatureResult signatureResult) {
         List<RlpType> result = new ArrayList<>();
@@ -81,27 +102,6 @@ public class TransactionEncoderService implements TransactionEncoderInterface {
             result.addAll(signatureResult.encode());
         }
         return result;
-    }
-
-    @Override
-    public String encodeAndSign(RawTransaction rawTransaction, CryptoKeyPair cryptoKeyPair) {
-        return Numeric.toHexString(encodeAndSignBytes(rawTransaction, cryptoKeyPair));
-    }
-
-    @Override
-    public byte[] encodeAndSignBytes(RawTransaction rawTransaction, CryptoKeyPair cryptoKeyPair) {
-        byte[] encodedTransaction = encode(rawTransaction, null);
-        byte[] hash = cryptoSuite.hash(encodedTransaction);
-        SignatureResult result =
-                transactionSignerService.sign(Hex.toHexString(hash), cryptoKeyPair);
-        return encode(rawTransaction, result);
-    }
-
-    @Override
-    public byte[] encode(RawTransaction transaction, SignatureResult signature) {
-        List<RlpType> values = asRlpValues(transaction, signature);
-        RlpList rlpList = new RlpList(values);
-        return RlpEncoder.encode(rlpList);
     }
 
     /** @return the signature */

@@ -79,11 +79,6 @@ public class TransactionResponse extends CommonResponse {
         return values;
     }
 
-    /** @param values the values to set */
-    public void setValues(String values) {
-        this.values = values;
-    }
-
     public List<Object> getValuesList() {
         if (StringUtils.isEmpty(values)) {
             return null;
@@ -91,14 +86,14 @@ public class TransactionResponse extends CommonResponse {
         return JsonUtils.fromJson(values, new TypeReference<List<Object>>() {});
     }
 
+    /** @param values the values to set */
+    public void setValues(String values) {
+        this.values = values;
+    }
+
     /** @return the events */
     public String getEvents() {
         return events;
-    }
-
-    /** @param events the events to set */
-    public void setEvents(String events) {
-        this.events = events;
     }
 
     @JsonIgnore
@@ -107,6 +102,11 @@ public class TransactionResponse extends CommonResponse {
             return null;
         }
         return JsonUtils.fromJson(events, new TypeReference<Map<String, List<List<Object>>>>() {});
+    }
+
+    /** @param events the events to set */
+    public void setEvents(String events) {
+        this.events = events;
     }
 
     /** @return the receiptMessages */

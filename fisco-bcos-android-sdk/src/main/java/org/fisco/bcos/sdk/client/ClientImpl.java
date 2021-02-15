@@ -924,6 +924,32 @@ public class ClientImpl implements Client {
                 callback);
     }
 
+    class SynchronousTransactionCallback extends TransactionCallback {
+        public TransactionReceipt receipt;
+        public Semaphore semaphore = new Semaphore(1, true);
+
+        SynchronousTransactionCallback() {
+            try {
+                semaphore.acquire(1);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        @Override
+        public void onTimeout() {
+            super.onTimeout();
+            semaphore.release();
+        }
+
+        // wait until get the transactionReceipt
+        @Override
+        public void onResponse(TransactionReceipt receipt) {
+            this.receipt = receipt;
+            semaphore.release();
+        }
+    }
+
     @Override
     public TransactionReceipt sendRawTransactionAndGetReceipt(String signedTransactionData) {
         SynchronousTransactionCallback callback = new SynchronousTransactionCallback();
@@ -1003,31 +1029,5 @@ public class ClientImpl implements Client {
     @Override
     public void stop() {
         Thread.currentThread().interrupt();
-    }
-
-    class SynchronousTransactionCallback extends TransactionCallback {
-        public TransactionReceipt receipt;
-        public Semaphore semaphore = new Semaphore(1, true);
-
-        SynchronousTransactionCallback() {
-            try {
-                semaphore.acquire(1);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        @Override
-        public void onTimeout() {
-            super.onTimeout();
-            semaphore.release();
-        }
-
-        // wait until get the transactionReceipt
-        @Override
-        public void onResponse(TransactionReceipt receipt) {
-            this.receipt = receipt;
-            semaphore.release();
-        }
     }
 }
