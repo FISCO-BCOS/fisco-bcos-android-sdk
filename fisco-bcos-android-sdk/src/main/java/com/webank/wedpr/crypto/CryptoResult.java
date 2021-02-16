@@ -18,6 +18,7 @@ public class CryptoResult extends WedprResult {
     public boolean booleanResult;
     public String encryptedData;
     public String decryptedData;
+    public String vrfProof;
 
     /** Expects no error occurred, otherwise throws an Exception. */
     public CryptoResult expectNoError() throws WedprException {

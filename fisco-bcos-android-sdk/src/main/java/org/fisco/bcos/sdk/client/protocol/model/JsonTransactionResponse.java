@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.signature.ECDSASignatureResult;
+import org.fisco.bcos.sdk.crypto.signature.SM2SignatureResult;
 import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.fisco.bcos.sdk.rlp.RlpEncoder;
@@ -303,11 +304,16 @@ public class JsonTransactionResponse {
             startIndex = 2;
         }
         // signature
+        SignatureResult signatureResult;
         if (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE) {
-            SignatureResult signatureResult =
+            signatureResult =
                     new ECDSASignatureResult(signature.getSignature().substring(startIndex));
-            result.addAll(signatureResult.encode());
+        } else {
+            signatureResult =
+                    new SM2SignatureResult(
+                            signature.getV(), signature.getSignature().substring(startIndex));
         }
+        result.addAll(signatureResult.encode());
         return result;
     }
 

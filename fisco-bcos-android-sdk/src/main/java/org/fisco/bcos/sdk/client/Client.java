@@ -128,6 +128,11 @@ public interface Client {
             Integer groupId,
             JsonRpcServiceForProxy jsonRpcServiceForProxy,
             ProxyConfig proxyConfig) {
+        int cryptoTypeProxyConfig = proxyConfig.getCryptoType();
+        if (cryptoTypeProxyConfig != CryptoType.ECDSA_TYPE) {
+            logger.error("only support ECDSA");
+            return null;
+        }
         // get crypto type from nodeVersion
         Integer cryptoType = CryptoType.ECDSA_TYPE;
         JsonRpcRequest jsonRpcRequest =
@@ -140,7 +145,6 @@ public interface Client {
                 if (nodeVersion.getNodeVersion().getVersion().contains("gm")) {
                     cryptoType = CryptoType.SM_TYPE;
                 }
-                int cryptoTypeProxyConfig = proxyConfig.getCryptoType();
                 if (cryptoTypeProxyConfig != cryptoType) {
                     logger.error(
                             "crypto in sdk and in node are different, sdk: "
