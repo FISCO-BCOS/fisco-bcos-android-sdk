@@ -32,22 +32,6 @@ public class ABICodecJsonWrapper {
 
     private ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
 
-    public static byte[] tryDecodeInputData(String inputData) {
-        if (inputData.startsWith(Base64EncodedDataPrefix)) {
-            return android.util.Base64.decode(
-                    inputData.substring(Base64EncodedDataPrefix.length()),
-                    android.util.Base64.NO_WRAP);
-        } else if (inputData.startsWith(HexEncodedDataPrefix)) {
-            String hexString = inputData.substring(HexEncodedDataPrefix.length());
-            if (hexString.startsWith("0x")) {
-                return Hex.decode(hexString.substring(2));
-            } else {
-                return Hex.decode(hexString);
-            }
-        }
-        return null;
-    }
-
     private void errorReport(String path, String expected, String actual)
             throws InvalidParameterException {
         String errorMessage =
@@ -297,6 +281,22 @@ public class ABICodecJsonWrapper {
         }
 
         return abiObject;
+    }
+
+    public static byte[] tryDecodeInputData(String inputData) {
+        if (inputData.startsWith(Base64EncodedDataPrefix)) {
+            return android.util.Base64.decode(
+                    inputData.substring(Base64EncodedDataPrefix.length()),
+                    android.util.Base64.NO_WRAP);
+        } else if (inputData.startsWith(HexEncodedDataPrefix)) {
+            String hexString = inputData.substring(HexEncodedDataPrefix.length());
+            if (hexString.startsWith("0x")) {
+                return Hex.decode(hexString.substring(2));
+            } else {
+                return Hex.decode(hexString);
+            }
+        }
+        return null;
     }
 
     public ABIObject encode(ABIObject template, List<String> inputs) throws IOException {

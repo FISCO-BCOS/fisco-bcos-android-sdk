@@ -55,17 +55,6 @@ public class CNSPrecompiled extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public static CNSPrecompiled load(
-            String contractAddress, Client client, CryptoKeyPair credential) {
-        return new CNSPrecompiled(contractAddress, client, credential);
-    }
-
-    public static CNSPrecompiled deploy(Client client, CryptoKeyPair credential)
-            throws ContractException {
-        return deploy(
-                CNSPrecompiled.class, client, credential, getBinary(client.getCryptoSuite()), "");
-    }
-
     public String selectByName(String name) throws ContractException {
         final Function function =
                 new Function(
@@ -167,5 +156,16 @@ public class CNSPrecompiled extends Contract {
                                 new org.fisco.bcos.sdk.abi.datatypes.Utf8String(version)),
                         Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeCallWithSingleValueReturn(function, String.class);
+    }
+
+    public static CNSPrecompiled load(
+            String contractAddress, Client client, CryptoKeyPair credential) {
+        return new CNSPrecompiled(contractAddress, client, credential);
+    }
+
+    public static CNSPrecompiled deploy(Client client, CryptoKeyPair credential)
+            throws ContractException {
+        return deploy(
+                CNSPrecompiled.class, client, credential, getBinary(client.getCryptoSuite()), "");
     }
 }

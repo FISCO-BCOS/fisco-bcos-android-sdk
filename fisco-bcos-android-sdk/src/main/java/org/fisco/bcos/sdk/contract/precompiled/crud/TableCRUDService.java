@@ -44,10 +44,10 @@ import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.StringUtils;
 
 public class TableCRUDService {
-    private static final String ValueFieldsDelimiter = ",";
     private final Client client;
     private final CRUD crudService;
     private final TableFactory tableFactory;
+    private static final String ValueFieldsDelimiter = ",";
     private final String currentVersion;
 
     public TableCRUDService(Client client, CryptoKeyPair credential) {
@@ -62,18 +62,6 @@ public class TableCRUDService {
 
     public static String convertValueFieldsToString(List<String> valueFields) {
         return StringUtils.joinAll(ValueFieldsDelimiter, valueFields);
-    }
-
-    public static List<Map<String, String>> parseSelectResult(String selectResult)
-            throws JsonProcessingException {
-        ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-        try {
-            return objectMapper.readValue(
-                    selectResult,
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, Map.class));
-        } catch (IOException e) {
-            return null;
-        }
     }
 
     public void checkKey(String key) throws ContractException {
@@ -175,6 +163,18 @@ public class TableCRUDService {
                             + " failed, error info:"
                             + e.getMessage(),
                     e);
+        }
+    }
+
+    public static List<Map<String, String>> parseSelectResult(String selectResult)
+            throws JsonProcessingException {
+        ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+        try {
+            return objectMapper.readValue(
+                    selectResult,
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, Map.class));
+        } catch (IOException e) {
+            return null;
         }
     }
 

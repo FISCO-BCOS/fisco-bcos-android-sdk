@@ -40,7 +40,6 @@ public interface GroupManagerService {
     void updateGroupInfo(String peerIpAndPort, List<String> groupList);
 
     Channel getChannel();
-
     /**
      * update the block number information for the specified group
      *

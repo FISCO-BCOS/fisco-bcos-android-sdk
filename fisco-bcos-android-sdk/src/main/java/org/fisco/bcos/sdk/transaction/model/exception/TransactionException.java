@@ -8,6 +8,26 @@ public class TransactionException extends Exception {
     private String status;
     private BigInteger gasUsed;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public BigInteger getGasUsed() {
+        return gasUsed;
+    }
+
+    public void setGasUsed(BigInteger gasUsed) {
+        this.gasUsed = gasUsed;
+    }
+
+    public void setTransactionHash(String transactionHash) {
+        this.transactionHash = transactionHash;
+    }
+
     public TransactionException(String message) {
         super(message);
     }
@@ -29,22 +49,6 @@ public class TransactionException extends Exception {
         super(cause);
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public BigInteger getGasUsed() {
-        return gasUsed;
-    }
-
-    public void setGasUsed(BigInteger gasUsed) {
-        this.gasUsed = gasUsed;
-    }
-
     /**
      * Obtain the transaction hash .
      *
@@ -52,9 +56,5 @@ public class TransactionException extends Exception {
      */
     public String getTransactionHash() {
         return transactionHash;
-    }
-
-    public void setTransactionHash(String transactionHash) {
-        this.transactionHash = transactionHash;
     }
 }

@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 
 public class EventSubscribeImp implements EventSubscribe {
     private static final Logger logger = LoggerFactory.getLogger(EventSubscribeImp.class);
-    ScheduledThreadPoolExecutor resendSchedule = new ScheduledThreadPoolExecutor(1);
     private Channel channel;
     private GroupManagerService groupManagerService;
     private Integer groupId;
@@ -47,6 +46,7 @@ public class EventSubscribeImp implements EventSubscribe {
     private EventPushMsgHandler msgHander;
     private EventResource eventResource;
     private boolean running = false;
+    ScheduledThreadPoolExecutor resendSchedule = new ScheduledThreadPoolExecutor(1);
 
     public EventSubscribeImp(
             GroupManagerService groupManagerService, EventResource eventResource, Integer groupId) {

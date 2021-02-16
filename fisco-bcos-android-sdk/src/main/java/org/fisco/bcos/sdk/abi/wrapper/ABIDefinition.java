@@ -27,15 +27,16 @@ import org.fisco.bcos.sdk.utils.StringUtils;
  * not accept Ether - the default) and payable (function accepts Ether). <br>
  */
 public class ABIDefinition {
-    public static List<String> CONSTANT_KEY = Arrays.asList("view");
     private String name;
     private String type;
     private boolean constant;
     private boolean payable;
     private boolean anonymous;
     private String stateMutability;
+
     private List<NamedType> inputs;
     private List<NamedType> outputs;
+    public static List<String> CONSTANT_KEY = Arrays.asList("view");
 
     public ABIDefinition() {}
 
@@ -150,12 +151,12 @@ public class ABIDefinition {
         return outputs;
     }
 
-    public void setOutputs(List<NamedType> outputs) {
-        this.outputs = outputs;
-    }
-
     public boolean hasOutputs() {
         return !outputs.isEmpty();
+    }
+
+    public void setOutputs(List<NamedType> outputs) {
+        this.outputs = outputs;
     }
 
     public String getType() {
@@ -284,16 +285,8 @@ public class ABIDefinition {
             return type;
         }
 
-        public void setType(String type) {
-            this.type = type;
-        }
-
         public String getRawType() {
             return rawType;
-        }
-
-        public void setRawType(String rawType) {
-            this.rawType = rawType;
         }
 
         public Type reduceDimensionAndGetType() {
@@ -321,12 +314,16 @@ public class ABIDefinition {
             return isList() && (dimensions.get(dimensions.size() - 1) != 0);
         }
 
-        public List<Integer> getDimensions() {
-            return dimensions;
+        public void setType(String type) {
+            this.type = type;
         }
 
-        public void setDimensions(List<Integer> dimensions) {
-            this.dimensions = dimensions;
+        public void setRawType(String rawType) {
+            this.rawType = rawType;
+        }
+
+        public List<Integer> getDimensions() {
+            return dimensions;
         }
 
         public Integer getLastDimension() {
@@ -335,6 +332,10 @@ public class ABIDefinition {
             }
 
             return dimensions.get(dimensions.size() - 1);
+        }
+
+        public void setDimensions(List<Integer> dimensions) {
+            this.dimensions = dimensions;
         }
     }
 

@@ -36,6 +36,14 @@ public enum EventSubNodeRespStatus {
         this.setStatus(status);
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public static EventSubNodeRespStatus fromIntStatus(int status) {
         for (EventSubNodeRespStatus e : EventSubNodeRespStatus.values()) {
             if (e.getStatus() == status) {
@@ -89,13 +97,5 @@ public enum EventSubNodeRespStatus {
         }
 
         return desc;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 }

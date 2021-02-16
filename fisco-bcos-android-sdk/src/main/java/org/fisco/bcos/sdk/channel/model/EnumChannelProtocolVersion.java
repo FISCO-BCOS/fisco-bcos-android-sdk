@@ -11,6 +11,14 @@ public enum EnumChannelProtocolVersion {
         this.setVersionNumber(versionNumber);
     }
 
+    public int getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(int versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
     public static EnumChannelProtocolVersion getMinimumProtocol() {
         // get minimum version number supported
         EnumChannelProtocolVersion[] versions = EnumChannelProtocolVersion.values();
@@ -41,13 +49,5 @@ public enum EnumChannelProtocolVersion {
 
         throw new ChannelPrococolExceiption(
                 " not support channel protocol, version " + String.valueOf(v));
-    }
-
-    public int getVersionNumber() {
-        return versionNumber;
-    }
-
-    public void setVersionNumber(int versionNumber) {
-        this.versionNumber = versionNumber;
     }
 }

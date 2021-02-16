@@ -20,9 +20,35 @@ import org.slf4j.LoggerFactory;
 public class ABIObject {
 
     private static final Logger logger = LoggerFactory.getLogger(ABIObject.class);
+
+    public enum ObjectType {
+        VALUE, // uint, int, bool, address, bytes<M>, bytes, string
+        STRUCT, // tuple
+        LIST // T[], T[M]
+    }
+
+    public enum ValueType {
+        BOOL, // bool
+        UINT, // uint<M>
+        INT, // int<M>
+        BYTES, // byteN
+        ADDRESS, // address
+        STRING, // string
+        DBYTES, // bytes
+        FIXED, // fixed<M>x<N>
+        UFIXED, // ufixed<M>x<N>
+    }
+
+    public enum ListType {
+        DYNAMIC, // T[]
+        FIXED, // T[M]
+    }
+
     private String name; // field name
+
     private ObjectType type; // for value
     private ValueType valueType;
+
     private NumericType numericValue;
     private Bytes bytesValue;
     private int bytesLength;
@@ -30,10 +56,12 @@ public class ABIObject {
     private Bool boolValue;
     private DynamicBytes dynamicBytesValue;
     private Utf8String stringValue;
+
     private ListType listType;
     private List<ABIObject> listValues; // for list
     private int listLength; // for list
     private ABIObject listValueType; // for list
+
     private List<ABIObject> structFields; // for struct
 
     public ABIObject(ObjectType type) {
@@ -588,18 +616,8 @@ public class ABIObject {
         return valueType;
     }
 
-    public void setValueType(ValueType valueType) {
-        this.valueType = valueType;
-    }
-
     public NumericType getNumericValue() {
         return numericValue;
-    }
-
-    public void setNumericValue(NumericType numericValue) {
-        this.type = ObjectType.VALUE;
-        this.valueType = ValueType.UINT;
-        this.numericValue = numericValue;
     }
 
     public Bool getBoolValue() {
@@ -610,6 +628,12 @@ public class ABIObject {
         this.type = ObjectType.VALUE;
         this.valueType = ValueType.BOOL;
         this.boolValue = boolValue;
+    }
+
+    public void setNumericValue(NumericType numericValue) {
+        this.type = ObjectType.VALUE;
+        this.valueType = ValueType.UINT;
+        this.numericValue = numericValue;
     }
 
     public Bytes getBytesValue() {
@@ -656,6 +680,10 @@ public class ABIObject {
     public void setListValues(List<ABIObject> listValues) {
         this.type = ObjectType.LIST;
         this.listValues = listValues;
+    }
+
+    public void setValueType(ValueType valueType) {
+        this.valueType = valueType;
     }
 
     public DynamicBytes getDynamicBytesValue() {
@@ -740,28 +768,5 @@ public class ABIObject {
 
         str += '}';
         return str;
-    }
-
-    public enum ObjectType {
-        VALUE, // uint, int, bool, address, bytes<M>, bytes, string
-        STRUCT, // tuple
-        LIST // T[], T[M]
-    }
-
-    public enum ValueType {
-        BOOL, // bool
-        UINT, // uint<M>
-        INT, // int<M>
-        BYTES, // byteN
-        ADDRESS, // address
-        STRING, // string
-        DBYTES, // bytes
-        FIXED, // fixed<M>x<N>
-        UFIXED, // ufixed<M>x<N>
-    }
-
-    public enum ListType {
-        DYNAMIC, // T[]
-        FIXED, // T[M]
     }
 }

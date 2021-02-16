@@ -26,18 +26,6 @@ public class ABICodecObject {
 
     private static final Logger logger = LoggerFactory.getLogger(ABICodecObject.class);
 
-    public static byte[] formatBytesN(ABIObject abiObject) {
-        if (abiObject.getBytesLength() > 0
-                && abiObject.getBytesValue().getValue().length > abiObject.getBytesLength()) {
-            byte[] value = new byte[abiObject.getBytesLength()];
-            System.arraycopy(
-                    abiObject.getBytesValue().getValue(), 0, value, 0, abiObject.getBytesLength());
-            return value;
-        } else {
-            return abiObject.getBytesValue().getValue();
-        }
-    }
-
     private void errorReport(String path, String expected, String actual)
             throws InvalidParameterException {
         String errorMessage =
@@ -320,6 +308,18 @@ public class ABICodecObject {
 
     private List<Object> decodeJavaObject(ABIObject template) throws UnsupportedOperationException {
         return decodeJavaObjectAndGetOutputObject(template).getLeft();
+    }
+
+    public static byte[] formatBytesN(ABIObject abiObject) {
+        if (abiObject.getBytesLength() > 0
+                && abiObject.getBytesValue().getValue().length > abiObject.getBytesLength()) {
+            byte[] value = new byte[abiObject.getBytesLength()];
+            System.arraycopy(
+                    abiObject.getBytesValue().getValue(), 0, value, 0, abiObject.getBytesLength());
+            return value;
+        } else {
+            return abiObject.getBytesValue().getValue();
+        }
     }
 
     private Pair<List<Object>, List<ABIObject>> decodeJavaObjectAndGetOutputObject(
