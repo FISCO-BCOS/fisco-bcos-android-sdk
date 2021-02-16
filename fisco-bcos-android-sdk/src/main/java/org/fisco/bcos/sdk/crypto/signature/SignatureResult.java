@@ -60,20 +60,20 @@ public abstract class SignatureResult {
         return r;
     }
 
-    public void setR(byte[] r) {
-        this.r = r;
-    }
-
     public byte[] getS() {
         return s;
     }
 
-    public void setS(byte[] s) {
-        this.s = s;
-    }
-
     public byte[] getSignatureBytes() {
         return signatureBytes;
+    }
+
+    public void setR(byte[] r) {
+        this.r = r;
+    }
+
+    public void setS(byte[] s) {
+        this.s = s;
     }
 
     public void setSignatureBytes(byte[] signatureBytes) {

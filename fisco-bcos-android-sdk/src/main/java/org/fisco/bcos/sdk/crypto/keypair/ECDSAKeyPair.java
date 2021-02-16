@@ -42,29 +42,15 @@ public class ECDSAKeyPair extends CryptoKeyPair {
         initECDSAKeyPair();
     }
 
-    public static CryptoKeyPair createKeyPair() {
-        return new ECDSAKeyPair(NativeInterface.secp256k1GenKeyPair());
-    }
-
-    public static String getAddressByPublicKey(String publicKey) {
-        return getAddress(publicKey, ECDSAKeyPair.DefaultHashAlgorithm);
-    }
-
-    public static byte[] getAddressByPublicKey(byte[] publicKey) {
-        return Hex.decode(
-                Numeric.cleanHexPrefix(getAddressByPublicKey(Hex.toHexString(publicKey))));
-    }
-
-    public static byte[] getAddressByPublicKey(BigInteger publicKey) {
-        byte[] publicKeyBytes = Numeric.toBytesPadded(publicKey, PUBLIC_KEY_SIZE);
-        return getAddressByPublicKey(publicKeyBytes);
-    }
-
     private void initECDSAKeyPair() {
         this.hashImpl = new Keccak256();
         this.curveName = CryptoKeyPair.ECDSA_CURVE_NAME;
         this.keyStoreSubDir = ECDSA_ACCOUNT_SUBDIR;
         this.signatureAlgorithm = ECDSA_SIGNATURE_ALGORITHM;
+    }
+
+    public static CryptoKeyPair createKeyPair() {
+        return new ECDSAKeyPair(NativeInterface.secp256k1GenKeyPair());
     }
 
     /**
@@ -80,5 +66,19 @@ public class ECDSAKeyPair extends CryptoKeyPair {
     @Override
     public CryptoKeyPair createKeyPair(KeyPair javaKeyPair) {
         return new ECDSAKeyPair(javaKeyPair);
+    }
+
+    public static String getAddressByPublicKey(String publicKey) {
+        return getAddress(publicKey, ECDSAKeyPair.DefaultHashAlgorithm);
+    }
+
+    public static byte[] getAddressByPublicKey(byte[] publicKey) {
+        return Hex.decode(
+                Numeric.cleanHexPrefix(getAddressByPublicKey(Hex.toHexString(publicKey))));
+    }
+
+    public static byte[] getAddressByPublicKey(BigInteger publicKey) {
+        byte[] publicKeyBytes = Numeric.toBytesPadded(publicKey, PUBLIC_KEY_SIZE);
+        return getAddressByPublicKey(publicKeyBytes);
     }
 }

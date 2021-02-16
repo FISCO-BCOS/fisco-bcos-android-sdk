@@ -13,7 +13,6 @@
  */
 package org.fisco.bcos.sdk.crypto.hash;
 
-import android.util.Base64;
 import com.webank.wedpr.crypto.CryptoResult;
 import com.webank.wedpr.crypto.NativeInterface;
 import org.fisco.bcos.sdk.crypto.exceptions.HashException;
@@ -38,13 +37,12 @@ public class Keccak256 implements Hash {
 
     private String calculateHash(final byte[] inputBytes) {
         // Note: the exceptions should be handled by the caller
-        String input = Base64.encodeToString(inputBytes, Base64.NO_WRAP);
-        CryptoResult hashResult = NativeInterface.keccak256Hash(input);
+        CryptoResult hashResult = NativeInterface.keccak256Hash(Hex.toHexString(inputBytes));
         if (hashResult.wedprErrorMessage != null && !hashResult.wedprErrorMessage.isEmpty()) {
             throw new HashException(
                     "Calculate hash with keccak256 failed! error message:"
                             + hashResult.wedprErrorMessage);
         }
-        return Hex.toHexString(Base64.decode(hashResult.hash, Base64.NO_WRAP));
+        return hashResult.hash;
     }
 }
