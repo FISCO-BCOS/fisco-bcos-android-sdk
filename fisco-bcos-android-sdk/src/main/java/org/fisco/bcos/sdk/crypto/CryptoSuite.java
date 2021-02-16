@@ -20,12 +20,15 @@ import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
 import org.fisco.bcos.sdk.crypto.exceptions.UnsupportedCryptoTypeException;
 import org.fisco.bcos.sdk.crypto.hash.Hash;
 import org.fisco.bcos.sdk.crypto.hash.Keccak256;
+import org.fisco.bcos.sdk.crypto.hash.SM3Hash;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.crypto.keypair.ECDSAKeyPair;
+import org.fisco.bcos.sdk.crypto.keypair.SM2KeyPair;
 import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
 import org.fisco.bcos.sdk.crypto.keystore.P12KeyStore;
 import org.fisco.bcos.sdk.crypto.keystore.PEMKeyStore;
 import org.fisco.bcos.sdk.crypto.signature.ECDSASignature;
+import org.fisco.bcos.sdk.crypto.signature.SM2Signature;
 import org.fisco.bcos.sdk.crypto.signature.Signature;
 import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 import org.fisco.bcos.sdk.model.CryptoType;
@@ -67,6 +70,10 @@ public class CryptoSuite {
             this.signatureImpl = new ECDSASignature();
             this.hashImpl = new Keccak256();
             this.keyPairFactory = new ECDSAKeyPair();
+        } else if (this.cryptoTypeConfig == CryptoType.SM_TYPE) {
+            this.signatureImpl = new SM2Signature();
+            this.hashImpl = new SM3Hash();
+            this.keyPairFactory = new SM2KeyPair();
         } else {
             throw new UnsupportedCryptoTypeException(
                     "only support "
@@ -111,6 +118,11 @@ public class CryptoSuite {
                 accountConfig.getAccountFileFormat(),
                 accountFilePath,
                 accountConfig.getAccountPassword());
+    }
+
+    public void setConfig(ConfigOption config) {
+        this.config = config;
+        this.keyPairFactory.setConfig(config);
     }
 
     public int getCryptoTypeConfig() {
@@ -182,22 +194,17 @@ public class CryptoSuite {
         return this.cryptoKeyPair;
     }
 
-    public CryptoKeyPair getCryptoKeyPair() {
-        return this.cryptoKeyPair;
-    }
-
     public void setCryptoKeyPair(CryptoKeyPair cryptoKeyPair) {
         this.cryptoKeyPair = cryptoKeyPair;
         this.cryptoKeyPair.setConfig(config);
     }
 
-    public ConfigOption getConfig() {
-        return this.config;
+    public CryptoKeyPair getCryptoKeyPair() {
+        return this.cryptoKeyPair;
     }
 
-    public void setConfig(ConfigOption config) {
-        this.config = config;
-        this.keyPairFactory.setConfig(config);
+    public ConfigOption getConfig() {
+        return this.config;
     }
 
     public CryptoKeyPair getKeyPairFactory() {

@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
 
 public class ECDSASignatureResult extends SignatureResult {
     protected static Logger logger = LoggerFactory.getLogger(SignatureResult.class);
-    protected static int VBASE = 27;
     protected byte v;
+    protected static int VBASE = 27;
 
     public ECDSASignatureResult(byte v, byte[] r, byte[] s) {
         super(r, s);

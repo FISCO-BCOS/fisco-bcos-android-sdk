@@ -81,4 +81,8 @@ public class CryptoClient {
     public CryptoResult keccak256Hash(String message) throws WedprException {
         return NativeInterface.keccak256Hash(message).expectNoError();
     }
+
+    public CryptoResult sm3Hash(String message) throws WedprException {
+        return NativeInterface.sm3Hash(message).expectNoError();
+    }
 }

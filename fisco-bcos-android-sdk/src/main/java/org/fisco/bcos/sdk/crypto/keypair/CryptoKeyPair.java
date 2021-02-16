@@ -13,7 +13,6 @@
  */
 package org.fisco.bcos.sdk.crypto.keypair;
 
-import android.util.Base64;
 import com.webank.wedpr.crypto.CryptoResult;
 import java.io.File;
 import java.math.BigInteger;
@@ -32,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class CryptoKeyPair {
+    protected static Logger logger = LoggerFactory.getLogger(CryptoKeyPair.class);
     public static final int ADDRESS_SIZE = 160;
     public static final int ADDRESS_LENGTH_IN_HEX = ADDRESS_SIZE >> 2;
     public static final int PUBLIC_KEY_SIZE = 64;
@@ -47,10 +47,9 @@ public abstract class CryptoKeyPair {
     public static final String UNCOMPRESSED_PUBLICKEY_FLAG_STR = "04";
     protected static final String ECDSA_SIGNATURE_ALGORITHM = "SHA256WITHECDSA";
     protected static final String SM_SIGNATURE_ALGORITHM = "1.2.156.10197.1.501";
-    protected static Logger logger = LoggerFactory.getLogger(CryptoKeyPair.class);
-    public KeyPair keyPair;
     protected String hexPrivateKey;
     protected String hexPublicKey;
+    public KeyPair keyPair;
     protected Hash hashImpl;
     // Curve name corresponding to the KeyPair
     protected String curveName;
@@ -83,53 +82,8 @@ public abstract class CryptoKeyPair {
      * @param nativeResult
      */
     CryptoKeyPair(final CryptoResult nativeResult) {
-        this.hexPrivateKey =
-                Hex.toHexString(Base64.decode(nativeResult.privateKey, Base64.NO_WRAP));
-        this.hexPublicKey = Hex.toHexString(Base64.decode(nativeResult.publicKey, Base64.NO_WRAP));
-    }
-
-    protected static String getPublicKeyNoPrefix(String publicKeyStr) {
-        String publicKeyNoPrefix = Numeric.cleanHexPrefix(publicKeyStr);
-        if (publicKeyNoPrefix.startsWith(UNCOMPRESSED_PUBLICKEY_FLAG_STR)
-                && publicKeyNoPrefix.length()
-                        == PUBLIC_KEY_LENGTH_IN_HEX + UNCOMPRESSED_PUBLICKEY_FLAG_STR.length()) {
-            publicKeyNoPrefix =
-                    publicKeyNoPrefix.substring(UNCOMPRESSED_PUBLICKEY_FLAG_STR.length());
-        }
-        // Hexadecimal public key length is less than 128, add 0 in front
-        if (publicKeyNoPrefix.length() < PUBLIC_KEY_LENGTH_IN_HEX) {
-            publicKeyNoPrefix =
-                    StringUtils.zeros(PUBLIC_KEY_LENGTH_IN_HEX - publicKeyNoPrefix.length())
-                            + publicKeyNoPrefix;
-        }
-        return publicKeyNoPrefix;
-    }
-
-    /**
-     * calculate the address according to the given public key
-     *
-     * @param publicKey the Hexed publicKey that need to calculate address
-     * @param hashInterface the hash implement, support SM3Hash and Keccak256 now
-     * @return the account address
-     */
-    protected static String getAddress(String publicKey, Hash hashInterface) {
-        try {
-            String publicKeyNoPrefix =
-                    Numeric.getKeyNoPrefix(
-                            UNCOMPRESSED_PUBLICKEY_FLAG_STR, publicKey, PUBLIC_KEY_LENGTH_IN_HEX);
-            // calculate hash for the public key
-            String publicKeyHash =
-                    Hex.toHexString(hashInterface.hash(Hex.decode(publicKeyNoPrefix)));
-            // right most 160 bits
-            return "0x" + publicKeyHash.substring(publicKeyHash.length() - ADDRESS_LENGTH_IN_HEX);
-        } catch (DecoderException e) {
-            throw new KeyPairException(
-                    "getAddress for "
-                            + publicKey
-                            + "failed, the publicKey param must be hex string, error message: "
-                            + e.getMessage(),
-                    e);
-        }
+        this.hexPrivateKey = nativeResult.privateKey;
+        this.hexPublicKey = nativeResult.publicKey;
     }
 
     public void setConfig(ConfigOption config) {
@@ -167,6 +121,23 @@ public abstract class CryptoKeyPair {
         return createKeyPair(keyPair);
     }
 
+    protected static String getPublicKeyNoPrefix(String publicKeyStr) {
+        String publicKeyNoPrefix = Numeric.cleanHexPrefix(publicKeyStr);
+        if (publicKeyNoPrefix.startsWith(UNCOMPRESSED_PUBLICKEY_FLAG_STR)
+                && publicKeyNoPrefix.length()
+                        == PUBLIC_KEY_LENGTH_IN_HEX + UNCOMPRESSED_PUBLICKEY_FLAG_STR.length()) {
+            publicKeyNoPrefix =
+                    publicKeyNoPrefix.substring(UNCOMPRESSED_PUBLICKEY_FLAG_STR.length());
+        }
+        // Hexadecimal public key length is less than 128, add 0 in front
+        if (publicKeyNoPrefix.length() < PUBLIC_KEY_LENGTH_IN_HEX) {
+            publicKeyNoPrefix =
+                    StringUtils.zeros(PUBLIC_KEY_LENGTH_IN_HEX - publicKeyNoPrefix.length())
+                            + publicKeyNoPrefix;
+        }
+        return publicKeyNoPrefix;
+    }
+
     /**
      * get the address according to the public key
      *
@@ -180,6 +151,33 @@ public abstract class CryptoKeyPair {
 
     public String getAddress(String publicKey) {
         return getAddress(publicKey, hashImpl);
+    }
+
+    /**
+     * calculate the address according to the given public key
+     *
+     * @param publicKey the Hexed publicKey that need to calculate address
+     * @param hashInterface the hash implement, support SM3Hash and Keccak256 now
+     * @return the account address
+     */
+    protected static String getAddress(String publicKey, Hash hashInterface) {
+        try {
+            String publicKeyNoPrefix =
+                    Numeric.getKeyNoPrefix(
+                            UNCOMPRESSED_PUBLICKEY_FLAG_STR, publicKey, PUBLIC_KEY_LENGTH_IN_HEX);
+            // calculate hash for the public key
+            String publicKeyHash =
+                    Hex.toHexString(hashInterface.hash(Hex.decode(publicKeyNoPrefix)));
+            // right most 160 bits
+            return "0x" + publicKeyHash.substring(publicKeyHash.length() - ADDRESS_LENGTH_IN_HEX);
+        } catch (DecoderException e) {
+            throw new KeyPairException(
+                    "getAddress for "
+                            + publicKey
+                            + "failed, the publicKey param must be hex string, error message: "
+                            + e.getMessage(),
+                    e);
+        }
     }
 
     public byte[] getAddress(byte[] publicKey) {
