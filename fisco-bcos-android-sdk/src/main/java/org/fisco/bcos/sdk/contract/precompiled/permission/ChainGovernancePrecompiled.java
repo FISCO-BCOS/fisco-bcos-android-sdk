@@ -79,21 +79,6 @@ public class ChainGovernancePrecompiled extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public static ChainGovernancePrecompiled load(
-            String contractAddress, Client client, CryptoKeyPair credential) {
-        return new ChainGovernancePrecompiled(contractAddress, client, credential);
-    }
-
-    public static ChainGovernancePrecompiled deploy(Client client, CryptoKeyPair credential)
-            throws ContractException {
-        return deploy(
-                ChainGovernancePrecompiled.class,
-                client,
-                credential,
-                getBinary(client.getCryptoSuite()),
-                "");
-    }
-
     public String listOperators() throws ContractException {
         final Function function =
                 new Function(
@@ -567,5 +552,20 @@ public class ChainGovernancePrecompiled extends Contract {
                         Arrays.<Type>asList(new org.fisco.bcos.sdk.abi.datatypes.Address(account)),
                         Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
         return executeCallWithSingleValueReturn(function, String.class);
+    }
+
+    public static ChainGovernancePrecompiled load(
+            String contractAddress, Client client, CryptoKeyPair credential) {
+        return new ChainGovernancePrecompiled(contractAddress, client, credential);
+    }
+
+    public static ChainGovernancePrecompiled deploy(Client client, CryptoKeyPair credential)
+            throws ContractException {
+        return deploy(
+                ChainGovernancePrecompiled.class,
+                client,
+                credential,
+                getBinary(client.getCryptoSuite()),
+                "");
     }
 }

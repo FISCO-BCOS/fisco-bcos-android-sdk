@@ -49,21 +49,6 @@ public class SystemConfigPrecompiled extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public static SystemConfigPrecompiled load(
-            String contractAddress, Client client, CryptoKeyPair credential) {
-        return new SystemConfigPrecompiled(contractAddress, client, credential);
-    }
-
-    public static SystemConfigPrecompiled deploy(Client client, CryptoKeyPair credential)
-            throws ContractException {
-        return deploy(
-                SystemConfigPrecompiled.class,
-                client,
-                credential,
-                getBinary(client.getCryptoSuite()),
-                "");
-    }
-
     public TransactionReceipt setValueByKey(String key, String value) {
         final Function function =
                 new Function(
@@ -120,5 +105,20 @@ public class SystemConfigPrecompiled extends Contract {
                         Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
+    }
+
+    public static SystemConfigPrecompiled load(
+            String contractAddress, Client client, CryptoKeyPair credential) {
+        return new SystemConfigPrecompiled(contractAddress, client, credential);
+    }
+
+    public static SystemConfigPrecompiled deploy(Client client, CryptoKeyPair credential)
+            throws ContractException {
+        return deploy(
+                SystemConfigPrecompiled.class,
+                client,
+                credential,
+                getBinary(client.getCryptoSuite()),
+                "");
     }
 }

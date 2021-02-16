@@ -69,23 +69,26 @@ public class GroupManagerServiceImpl implements GroupManagerService {
     private static Logger logger = LoggerFactory.getLogger(GroupManagerServiceImpl.class);
     private final Channel channel;
     private final BlockNumberMessageDecoder blockNumberMessageDecoder;
-    private final GroupServiceFactory groupServiceFactory;
-    private final Timer timeoutHandler = new HashedWheelTimer();
-    // the thread pool is used to handle the block_notify message and transaction_notify message
-    private final ThreadPoolService threadPool;
-    private final ConfigOption config;
-    AtomicBoolean running = new AtomicBoolean(false);
     private Amop amop;
+    private final GroupServiceFactory groupServiceFactory;
     private ConcurrentHashMap<Integer, GroupService> groupIdToService = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, List<String>> nodeToGroupIDList = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, NodeVersion> nodeToNodeVersion = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, BlockNumberNotifyCallback> registerIdToBlockNotifyCallback =
             new ConcurrentHashMap<>();
+
     private ConcurrentHashMap<String, TransactionCallback> seq2TransactionCallback =
             new ConcurrentHashMap<>();
+    private final Timer timeoutHandler = new HashedWheelTimer();
     private Client groupInfoGetter;
     private long fetchGroupListIntervalMs = 60000;
     private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
+
+    // the thread pool is used to handle the block_notify message and transaction_notify message
+    private final ThreadPoolService threadPool;
+    AtomicBoolean running = new AtomicBoolean(false);
+
+    private final ConfigOption config;
 
     public GroupManagerServiceImpl(Channel channel, ConfigOption configOption) {
         this.channel = channel;

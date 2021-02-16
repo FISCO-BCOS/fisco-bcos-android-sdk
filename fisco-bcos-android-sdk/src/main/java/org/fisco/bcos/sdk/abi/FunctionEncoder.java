@@ -22,6 +22,18 @@ public class FunctionEncoder {
         this.cryptoSuite = cryptoSuite;
     }
 
+    public String encode(Function function) {
+        List<Type> parameters = function.getInputParameters();
+
+        String methodSignature = buildMethodSignature(function.getName(), parameters);
+        String methodId = buildMethodId(methodSignature);
+
+        StringBuilder result = new StringBuilder();
+        result.append(methodId);
+
+        return encodeParameters(parameters, result);
+    }
+
     public static String encodeConstructor(List<Type> parameters) {
         return encodeParameters(parameters, new StringBuilder());
     }
@@ -62,18 +74,6 @@ public class FunctionEncoder {
         result.append(StringUtils.joinAll(",", strList));
         result.append(")");
         return result.toString();
-    }
-
-    public String encode(Function function) {
-        List<Type> parameters = function.getInputParameters();
-
-        String methodSignature = buildMethodSignature(function.getName(), parameters);
-        String methodId = buildMethodId(methodSignature);
-
-        StringBuilder result = new StringBuilder();
-        result.append(methodId);
-
-        return encodeParameters(parameters, result);
     }
 
     public String buildMethodId(String methodSignature) {

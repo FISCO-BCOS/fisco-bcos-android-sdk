@@ -33,12 +33,13 @@ import org.slf4j.LoggerFactory;
 
 public class ABICodec {
 
-    public static final String TYPE_CONSTRUCTOR = "constructor";
     private static final Logger logger = LoggerFactory.getLogger(ABICodec.class);
+
     private final CryptoSuite cryptoSuite;
+    public static final String TYPE_CONSTRUCTOR = "constructor";
+    private ABIDefinitionFactory abiDefinitionFactory;
     private final ABIObjectFactory abiObjectFactory = new ABIObjectFactory();
     private final ABICodecJsonWrapper abiCodecJsonWrapper = new ABICodecJsonWrapper();
-    private ABIDefinitionFactory abiDefinitionFactory;
 
     public ABICodec(CryptoSuite cryptoSuite) {
         super();

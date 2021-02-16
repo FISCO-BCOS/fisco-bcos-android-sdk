@@ -60,12 +60,12 @@ public class Response {
         this.content = content.getBytes();
     }
 
-    public byte[] getContentBytes() {
-        return this.content;
-    }
-
     public void setContentBytes(byte[] content) {
         this.content = content;
+    }
+
+    public byte[] getContentBytes() {
+        return this.content;
     }
 
     public ChannelHandlerContext getCtx() {

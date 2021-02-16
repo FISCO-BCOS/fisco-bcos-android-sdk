@@ -219,6 +219,38 @@ public class ChannelImp implements Channel {
         return sendToPeerWithTimeOut(out, peerIpPort, options);
     }
 
+    class Callback extends ResponseCallback {
+        public transient Response retResponse;
+        public transient Semaphore semaphore = new Semaphore(1, true);
+
+        Callback() {
+            try {
+                semaphore.acquire(1);
+            } catch (InterruptedException e) {
+                logger.error("error :", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        @Override
+        public void onTimeout() {
+            super.onTimeout();
+            semaphore.release();
+        }
+
+        @Override
+        public void onResponse(Response response) {
+            retResponse = response;
+            if (retResponse != null && retResponse.getContent() != null) {
+                logger.trace("response: {}", retResponse.getContent());
+            } else {
+                logger.error("response is null");
+            }
+
+            semaphore.release();
+        }
+    }
+
     public void waitResponse(Callback callback, Options options) {
         try {
             callback.semaphore.acquire(1);
@@ -428,37 +460,5 @@ public class ChannelImp implements Channel {
     @Override
     public void setThreadPool(ExecutorService threadPool) {
         network.setMsgHandleThreadPool(threadPool);
-    }
-
-    class Callback extends ResponseCallback {
-        public transient Response retResponse;
-        public transient Semaphore semaphore = new Semaphore(1, true);
-
-        Callback() {
-            try {
-                semaphore.acquire(1);
-            } catch (InterruptedException e) {
-                logger.error("error :", e);
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        @Override
-        public void onTimeout() {
-            super.onTimeout();
-            semaphore.release();
-        }
-
-        @Override
-        public void onResponse(Response response) {
-            retResponse = response;
-            if (retResponse != null && retResponse.getContent() != null) {
-                logger.trace("response: {}", retResponse.getContent());
-            } else {
-                logger.error("response is null");
-            }
-
-            semaphore.release();
-        }
     }
 }

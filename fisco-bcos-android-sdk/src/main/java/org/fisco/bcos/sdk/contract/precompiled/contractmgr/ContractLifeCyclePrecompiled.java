@@ -61,21 +61,6 @@ public class ContractLifeCyclePrecompiled extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public static ContractLifeCyclePrecompiled load(
-            String contractAddress, Client client, CryptoKeyPair credential) {
-        return new ContractLifeCyclePrecompiled(contractAddress, client, credential);
-    }
-
-    public static ContractLifeCyclePrecompiled deploy(Client client, CryptoKeyPair credential)
-            throws ContractException {
-        return deploy(
-                ContractLifeCyclePrecompiled.class,
-                client,
-                credential,
-                getBinary(client.getCryptoSuite()),
-                "");
-    }
-
     public Tuple2<BigInteger, String> getStatus(String addr) throws ContractException {
         final Function function =
                 new Function(
@@ -313,5 +298,20 @@ public class ContractLifeCyclePrecompiled extends Contract {
         return new Tuple2<BigInteger, List<String>>(
                 (BigInteger) results.get(0).getValue(),
                 convertToNative((List<Address>) results.get(1).getValue()));
+    }
+
+    public static ContractLifeCyclePrecompiled load(
+            String contractAddress, Client client, CryptoKeyPair credential) {
+        return new ContractLifeCyclePrecompiled(contractAddress, client, credential);
+    }
+
+    public static ContractLifeCyclePrecompiled deploy(Client client, CryptoKeyPair credential)
+            throws ContractException {
+        return deploy(
+                ContractLifeCyclePrecompiled.class,
+                client,
+                credential,
+                getBinary(client.getCryptoSuite()),
+                "");
     }
 }

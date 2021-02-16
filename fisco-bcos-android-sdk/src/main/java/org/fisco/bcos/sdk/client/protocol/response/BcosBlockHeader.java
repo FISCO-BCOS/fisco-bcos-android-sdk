@@ -102,124 +102,124 @@ public class BcosBlockHeader extends JsonRpcResponse<BcosBlockHeader.BlockHeader
         protected String timestamp;
         protected List<Signature> signatureList;
 
-        public List<Signature> getSignatureList() {
-            return this.signatureList;
-        }
-
         public void setSignatureList(List<Signature> signatureList) {
             this.signatureList = signatureList;
         }
 
-        public BigInteger getNumber() {
-            return Numeric.decodeQuantity(number);
+        public List<Signature> getSignatureList() {
+            return this.signatureList;
         }
 
         public void setNumber(String number) {
             this.number = number;
         }
 
-        public String getHash() {
-            return hash;
-        }
-
         public void setHash(String hash) {
             this.hash = hash;
-        }
-
-        public String getParentHash() {
-            return parentHash;
         }
 
         public void setParentHash(String parentHash) {
             this.parentHash = parentHash;
         }
 
-        public String getLogsBloom() {
-            return logsBloom;
-        }
-
         public void setLogsBloom(String logsBloom) {
             this.logsBloom = logsBloom;
-        }
-
-        public String getTransactionsRoot() {
-            return transactionsRoot;
         }
 
         public void setTransactionsRoot(String transactionsRoot) {
             this.transactionsRoot = transactionsRoot;
         }
 
-        public String getReceiptsRoot() {
-            return receiptsRoot;
-        }
-
         public void setReceiptsRoot(String receiptsRoot) {
             this.receiptsRoot = receiptsRoot;
-        }
-
-        public String getDbHash() {
-            return dbHash;
         }
 
         public void setDbHash(String dbHash) {
             this.dbHash = dbHash;
         }
 
-        public String getStateRoot() {
-            return stateRoot;
-        }
-
         public void setStateRoot(String stateRoot) {
             this.stateRoot = stateRoot;
-        }
-
-        public String getSealer() {
-            return sealer;
         }
 
         public void setSealer(String sealer) {
             this.sealer = sealer;
         }
 
-        public List<String> getSealerList() {
-            return sealerList;
-        }
-
         public void setSealerList(List<String> sealerList) {
             this.sealerList = sealerList;
-        }
-
-        public List<String> getExtraData() {
-            return extraData;
         }
 
         public void setExtraData(List<String> extraData) {
             this.extraData = extraData;
         }
 
-        public String getGasLimit() {
-            return gasLimit;
-        }
-
         public void setGasLimit(String gasLimit) {
             this.gasLimit = gasLimit;
-        }
-
-        public String getGasUsed() {
-            return gasUsed;
         }
 
         public void setGasUsed(String gasUsed) {
             this.gasUsed = gasUsed;
         }
 
-        public String getTimestamp() {
-            return timestamp;
-        }
-
         public void setTimestamp(String timestamp) {
             this.timestamp = timestamp;
+        }
+
+        public BigInteger getNumber() {
+            return Numeric.decodeQuantity(number);
+        }
+
+        public String getHash() {
+            return hash;
+        }
+
+        public String getParentHash() {
+            return parentHash;
+        }
+
+        public String getLogsBloom() {
+            return logsBloom;
+        }
+
+        public String getTransactionsRoot() {
+            return transactionsRoot;
+        }
+
+        public String getReceiptsRoot() {
+            return receiptsRoot;
+        }
+
+        public String getDbHash() {
+            return dbHash;
+        }
+
+        public String getStateRoot() {
+            return stateRoot;
+        }
+
+        public String getSealer() {
+            return sealer;
+        }
+
+        public List<String> getSealerList() {
+            return sealerList;
+        }
+
+        public List<String> getExtraData() {
+            return extraData;
+        }
+
+        public String getGasLimit() {
+            return gasLimit;
+        }
+
+        public String getGasUsed() {
+            return gasUsed;
+        }
+
+        public String getTimestamp() {
+            return timestamp;
         }
 
         private byte[] encodeBlockHeader() {

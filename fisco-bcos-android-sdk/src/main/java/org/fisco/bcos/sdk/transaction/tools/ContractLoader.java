@@ -56,16 +56,6 @@ public class ContractLoader {
         loadABI(contractName, abi);
     }
 
-    public static ABIDefinition selectConstructor(List<ABIDefinition> abiList) {
-        for (ABIDefinition ABIDefinition : abiList) {
-            if (ABIDefinition.getType().equals(CommonConstant.ABI_CONSTRUCTOR)) {
-                return ABIDefinition;
-            }
-        }
-        // The case where the sol file does not define constructor
-        return null;
-    }
-
     public boolean appendContractAbi(String contractName, String abi) {
         return loadABI(contractName, abi);
     }
@@ -134,6 +124,16 @@ public class ContractLoader {
             loadABI(contract, abi);
         }
         return new AbiInfo(contractFuncAbis, contractConstructorAbi);
+    }
+
+    public static ABIDefinition selectConstructor(List<ABIDefinition> abiList) {
+        for (ABIDefinition ABIDefinition : abiList) {
+            if (ABIDefinition.getType().equals(CommonConstant.ABI_CONSTRUCTOR)) {
+                return ABIDefinition;
+            }
+        }
+        // The case where the sol file does not define constructor
+        return null;
     }
 
     private String parseContractName(File file) {

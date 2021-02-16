@@ -51,17 +51,6 @@ public class TableFactory extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public static TableFactory load(
-            String contractAddress, Client client, CryptoKeyPair credential) {
-        return new TableFactory(contractAddress, client, credential);
-    }
-
-    public static TableFactory deploy(Client client, CryptoKeyPair credential)
-            throws ContractException {
-        return deploy(
-                TableFactory.class, client, credential, getBinary(client.getCryptoSuite()), "");
-    }
-
     public TransactionReceipt createTable(String param0, String param1, String param2) {
         final Function function =
                 new Function(
@@ -136,5 +125,16 @@ public class TableFactory extends Contract {
                                 new org.fisco.bcos.sdk.abi.datatypes.Utf8String(param0)),
                         Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeCallWithSingleValueReturn(function, String.class);
+    }
+
+    public static TableFactory load(
+            String contractAddress, Client client, CryptoKeyPair credential) {
+        return new TableFactory(contractAddress, client, credential);
+    }
+
+    public static TableFactory deploy(Client client, CryptoKeyPair credential)
+            throws ContractException {
+        return deploy(
+                TableFactory.class, client, credential, getBinary(client.getCryptoSuite()), "");
     }
 }

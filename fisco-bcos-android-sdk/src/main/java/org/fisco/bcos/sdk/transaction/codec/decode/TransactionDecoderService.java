@@ -45,8 +45,9 @@ import org.slf4j.LoggerFactory;
 
 public class TransactionDecoderService implements TransactionDecoderInterface {
     protected static Logger logger = LoggerFactory.getLogger(TransactionDecoderService.class);
-    private final ABICodec abiCodec;
+
     private CryptoSuite cryptoSuite;
+    private final ABICodec abiCodec;
     private EventEncoder eventEncoder;
 
     /**

@@ -46,6 +46,83 @@ public class TransactionReceipt {
         return status.equals("0x0") || status.equals("0");
     }
 
+    public static class Logs {
+        private String address;
+        private List<String> topics;
+        private String data;
+        private String blockNumber;
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public List<String> getTopics() {
+            return topics;
+        }
+
+        public void setTopics(List<String> topics) {
+            this.topics = topics;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+
+        public String getBlockNumber() {
+            return blockNumber;
+        }
+
+        public void setBlockNumber(String blockNumber) {
+            this.blockNumber = blockNumber;
+        }
+
+        public EventLog toEventLog() {
+            EventLog eventLog = new EventLog();
+            eventLog.setAddress(this.address);
+            eventLog.setTopics(this.topics);
+            eventLog.setData(this.data);
+            eventLog.setBlockNumber(this.blockNumber);
+            return eventLog;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Logs logs = (Logs) o;
+            return Objects.equals(address, logs.address)
+                    && Objects.equals(topics, logs.topics)
+                    && Objects.equals(data, logs.data);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(address, topics, data);
+        }
+
+        @Override
+        public String toString() {
+            return "Logs{"
+                    + "address='"
+                    + address
+                    + '\''
+                    + ", topics="
+                    + topics
+                    + ", data='"
+                    + data
+                    + '\''
+                    + '}';
+        }
+    }
+
     public List<MerkleProofUnit> getReceiptProof() {
         return receiptProof;
     }
@@ -288,82 +365,5 @@ public class TransactionReceipt {
     /** @param message the message to set */
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public static class Logs {
-        private String address;
-        private List<String> topics;
-        private String data;
-        private String blockNumber;
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public List<String> getTopics() {
-            return topics;
-        }
-
-        public void setTopics(List<String> topics) {
-            this.topics = topics;
-        }
-
-        public String getData() {
-            return data;
-        }
-
-        public void setData(String data) {
-            this.data = data;
-        }
-
-        public String getBlockNumber() {
-            return blockNumber;
-        }
-
-        public void setBlockNumber(String blockNumber) {
-            this.blockNumber = blockNumber;
-        }
-
-        public EventLog toEventLog() {
-            EventLog eventLog = new EventLog();
-            eventLog.setAddress(this.address);
-            eventLog.setTopics(this.topics);
-            eventLog.setData(this.data);
-            eventLog.setBlockNumber(this.blockNumber);
-            return eventLog;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Logs logs = (Logs) o;
-            return Objects.equals(address, logs.address)
-                    && Objects.equals(topics, logs.topics)
-                    && Objects.equals(data, logs.data);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(address, topics, data);
-        }
-
-        @Override
-        public String toString() {
-            return "Logs{"
-                    + "address='"
-                    + address
-                    + '\''
-                    + ", topics="
-                    + topics
-                    + ", data='"
-                    + data
-                    + '\''
-                    + '}';
-        }
     }
 }

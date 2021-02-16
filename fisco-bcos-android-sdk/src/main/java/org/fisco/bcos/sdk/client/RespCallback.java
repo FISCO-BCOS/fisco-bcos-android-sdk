@@ -20,8 +20,8 @@ import org.fisco.bcos.sdk.model.Response;
 /**
  * Callback function to executed when client get response from the node.
  *
- * @param <T> for the response data structures in package client/response
  * @author Maggie
+ * @param <T> for the response data structures in package client/response
  */
 public interface RespCallback<T> {
     /**

@@ -20,7 +20,6 @@ import org.fisco.bcos.sdk.crypto.signature.SignatureResult;
 
 public class TransactionSignerServcie implements TransactionSignerInterface {
     private Signature signature;
-
     /**
      * create the TransactionSignerService according the the given signature
      *

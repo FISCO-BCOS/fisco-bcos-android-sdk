@@ -52,21 +52,6 @@ public class ConsensusPrecompiled extends Contract {
         return (cryptoSuite.getCryptoTypeConfig() == CryptoType.ECDSA_TYPE ? BINARY : SM_BINARY);
     }
 
-    public static ConsensusPrecompiled load(
-            String contractAddress, Client client, CryptoKeyPair credential) {
-        return new ConsensusPrecompiled(contractAddress, client, credential);
-    }
-
-    public static ConsensusPrecompiled deploy(Client client, CryptoKeyPair credential)
-            throws ContractException {
-        return deploy(
-                ConsensusPrecompiled.class,
-                client,
-                credential,
-                getBinary(client.getCryptoSuite()),
-                "");
-    }
-
     public TransactionReceipt addObserver(String param0) {
         final Function function =
                 new Function(
@@ -221,5 +206,20 @@ public class ConsensusPrecompiled extends Contract {
                         Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}));
         List<Type> results = FunctionReturnDecoder.decode(data, function.getOutputParameters());
         return new Tuple1<BigInteger>((BigInteger) results.get(0).getValue());
+    }
+
+    public static ConsensusPrecompiled load(
+            String contractAddress, Client client, CryptoKeyPair credential) {
+        return new ConsensusPrecompiled(contractAddress, client, credential);
+    }
+
+    public static ConsensusPrecompiled deploy(Client client, CryptoKeyPair credential)
+            throws ContractException {
+        return deploy(
+                ConsensusPrecompiled.class,
+                client,
+                credential,
+                getBinary(client.getCryptoSuite()),
+                "");
     }
 }

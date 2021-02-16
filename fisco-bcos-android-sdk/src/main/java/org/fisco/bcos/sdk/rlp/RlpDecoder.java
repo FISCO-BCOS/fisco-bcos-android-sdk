@@ -53,7 +53,6 @@ public final class RlpDecoder {
     private RlpDecoder() {
         throw new IllegalStateException("Utility class");
     }
-
     /**
      * Parse wire byte[] message into RLP elements.
      *

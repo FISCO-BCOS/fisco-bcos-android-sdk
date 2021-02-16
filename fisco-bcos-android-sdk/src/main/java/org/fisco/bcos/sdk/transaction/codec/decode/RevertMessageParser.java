@@ -41,17 +41,20 @@ import org.slf4j.LoggerFactory;
 
 public class RevertMessageParser {
 
+    private static final Logger logger = LoggerFactory.getLogger(RevertMessageParser.class);
+
     public static final String RevertMethod = "08c379a0";
     public static final String RevertMethodWithHexPrefix = "0x08c379a0";
+
     public static final String SMRevertMethod = "c703cb12";
     public static final String SMRevertMethodWithHexPrefix = "0xc703cb12";
+
     // Error(String)
     public static final Function revertFunction =
             new Function(
                     "Error",
                     Collections.<Type>emptyList(),
                     Collections.singletonList(new TypeReference<Utf8String>() {}));
-    private static final Logger logger = LoggerFactory.getLogger(RevertMessageParser.class);
 
     /**
      * Does output start with the code of the Revert method, If so, the output may be error message

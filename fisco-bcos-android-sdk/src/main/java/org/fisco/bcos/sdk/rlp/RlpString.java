@@ -27,6 +27,21 @@ public final class RlpString implements RlpType {
         this.value = value;
     }
 
+    public final byte[] getBytes() {
+        return value;
+    }
+
+    public BigInteger asPositiveBigInteger() {
+        if (value.length == 0) {
+            return BigInteger.ZERO;
+        }
+        return new BigInteger(1, value);
+    }
+
+    public String asString() {
+        return Numeric.toHexString(value);
+    }
+
     public static RlpString create(byte[] value) {
         return new RlpString(value);
     }
@@ -56,21 +71,6 @@ public final class RlpString implements RlpType {
 
     public static RlpString create(String value) {
         return new RlpString(value.getBytes());
-    }
-
-    public final byte[] getBytes() {
-        return value;
-    }
-
-    public BigInteger asPositiveBigInteger() {
-        if (value.length == 0) {
-            return BigInteger.ZERO;
-        }
-        return new BigInteger(1, value);
-    }
-
-    public String asString() {
-        return Numeric.toHexString(value);
     }
 
     @Override
