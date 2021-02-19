@@ -37,6 +37,8 @@ import org.fisco.bcos.sdk.channel.model.NodeHeartbeat;
 import org.fisco.bcos.sdk.channel.model.Options;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.model.MsgType;
 import org.fisco.bcos.sdk.model.Response;
@@ -48,8 +50,6 @@ import org.fisco.bcos.sdk.network.NetworkImp;
 import org.fisco.bcos.sdk.utils.ChannelUtils;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An implementation of channel.
@@ -196,13 +196,11 @@ public class ChannelImp implements Channel {
 
     @Override
     public void broadcast(Message out) {
-        /*msgHandler
-        .getAvailablePeer()
-        .forEach(
-                (peer, ctx) -> {
-                    ctx.writeAndFlush(out);
-                    logger.trace("send message to {} success ", peer);
-                });*/
+        /*
+         * msgHandler .getAvailablePeer() .forEach( (peer, ctx) -> {
+         * ctx.writeAndFlush(out); logger.trace("send message to {} success ", peer);
+         * });
+         */
         Map<String, ChannelHandlerContext> ctxs = msgHandler.getAvailablePeer();
         for (Map.Entry<String, ChannelHandlerContext> entry : ctxs.entrySet()) {
             String peer = entry.getKey();
@@ -360,12 +358,10 @@ public class ChannelImp implements Channel {
     @Override
     public List<String> getAvailablePeer() {
         List<String> peerList = new ArrayList<>();
-        /*msgHandler
-        .getAvailablePeer()
-        .forEach(
-                (peer, ctx) -> {
-                    peerList.add(peer);
-                });*/
+        /*
+         * msgHandler .getAvailablePeer() .forEach( (peer, ctx) -> { peerList.add(peer);
+         * });
+         */
         Map<String, ChannelHandlerContext> ctxs = msgHandler.getAvailablePeer();
         for (Map.Entry<String, ChannelHandlerContext> entry : ctxs.entrySet()) {
             peerList.add(entry.getKey());
@@ -375,13 +371,11 @@ public class ChannelImp implements Channel {
 
     private void broadcastHeartbeat() {
         try {
-            /*msgHandler
-            .getAvailablePeer()
-            .forEach(
-                    (peer, ctx) -> {
-                        sendHeartbeatMessage(ctx);
-                        logger.trace("broadcastHeartbeat to {} success ", peer);
-                    });*/
+            /*
+             * msgHandler .getAvailablePeer() .forEach( (peer, ctx) -> {
+             * sendHeartbeatMessage(ctx); logger.trace("broadcastHeartbeat to {} success ",
+             * peer); });
+             */
             Map<String, ChannelHandlerContext> ctxs = msgHandler.getAvailablePeer();
             for (Map.Entry<String, ChannelHandlerContext> entry : ctxs.entrySet()) {
                 String peer = entry.getKey();

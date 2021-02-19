@@ -46,6 +46,8 @@ import org.fisco.bcos.sdk.client.handler.TransactionNotifyHandler;
 import org.fisco.bcos.sdk.client.protocol.response.BlockNumber;
 import org.fisco.bcos.sdk.client.protocol.response.GroupList;
 import org.fisco.bcos.sdk.config.ConfigOption;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.model.MsgType;
@@ -60,8 +62,6 @@ import org.fisco.bcos.sdk.service.model.BlockNumberNotification;
 import org.fisco.bcos.sdk.utils.ChannelUtils;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.ThreadPoolService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GroupManagerServiceImpl implements GroupManagerService {
     public static final String SM_CRYPTO_STR = "gm";

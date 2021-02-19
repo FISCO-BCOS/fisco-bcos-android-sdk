@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.security.Provider;
 import java.security.SecureRandomSpi;
 import java.security.Security;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 
 /**
  * Implementation from <a

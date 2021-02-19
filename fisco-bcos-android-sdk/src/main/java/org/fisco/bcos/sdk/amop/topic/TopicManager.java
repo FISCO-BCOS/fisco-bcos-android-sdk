@@ -28,9 +28,9 @@ import org.fisco.bcos.sdk.amop.AmopMsgOut;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.CryptoType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TopicManager {
     private static Logger logger = LoggerFactory.getLogger(TopicManager.class);

@@ -24,12 +24,12 @@ import org.fisco.bcos.sdk.channel.ChannelVersionNegotiation;
 import org.fisco.bcos.sdk.channel.model.ChannelProtocol;
 import org.fisco.bcos.sdk.channel.model.EnumChannelProtocolVersion;
 import org.fisco.bcos.sdk.channel.model.EnumSocketChannelAttributeKey;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.AmopMsg;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.model.MsgType;
 import org.fisco.bcos.sdk.network.MsgHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BlockNumberNotifyHandler implements MsgHandler {
     private static Logger logger = LoggerFactory.getLogger(BlockNumberNotifyHandler.class);

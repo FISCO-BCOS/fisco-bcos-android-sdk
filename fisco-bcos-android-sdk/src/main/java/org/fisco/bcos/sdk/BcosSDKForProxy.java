@@ -19,9 +19,9 @@ import org.fisco.bcos.sdk.NetworkHandler.NetworkHandlerInterface;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.JsonRpcServiceForProxy;
 import org.fisco.bcos.sdk.config.model.ProxyConfig;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.ConstantConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BcosSDKForProxy {
 

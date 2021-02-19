@@ -2,9 +2,9 @@ package org.fisco.bcos.sdk.abi.wrapper;
 
 import java.math.BigInteger;
 import java.util.List;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.utils.Numeric;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ABIObjectFactory {
 

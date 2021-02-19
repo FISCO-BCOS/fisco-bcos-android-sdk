@@ -32,6 +32,8 @@ import org.fisco.bcos.sdk.channel.model.ChannelRequest;
 import org.fisco.bcos.sdk.channel.model.EnumChannelProtocolVersion;
 import org.fisco.bcos.sdk.channel.model.EnumNodeVersion;
 import org.fisco.bcos.sdk.channel.model.EnumSocketChannelAttributeKey;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.model.MsgType;
 import org.fisco.bcos.sdk.model.NodeVersion;
@@ -39,8 +41,6 @@ import org.fisco.bcos.sdk.model.Response;
 import org.fisco.bcos.sdk.network.MsgHandler;
 import org.fisco.bcos.sdk.utils.ChannelUtils;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An implementation of channel.
