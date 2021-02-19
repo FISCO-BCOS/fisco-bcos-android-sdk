@@ -15,10 +15,10 @@ package org.fisco.bcos.sdk.service.model;
 
 import java.io.IOException;
 import org.fisco.bcos.sdk.channel.model.EnumChannelProtocolVersion;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BlockNumberMessageDecoder {
     private static Logger logger = LoggerFactory.getLogger(BlockNumberMessageDecoder.class);

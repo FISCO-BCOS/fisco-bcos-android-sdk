@@ -21,11 +21,11 @@ import org.fisco.bcos.sdk.NetworkHandler.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
 import org.fisco.bcos.sdk.client.exceptions.NetworkHandlerException;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
 import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JsonRpcServiceForProxy extends JsonRpcService {
 

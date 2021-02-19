@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.utils.Numeric;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ContractABIDefinition {
 

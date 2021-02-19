@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.fisco.bcos.sdk.eventsub.EventCallback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 
 /**
  * Filter manager is to maintain a EventLogFilter list, as well as a EventCallback list. Include

@@ -22,8 +22,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.fisco.bcos.sdk.NetworkHandler.model.CertInfo;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 
 public class NetworkHandlerHttpsImp implements NetworkHandlerInterface {
 

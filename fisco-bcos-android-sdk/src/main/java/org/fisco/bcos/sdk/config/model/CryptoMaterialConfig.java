@@ -18,9 +18,9 @@ package org.fisco.bcos.sdk.config.model;
 import java.io.File;
 import java.util.Map;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.CryptoType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CryptoMaterialConfig {
     private static Logger logger = LoggerFactory.getLogger(CryptoMaterialConfig.class);

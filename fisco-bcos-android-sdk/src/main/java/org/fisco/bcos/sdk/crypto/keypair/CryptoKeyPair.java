@@ -23,12 +23,12 @@ import org.fisco.bcos.sdk.crypto.hash.Hash;
 import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
 import org.fisco.bcos.sdk.crypto.keystore.P12KeyStore;
 import org.fisco.bcos.sdk.crypto.keystore.PEMKeyStore;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.utils.Hex;
 import org.fisco.bcos.sdk.utils.Numeric;
 import org.fisco.bcos.sdk.utils.StringUtils;
 import org.fisco.bcos.sdk.utils.exceptions.DecoderException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class CryptoKeyPair {
     protected static Logger logger = LoggerFactory.getLogger(CryptoKeyPair.class);

@@ -1,8 +1,8 @@
 package org.fisco.bcos.sdk.amop.topic;
 
 import io.netty.channel.ChannelHandlerContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 
 public class AmopMsgIn {
     private static Logger logger = LoggerFactory.getLogger(AmopMsgIn.class);

@@ -16,10 +16,10 @@
 package org.fisco.bcos.sdk.model.callback;
 
 import io.netty.util.Timeout;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.TransactionReceiptStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class TransactionCallback {
     private static Logger logger = LoggerFactory.getLogger(TransactionCallback.class);

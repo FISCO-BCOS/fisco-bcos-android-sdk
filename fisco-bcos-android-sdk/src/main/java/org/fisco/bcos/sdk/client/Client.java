@@ -59,14 +59,14 @@ import org.fisco.bcos.sdk.client.protocol.response.TransactionWithProof;
 import org.fisco.bcos.sdk.config.model.ProxyConfig;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.eventsub.EventResource;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.CryptoType;
 import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.service.GroupManagerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This is the interface of client module.
@@ -163,7 +163,12 @@ public interface Client {
                     return null;
                 }
                 CryptoSuite cryptoSuite = new CryptoSuite(cryptoType);
-                cryptoSuite.createKeyPair(proxyConfig.getHexPrivateKey());
+                String privateKey = proxyConfig.getHexPrivateKey();
+                if (privateKey != null && !privateKey.isEmpty()) {
+                    cryptoSuite.createKeyPair(privateKey);
+                } else {
+                    cryptoSuite.createKeyPair();
+                }
                 logger.info("created address: " + cryptoSuite.getCryptoKeyPair().getAddress());
                 return new ClientImplForProxy(
                         groupId, cryptoSuite, nodeVersion, jsonRpcServiceForProxy);
@@ -172,6 +177,7 @@ public interface Client {
             }
         } catch (Exception e) {
             logger.error("build client failed, error info: " + e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

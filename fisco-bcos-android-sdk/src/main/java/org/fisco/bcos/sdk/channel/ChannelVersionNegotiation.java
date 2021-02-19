@@ -6,8 +6,8 @@ import io.netty.util.AttributeKey;
 import org.fisco.bcos.sdk.channel.model.ChannelProtocol;
 import org.fisco.bcos.sdk.channel.model.EnumChannelProtocolVersion;
 import org.fisco.bcos.sdk.channel.model.EnumSocketChannelAttributeKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 
 public class ChannelVersionNegotiation {
 

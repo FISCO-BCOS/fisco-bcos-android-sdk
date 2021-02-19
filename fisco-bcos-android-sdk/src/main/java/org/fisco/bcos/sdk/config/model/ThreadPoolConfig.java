@@ -16,8 +16,8 @@
 package org.fisco.bcos.sdk.config.model;
 
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 
 public class ThreadPoolConfig {
     private static final Logger logger = LoggerFactory.getLogger(ThreadPoolConfig.class);
