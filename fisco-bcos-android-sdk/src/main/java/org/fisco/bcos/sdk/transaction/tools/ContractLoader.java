@@ -26,13 +26,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.fisco.bcos.sdk.abi.tools.ContractAbiUtil;
 import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.transaction.model.CommonConstant;
 import org.fisco.bcos.sdk.transaction.model.bo.AbiInfo;
 import org.fisco.bcos.sdk.transaction.model.bo.BinInfo;
 import org.fisco.bcos.sdk.transaction.model.exception.NoSuchTransactionFileException;
 import org.fisco.bcos.sdk.transaction.model.exception.TransactionRetCodeConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * ContractLoader @Description: ContractLoader

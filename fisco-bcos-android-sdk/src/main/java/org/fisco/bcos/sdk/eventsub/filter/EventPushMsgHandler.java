@@ -20,13 +20,13 @@ import io.netty.channel.ChannelHandlerContext;
 import java.io.IOException;
 import java.util.List;
 import org.fisco.bcos.sdk.eventsub.EventCallback;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.EventLog;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.network.MsgHandler;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 import org.fisco.bcos.sdk.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** EventPushMsgHandler is the type of EVENT_LOG_PUSH message handler. */
 public class EventPushMsgHandler implements MsgHandler {

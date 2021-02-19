@@ -4,12 +4,12 @@ import io.netty.channel.ChannelHandlerContext;
 import org.fisco.bcos.sdk.amop.topic.AmopMsgHandler;
 import org.fisco.bcos.sdk.amop.topic.AmopMsgIn;
 import org.fisco.bcos.sdk.amop.topic.TopicType;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.AmopMsg;
 import org.fisco.bcos.sdk.model.Message;
 import org.fisco.bcos.sdk.model.MsgType;
 import org.fisco.bcos.sdk.model.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AmopResponse {
     private static Logger logger = LoggerFactory.getLogger(AmopResponse.class);

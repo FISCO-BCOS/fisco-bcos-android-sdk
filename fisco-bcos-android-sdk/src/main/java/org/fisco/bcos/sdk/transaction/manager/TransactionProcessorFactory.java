@@ -18,10 +18,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.fisco.bcos.sdk.channel.model.EnumNodeVersion;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.transaction.tools.ContractLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TransactionProcessorFactory {
     private static final Logger logger = LoggerFactory.getLogger(TransactionProcessorFactory.class);

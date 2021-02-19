@@ -87,3 +87,8 @@ lint/tmp/
 
 # mac
 .DS_Store
+.project
+.settings/
+*/.classpath
+*/.project
+*/.settings/

@@ -17,9 +17,9 @@ package org.fisco.bcos.sdk.contract.precompiled.model;
 
 import org.fisco.bcos.sdk.channel.model.ChannelPrococolExceiption;
 import org.fisco.bcos.sdk.channel.model.EnumNodeVersion;
+import org.fisco.bcos.sdk.log.Logger;
+import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Version {
     private static Logger logger = LoggerFactory.getLogger(Version.class);
