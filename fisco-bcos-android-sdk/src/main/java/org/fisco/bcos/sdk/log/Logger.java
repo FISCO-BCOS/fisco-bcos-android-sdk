@@ -2,6 +2,13 @@ package org.fisco.bcos.sdk.log;
 
 import android.util.Log;
 
+/**
+ * The default implementation of the log interface.
+ *
+ * <p>Implements the interface using android native log.
+ *
+ * <p>Controls log output by setting the level.
+ */
 public class Logger {
     protected String tag = "BcosSDKLogger";
     protected int effectiveLevel = Log.VERBOSE;
@@ -18,32 +25,39 @@ public class Logger {
 
     public void error(String format, Object... arg) {
         if (isErrorEnabled()) {
-            Log.e(this.tag, String.format(format, arg));
+            Log.e(this.tag, format(format, arg));
         }
     }
 
     public void warn(String format, Object... arg) {
         if (isWarnEnabled()) {
-            Log.w(this.tag, String.format(format, arg));
+            Log.w(this.tag, format(format, arg));
         }
     }
 
     public void info(String format, Object... arg) {
         if (isInfoEnabled()) {
-            Log.i(this.tag, String.format(format, arg));
+            Log.i(this.tag, format(format, arg));
         }
     }
 
     public void debug(String format, Object... arg) {
         if (isDebugEnabled()) {
-            Log.d(this.tag, String.format(format, arg));
+            Log.d(this.tag, format(format, arg));
         }
     }
 
     public void trace(String format, Object... arg) {
         if (isTraceEnabled()) {
-            Log.v(this.tag, String.format(format, arg));
+            Log.v(this.tag, format(format, arg));
         }
+    }
+
+    public static String format(String str, Object... args) {
+        for (int i = 0; i < args.length; i++) {
+            str = str.replaceFirst("\\{\\}", String.valueOf(args[i]));
+        }
+        return str;
     }
 
     public boolean isErrorEnabled() {
