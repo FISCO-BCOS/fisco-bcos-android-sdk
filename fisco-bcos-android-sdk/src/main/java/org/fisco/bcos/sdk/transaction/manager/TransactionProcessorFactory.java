@@ -15,13 +15,12 @@
 package org.fisco.bcos.sdk.transaction.manager;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.fisco.bcos.sdk.channel.model.EnumNodeVersion;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
+import org.fisco.bcos.sdk.model.EnumNodeVersion;
 import org.fisco.bcos.sdk.model.NodeVersion;
-import org.fisco.bcos.sdk.transaction.tools.ContractLoader;
 
 public class TransactionProcessorFactory {
     private static final Logger logger = LoggerFactory.getLogger(TransactionProcessorFactory.class);
@@ -57,32 +56,5 @@ public class TransactionProcessorFactory {
             Client client, CryptoKeyPair cryptoKeyPair) {
         Pair<String, Integer> pair = getChainIdAndGroupId(client);
         return new TransactionProcessor(client, cryptoKeyPair, pair.getRight(), pair.getLeft());
-    }
-
-    public static AssembleTransactionProcessor createAssembleTransactionProcessor(
-            Client client, CryptoKeyPair cryptoKeyPair) throws Exception {
-        Pair<String, Integer> pair = getChainIdAndGroupId(client);
-        return new AssembleTransactionProcessor(
-                client, cryptoKeyPair, pair.getRight(), pair.getLeft(), null);
-    }
-
-    public static AssembleTransactionProcessor createAssembleTransactionProcessor(
-            Client client, CryptoKeyPair cryptoKeyPair, String abiFilePath, String binFilePath)
-            throws Exception {
-        Pair<String, Integer> pair = getChainIdAndGroupId(client);
-        ContractLoader contractLoader = new ContractLoader(abiFilePath, binFilePath);
-        return new AssembleTransactionProcessor(
-                client, cryptoKeyPair, pair.getRight(), pair.getLeft(), contractLoader);
-    }
-
-    public static AssembleTransactionProcessor createAssembleTransactionProcessor(
-            Client client,
-            CryptoKeyPair cryptoKeyPair,
-            String contractName,
-            String abi,
-            String bin) {
-        Pair<String, Integer> pair = getChainIdAndGroupId(client);
-        return new AssembleTransactionProcessor(
-                client, cryptoKeyPair, pair.getRight(), pair.getLeft(), contractName, abi, bin);
     }
 }

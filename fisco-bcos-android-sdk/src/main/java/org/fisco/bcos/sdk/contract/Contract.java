@@ -32,14 +32,10 @@ import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
-import org.fisco.bcos.sdk.eventsub.EventCallback;
-import org.fisco.bcos.sdk.eventsub.EventLogParams;
-import org.fisco.bcos.sdk.eventsub.EventSubscribe;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.RetCode;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.transaction.codec.decode.ReceiptParser;
 import org.fisco.bcos.sdk.transaction.manager.TransactionProcessor;
 import org.fisco.bcos.sdk.transaction.manager.TransactionProcessorFactory;
@@ -59,7 +55,6 @@ public class Contract {
     protected final CryptoKeyPair credential;
     protected final CryptoSuite cryptoSuite;
     protected final EventEncoder eventEncoder;
-    private final EventSubscribe eventSubscribe;
     protected static String LATEST_BLOCK = "latest";
 
     protected Contract(
@@ -76,17 +71,6 @@ public class Contract {
         this.cryptoSuite = client.getCryptoSuite();
         this.functionEncoder = new FunctionEncoder(client.getCryptoSuite());
         this.eventEncoder = new EventEncoder(client.getCryptoSuite());
-        // create eventSubscribe
-        String name = client.getClass().getName();
-        if (name.endsWith("ClientImpl")) {
-            this.eventSubscribe =
-                    EventSubscribe.build(
-                            client.getGroupManagerService(),
-                            client.getEventResource(),
-                            client.getGroupId());
-        } else {
-            this.eventSubscribe = null;
-        }
     }
 
     protected Contract(
@@ -242,15 +226,6 @@ public class Contract {
         return executeCall(function);
     }
 
-    protected void asyncExecuteTransaction(
-            String data, String funName, TransactionCallback callback) {
-        transactionProcessor.sendTransactionAsync(contractAddress, data, credential, callback);
-    }
-
-    protected void asyncExecuteTransaction(Function function, TransactionCallback callback) {
-        asyncExecuteTransaction(functionEncoder.encode(function), function.getName(), callback);
-    }
-
     protected TransactionReceipt executeTransaction(Function function) {
         return executeTransaction(functionEncoder.encode(function), function.getName());
     }
@@ -288,43 +263,6 @@ public class Contract {
 
     protected String createSignedTransaction(String to, String data) {
         return transactionProcessor.createSignedTransaction(to, data, credential);
-    }
-
-    public void subscribeEvent(EventLogParams params, EventCallback callback) {
-        this.eventSubscribe.subscribeEvent(params, callback);
-    }
-
-    public void subscribeEvent(String abi, String bin, String topic0, EventCallback callback) {
-        subscribeEvent(
-                abi, bin, topic0, LATEST_BLOCK, LATEST_BLOCK, new ArrayList<String>(), callback);
-    }
-
-    public void subscribeEvent(
-            String abi,
-            String bin,
-            String topic0,
-            String fromBlock,
-            String toBlock,
-            List<String> otherTopics,
-            EventCallback callback) {
-
-        EventLogParams filter = new EventLogParams();
-        filter.setFromBlock(fromBlock);
-        filter.setToBlock(toBlock);
-
-        List<String> addresses = new ArrayList<String>();
-        addresses.add(getContractAddress());
-        filter.setAddresses(addresses);
-
-        List<Object> topics = new ArrayList<Object>();
-        topics.add(topic0);
-        if (otherTopics != null) {
-            for (Object obj : otherTopics) {
-                topics.add(obj);
-            }
-        }
-        filter.setTopics(topics);
-        this.subscribeEvent(filter, callback);
     }
 
     public static EventValues staticExtractEventParameters(

@@ -18,7 +18,6 @@ package org.fisco.bcos.sdk.config.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,10 +28,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConfigProperty {
     public Map<String, Object> cryptoMaterial;
-    public Map<String, Object> network;
-    public List<AmopTopic> amop;
     public Map<String, Object> account;
-
     public Map<String, Object> threadPool;
 
     public Map<String, Object> getCryptoMaterial() {
@@ -41,22 +37,6 @@ public class ConfigProperty {
 
     public void setCryptoMaterial(Map<String, Object> cryptoMaterial) {
         this.cryptoMaterial = cryptoMaterial;
-    }
-
-    public Map<String, Object> getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(Map<String, Object> network) {
-        this.network = network;
-    }
-
-    public List<AmopTopic> getAmop() {
-        return amop;
-    }
-
-    public void setAmop(List<AmopTopic> amop) {
-        this.amop = amop;
     }
 
     public Map<String, Object> getAccount() {

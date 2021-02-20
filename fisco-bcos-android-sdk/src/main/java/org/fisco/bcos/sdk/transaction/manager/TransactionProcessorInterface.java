@@ -17,7 +17,6 @@ package org.fisco.bcos.sdk.transaction.manager;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.transaction.model.dto.CallRequest;
 
 /**
@@ -29,9 +28,6 @@ public interface TransactionProcessorInterface {
 
     public TransactionReceipt sendTransactionAndGetReceipt(
             String to, String data, CryptoKeyPair cryptoKeyPair);
-
-    public void sendTransactionAsync(
-            String to, String data, CryptoKeyPair cryptoKeyPair, TransactionCallback callback);
 
     public Call executeCall(CallRequest callRequest);
 
