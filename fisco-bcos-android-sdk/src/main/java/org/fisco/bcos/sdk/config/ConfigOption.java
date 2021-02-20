@@ -18,10 +18,8 @@ package org.fisco.bcos.sdk.config;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.fisco.bcos.sdk.config.exceptions.ConfigException;
 import org.fisco.bcos.sdk.config.model.AccountConfig;
-import org.fisco.bcos.sdk.config.model.AmopConfig;
 import org.fisco.bcos.sdk.config.model.ConfigProperty;
 import org.fisco.bcos.sdk.config.model.CryptoMaterialConfig;
-import org.fisco.bcos.sdk.config.model.NetworkConfig;
 import org.fisco.bcos.sdk.config.model.ThreadPoolConfig;
 import org.fisco.bcos.sdk.model.CryptoType;
 
@@ -34,8 +32,6 @@ import org.fisco.bcos.sdk.model.CryptoType;
 public class ConfigOption {
     private CryptoMaterialConfig cryptoMaterialConfig;
     private AccountConfig accountConfig;
-    private AmopConfig amopConfig;
-    private NetworkConfig networkConfig;
     private ThreadPoolConfig threadPoolConfig;
     private ConfigProperty configProperty;
 
@@ -50,10 +46,6 @@ public class ConfigOption {
         cryptoMaterialConfig = new CryptoMaterialConfig(configProperty, cryptoType);
         // load accountConfig
         accountConfig = new AccountConfig(configProperty);
-        // load AmopConfig
-        amopConfig = new AmopConfig(configProperty);
-        // load networkConfig
-        networkConfig = new NetworkConfig(configProperty);
         // load threadPoolConfig
         threadPoolConfig = new ThreadPoolConfig(configProperty);
         // init configProperty
@@ -78,22 +70,6 @@ public class ConfigOption {
 
     public void setAccountConfig(AccountConfig accountConfig) {
         this.accountConfig = accountConfig;
-    }
-
-    public AmopConfig getAmopConfig() {
-        return amopConfig;
-    }
-
-    public void setAmopConfig(AmopConfig amopConfig) {
-        this.amopConfig = amopConfig;
-    }
-
-    public NetworkConfig getNetworkConfig() {
-        return networkConfig;
-    }
-
-    public void setNetworkConfig(NetworkConfig networkConfig) {
-        this.networkConfig = networkConfig;
     }
 
     public ThreadPoolConfig getThreadPoolConfig() {

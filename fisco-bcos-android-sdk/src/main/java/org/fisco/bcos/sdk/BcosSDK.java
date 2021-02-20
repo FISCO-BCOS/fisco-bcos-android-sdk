@@ -13,100 +13,39 @@
  */
 package org.fisco.bcos.sdk;
 
-import io.netty.channel.ChannelException;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import org.fisco.bcos.sdk.amop.Amop;
-import org.fisco.bcos.sdk.channel.Channel;
 import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.config.Config;
-import org.fisco.bcos.sdk.config.ConfigOption;
-import org.fisco.bcos.sdk.config.exceptions.ConfigException;
-import org.fisco.bcos.sdk.eventsub.EventResource;
-import org.fisco.bcos.sdk.eventsub.EventSubscribe;
+import org.fisco.bcos.sdk.client.JsonRpcService;
+import org.fisco.bcos.sdk.config.model.ProxyConfig;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.ConstantConfig;
-import org.fisco.bcos.sdk.service.GroupManagerService;
-import org.fisco.bcos.sdk.service.GroupManagerServiceImpl;
-import org.fisco.bcos.sdk.utils.ThreadPoolService;
+import org.fisco.bcos.sdk.network.NetworkHandlerImp;
+import org.fisco.bcos.sdk.network.NetworkHandlerInterface;
 
 public class BcosSDK {
     private static Logger logger = LoggerFactory.getLogger(BcosSDK.class);
-    public static final String ECDSA_TYPE_STR = "ecdsa";
-    public static final String SM_TYPE_STR = "sm";
-
-    private final ConfigOption config;
-    private final Channel channel;
-    private final GroupManagerService groupManagerService;
     private ConcurrentHashMap<Integer, Client> groupToClient = new ConcurrentHashMap<>();
-    private long maxWaitEstablishConnectionTime = 30000;
-    private Amop amop;
-    private EventResource eventResource;
-    private ThreadPoolService threadPoolService;
+    private ProxyConfig proxyConfig;
+    private NetworkHandlerInterface networkHandler;
 
-    public static BcosSDK build(String tomlConfigFilePath) throws BcosSDKException {
+    public BcosSDK(ProxyConfig proxyConfig) throws BcosSDKException {
         try {
-            ConfigOption configOption = Config.load(tomlConfigFilePath);
-            logger.info("create BcosSDK, configPath: {}", tomlConfigFilePath);
-            return new BcosSDK(configOption);
-        } catch (ConfigException e) {
-            throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
-        }
-    }
-
-    public BcosSDK(ConfigOption configOption) throws BcosSDKException {
-        try {
-            // create channel and load configuration file
-            this.channel = Channel.build(configOption);
-            this.channel.start();
-            this.config = this.channel.getNetwork().getConfigOption();
-            logger.info(
-                    "create BcosSDK, start channel success, cryptoType: {}",
-                    this.channel.getNetwork().getSslCryptoType());
-
-            threadPoolService =
-                    new ThreadPoolService(
-                            "channelProcessor",
-                            this.config.getThreadPoolConfig().getChannelProcessorThreadSize(),
-                            this.config.getThreadPoolConfig().getMaxBlockingQueueSize());
-            channel.setThreadPool(threadPoolService.getThreadPool());
-            logger.info(
-                    "create BcosSDK, start channel succ, channelProcessorThreadSize: {}, receiptProcessorThreadSize: {}",
-                    config.getThreadPoolConfig().getChannelProcessorThreadSize(),
-                    config.getThreadPoolConfig().getReceiptProcessorThreadSize());
-            if (!waitForEstablishConnection()) {
-                logger.error("create BcosSDK failed for the number of available peers is 0");
-                throw new BcosSDKException(
-                        "create BcosSDK failed for the number of available peers is 0");
+            this.proxyConfig = proxyConfig;
+            Object networkHandler = proxyConfig.getNetworkHandler();
+            if (networkHandler == null) {
+                networkHandler = (new NetworkHandlerImp());
             }
-            // create GroupMangerService
-            this.groupManagerService = new GroupManagerServiceImpl(this.channel, this.config);
-            logger.info("create BcosSDK, create groupManagerService success");
-            // init amop
-            amop = Amop.build(this.channel, config);
-            this.groupManagerService.setAmop(amop);
-            amop.start();
-            logger.info("create BcosSDK, create Amop success");
-            // new EventResource
-            eventResource = new EventResource();
-        } catch (ChannelException | ConfigException e) {
+            this.networkHandler = (NetworkHandlerInterface) networkHandler;
+            logger.info("create BcosSDK successfully");
+        } catch (Exception e) {
             stopAll();
             throw new BcosSDKException("create BcosSDK failed, error info: " + e.getMessage(), e);
         }
     }
 
-    private boolean waitForEstablishConnection() {
-        long startTime = System.currentTimeMillis();
-        try {
-            while (System.currentTimeMillis() - startTime < maxWaitEstablishConnectionTime
-                    && this.channel.getAvailablePeer().size() == 0) {
-                Thread.sleep(1000);
-            }
-        } catch (InterruptedException e) {
-            logger.warn("waitForEstablishConnection exceptioned, error info: {}", e.getMessage());
-        }
-        return (this.channel.getAvailablePeer().size() > 0);
+    public static BcosSDK build(ProxyConfig proxyConfig) throws BcosSDKException {
+        return new BcosSDK(proxyConfig);
     }
 
     public void checkGroupId(Integer groupId) {
@@ -123,20 +62,10 @@ public class BcosSDK {
 
     public Client getClient(Integer groupId) {
         checkGroupId(groupId);
-        if (!waitForEstablishConnection()) {
-            logger.error(
-                    "get client for group: {} failed for the number of available peers is 0",
-                    groupId);
-            throw new BcosSDKException(
-                    "get client for group "
-                            + groupId
-                            + " failed for the number of available peers is 0");
-        }
         if (!groupToClient.containsKey(groupId)) {
             // create a new client for the specified group
-            Client client =
-                    Client.build(
-                            this.groupManagerService, this.channel, this.eventResource, groupId);
+            JsonRpcService jsonRpcService = new JsonRpcService(this.networkHandler);
+            Client client = Client.build(groupId, jsonRpcService, this.proxyConfig);
             if (client == null) {
                 throw new BcosSDKException(
                         "create client for group "
@@ -145,69 +74,18 @@ public class BcosSDK {
                                 + groupId
                                 + " of the connected node!");
             }
+            client.start();
             groupToClient.put(groupId, client);
             logger.info("create client for group {} success", groupId);
-        }
-        groupManagerService.fetchGroupList();
-        Set<String> nodeList = groupManagerService.getGroupNodeList(groupId);
-        if (nodeList.size() == 0) {
-            groupToClient.remove(groupId);
-            throw new BcosSDKException(
-                    "create client for group "
-                            + groupId
-                            + " failed for no peers set up the group!");
         }
         return groupToClient.get(groupId);
     }
 
-    public int getSSLCryptoType() {
-        return this.channel.getNetwork().getSslCryptoType();
-    }
-
-    public GroupManagerService getGroupManagerService() {
-        return this.groupManagerService;
-    }
-
-    public ConfigOption getConfig() {
-        return this.config;
-    }
-
-    public Amop getAmop() {
-        return amop;
-    }
-
-    public EventResource getEventResource() {
-        return eventResource;
-    }
-
-    public EventSubscribe getEventSubscribe(Integer groupId) {
-        return EventSubscribe.build(this.groupManagerService, this.eventResource, groupId);
-    }
-
-    public Channel getChannel() {
-        return channel;
-    }
-
     public void stopAll() {
-        if (this.channel != null) {
-            this.channel.stop();
-        }
-        if (this.threadPoolService != null) {
-            this.threadPoolService.stop();
-        }
-        if (this.groupManagerService != null) {
-            this.groupManagerService.stop();
-        }
-        if (this.amop != null) {
-            this.amop.stop();
-        }
         // stop the client
         for (Integer groupId : groupToClient.keySet()) {
             groupToClient.get(groupId).stop();
-            EventSubscribe event = this.getEventSubscribe(groupId);
-            if (event != null) {
-                event.stop();
-            }
         }
+        logger.info("stop BcosSDK successfully");
     }
 }

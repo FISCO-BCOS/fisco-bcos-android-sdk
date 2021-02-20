@@ -15,8 +15,6 @@ package org.fisco.bcos.sdk.crypto;
 
 import java.security.KeyPair;
 import org.fisco.bcos.sdk.config.ConfigOption;
-import org.fisco.bcos.sdk.config.model.AccountConfig;
-import org.fisco.bcos.sdk.crypto.exceptions.LoadKeyStoreException;
 import org.fisco.bcos.sdk.crypto.exceptions.UnsupportedCryptoTypeException;
 import org.fisco.bcos.sdk.crypto.hash.Hash;
 import org.fisco.bcos.sdk.crypto.hash.Keccak256;
@@ -25,8 +23,6 @@ import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.crypto.keypair.ECDSAKeyPair;
 import org.fisco.bcos.sdk.crypto.keypair.SM2KeyPair;
 import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
-import org.fisco.bcos.sdk.crypto.keystore.P12KeyStore;
-import org.fisco.bcos.sdk.crypto.keystore.PEMKeyStore;
 import org.fisco.bcos.sdk.crypto.signature.ECDSASignature;
 import org.fisco.bcos.sdk.crypto.signature.SM2Signature;
 import org.fisco.bcos.sdk.crypto.signature.Signature;
@@ -56,7 +52,6 @@ public class CryptoSuite {
             createKeyPair();
             return;
         }
-        loadAccount(configOption);
     }
 
     /**
@@ -84,40 +79,6 @@ public class CryptoSuite {
         }
         // create keyPair randomly
         createKeyPair();
-    }
-
-    public void loadAccount(String accountFileFormat, String accountFilePath, String password) {
-        KeyTool keyTool = null;
-        if (accountFileFormat.compareToIgnoreCase("p12") == 0) {
-            keyTool = new P12KeyStore(accountFilePath, password);
-        } else if (accountFileFormat.compareToIgnoreCase("pem") == 0) {
-            keyTool = new PEMKeyStore(accountFilePath);
-        } else {
-            throw new LoadKeyStoreException(
-                    "unsupported account file format : "
-                            + accountFileFormat
-                            + ", current supported are p12 and pem");
-        }
-        logger.debug("Load account from {}", accountFilePath);
-        createKeyPair(keyTool.getKeyPair());
-    }
-
-    private void loadAccount(ConfigOption configOption) {
-        AccountConfig accountConfig = configOption.getAccountConfig();
-        String accountFilePath = accountConfig.getAccountFilePath();
-        if (accountFilePath == null || accountFilePath.equals("")) {
-            if (accountConfig.getAccountFileFormat().compareToIgnoreCase("p12") == 0) {
-                accountFilePath =
-                        keyPairFactory.getP12KeyStoreFilePath(accountConfig.getAccountAddress());
-            } else if (accountConfig.getAccountFileFormat().compareToIgnoreCase("pem") == 0) {
-                accountFilePath =
-                        keyPairFactory.getPemKeyStoreFilePath(accountConfig.getAccountAddress());
-            }
-        }
-        loadAccount(
-                accountConfig.getAccountFileFormat(),
-                accountFilePath,
-                accountConfig.getAccountPassword());
     }
 
     public void setConfig(ConfigOption config) {

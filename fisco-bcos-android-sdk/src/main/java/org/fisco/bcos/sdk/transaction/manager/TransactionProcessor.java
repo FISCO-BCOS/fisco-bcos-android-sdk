@@ -23,7 +23,6 @@ import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
-import org.fisco.bcos.sdk.model.callback.TransactionCallback;
 import org.fisco.bcos.sdk.transaction.builder.TransactionBuilderInterface;
 import org.fisco.bcos.sdk.transaction.builder.TransactionBuilderService;
 import org.fisco.bcos.sdk.transaction.codec.encode.TransactionEncoderInterface;
@@ -58,13 +57,6 @@ public class TransactionProcessor implements TransactionProcessorInterface {
             String to, String data, CryptoKeyPair cryptoKeyPair) {
         String signedData = createSignedTransaction(to, data, cryptoKeyPair);
         return this.client.sendRawTransactionAndGetReceipt(signedData);
-    }
-
-    @Override
-    public void sendTransactionAsync(
-            String to, String data, CryptoKeyPair cryptoKeyPair, TransactionCallback callback) {
-        String signedData = createSignedTransaction(to, data, cryptoKeyPair);
-        client.sendRawTransactionAndGetReceiptAsync(signedData, callback);
     }
 
     @Override

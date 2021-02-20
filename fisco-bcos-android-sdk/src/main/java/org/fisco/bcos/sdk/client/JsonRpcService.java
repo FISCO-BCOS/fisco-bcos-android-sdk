@@ -15,268 +15,92 @@ package org.fisco.bcos.sdk.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import org.fisco.bcos.sdk.channel.Channel;
-import org.fisco.bcos.sdk.channel.ResponseCallback;
-import org.fisco.bcos.sdk.channel.model.Options;
+import java.util.Map;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
+import org.fisco.bcos.sdk.client.exceptions.NetworkHandlerException;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.model.JsonRpcResponse;
-import org.fisco.bcos.sdk.model.Message;
-import org.fisco.bcos.sdk.model.MsgType;
-import org.fisco.bcos.sdk.model.Response;
-import org.fisco.bcos.sdk.model.callback.TransactionCallback;
-import org.fisco.bcos.sdk.service.GroupManagerService;
-import org.fisco.bcos.sdk.utils.ChannelUtils;
+import org.fisco.bcos.sdk.model.NetworkResponse;
+import org.fisco.bcos.sdk.network.NetworkHandlerInterface;
+import org.fisco.bcos.sdk.network.model.NetworkResponseCode;
 import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
 public class JsonRpcService {
-    protected final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+
     private static Logger logger = LoggerFactory.getLogger(JsonRpcService.class);
-    protected GroupManagerService groupManagerService;
-    public Channel channel;
+    protected final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+    private NetworkHandlerInterface networkHandle;
     protected Integer groupId;
 
-    public JsonRpcService() {}
-
-    public JsonRpcService(
-            GroupManagerService groupManagerService, Channel channel, Integer groupId) {
-        this.groupManagerService = groupManagerService;
-        this.channel = channel;
-        this.groupId = groupId;
+    public JsonRpcService(NetworkHandlerInterface networkHandle) {
+        this.networkHandle = networkHandle;
     }
 
-    public Channel getChannel() {
-        return this.channel;
-    }
-
-    public GroupManagerService getGroupManagerService() {
-        return this.groupManagerService;
-    }
-
-    public <T extends JsonRpcResponse> T sendRequestToPeer(
-            JsonRpcRequest request, String peerIpPort, Class<T> responseType) {
-        return this.sendRequestToPeer(
-                request, MsgType.CHANNEL_RPC_REQUEST, responseType, peerIpPort);
-    }
-
-    public <T extends JsonRpcResponse> T sendRequestToGroup(
+    public <T extends JsonRpcResponse> NetworkResponse<T> sendRequestToGroupByProxy(
             JsonRpcRequest request, Class<T> responseType) {
-        return this.sendRequestToGroup(request, MsgType.CHANNEL_RPC_REQUEST, responseType);
-    }
-
-    public <T extends JsonRpcResponse> T sendRequestToPeer(
-            JsonRpcRequest request, MsgType messageType, Class<T> responseType, String peerIpPort) {
-        Message message =
-                encodeRequestToMessage(request, Short.valueOf((short) messageType.getType()));
-        Response response = channel.sendToPeer(message, peerIpPort);
-        return this.parseResponseIntoJsonRpcResponse(request, response, responseType);
-    }
-
-    public <T extends JsonRpcResponse> T sendRequestToGroup(
-            JsonRpcRequest request, MsgType messageType, Class<T> responseType) {
-        Message message =
-                encodeRequestToMessage(request, Short.valueOf((short) messageType.getType()));
-        Response response = this.groupManagerService.sendMessageToGroup(this.groupId, message);
-        if (response == null) {
-            throw new ClientException(
-                    "sendRequestToGroup to "
-                            + this.groupId
-                            + " failed for select peers to send message failed, please make sure that the group exists");
-        }
-        return this.parseResponseIntoJsonRpcResponse(request, response, responseType);
-    }
-
-    public <T extends JsonRpcResponse> void asyncSendRequestToPeer(
-            JsonRpcRequest request,
-            String peerIpAndPort,
-            Class<T> responseType,
-            RespCallback<T> callback) {
-        asyncSendRequestToPeer(
-                request, MsgType.CHANNEL_RPC_REQUEST, peerIpAndPort, responseType, callback);
-    }
-
-    public <T extends JsonRpcResponse> void asyncSendRequestToPeer(
-            JsonRpcRequest request,
-            MsgType messageType,
-            String peerIpAndPort,
-            Class<T> responseType,
-            RespCallback<T> callback) {
-        Message message =
-                encodeRequestToMessage(request, Short.valueOf((short) messageType.getType()));
-        this.channel.asyncSendToPeer(
-                message,
-                peerIpAndPort,
-                new ResponseCallback() {
-                    @Override
-                    public void onResponse(Response response) {
-                        try {
-                            // decode the transaction
-                            T jsonRpcResponse =
-                                    parseResponseIntoJsonRpcResponse(
-                                            request, response, responseType);
-                            callback.onResponse(jsonRpcResponse);
-                        } catch (ClientException e) {
-                            Response errorResponse = new Response();
-                            errorResponse.setErrorMessage(e.getErrorMessage());
-                            errorResponse.setErrorCode(e.getErrorCode());
-                            callback.onError(errorResponse);
-                        }
-                    }
-                },
-                new Options());
-    }
-
-    public <T extends JsonRpcResponse> void asyncSendRequestToGroup(
-            JsonRpcRequest request, Class<T> responseType, RespCallback<T> callback) {
-        asyncSendRequestToGroup(request, MsgType.CHANNEL_RPC_REQUEST, responseType, callback);
-    }
-
-    public <T extends JsonRpcResponse> void asyncSendRequestToGroup(
-            JsonRpcRequest request,
-            MsgType messageType,
-            Class<T> responseType,
-            RespCallback<T> callback) {
-        Message message =
-                encodeRequestToMessage(request, Short.valueOf((short) messageType.getType()));
-        this.groupManagerService.asyncSendMessageToGroup(
-                this.groupId,
-                message,
-                new ResponseCallback() {
-                    @Override
-                    public void onResponse(Response response) {
-                        try {
-                            // decode the transaction
-                            T jsonRpcResponse =
-                                    parseResponseIntoJsonRpcResponse(
-                                            request, response, responseType);
-                            callback.onResponse(jsonRpcResponse);
-                        } catch (ClientException e) {
-                            callback.onError(response);
-                        }
-                    }
-                });
-    }
-
-    public <T extends JsonRpcResponse> void asyncSendTransactionToGroup(
-            JsonRpcRequest request, TransactionCallback callback, Class<T> responseType) {
-        Message message =
-                encodeRequestToMessage(
-                        request, Short.valueOf((short) MsgType.CHANNEL_RPC_REQUEST.getType()));
-        this.groupManagerService.asyncSendTransaction(
-                this.groupId,
-                message,
-                callback,
-                new ResponseCallback() {
-                    @Override
-                    public void onResponse(Response response) {
-                        try {
-                            // decode the transaction
-                            parseResponseIntoJsonRpcResponse(request, response, responseType);
-                        } catch (ClientException e) {
-                            if (message != null) {
-                                groupManagerService.eraseTransactionSeq(message.getSeq());
-                            }
-                            if (response != null) {
-                                groupManagerService.eraseTransactionSeq(response.getMessageID());
-                            }
-                            // fake the transactionReceipt
-                            callback.onError(e.getErrorCode(), e.getErrorMessage());
-                        }
-                    }
-                });
-    }
-
-    protected <T extends JsonRpcResponse> T parseResponseIntoJsonRpcResponse(
-            JsonRpcRequest request, Response response, Class<T> responseType) {
         try {
-            if (response.getErrorCode() == 0) {
-                // parse the response into JsonRPCResponse
-                T jsonRpcResponse = objectMapper.readValue(response.getContent(), responseType);
-                if (jsonRpcResponse.getError() != null) {
-                    logger.error(
-                            "parseResponseIntoJsonRpcResponse failed for non-empty error message, method: {}, group: {}, seq: {}, retErrorMessage: {}, retErrorCode: {}",
-                            request.getMethod(),
-                            this.groupId,
-                            response.getMessageID(),
-                            jsonRpcResponse.getError().getMessage(),
-                            jsonRpcResponse.getError().getCode());
-                    throw new ClientException(
-                            jsonRpcResponse.getError().getCode(),
-                            jsonRpcResponse.getError().getMessage(),
-                            "parseResponseIntoJsonRpcResponse failed for non-empty error message, method: "
-                                    + request.getMethod()
-                                    + " ,group: "
-                                    + this.groupId
-                                    + " ,seq:"
-                                    + response.getMessageID()
-                                    + ",retErrorMessage: "
-                                    + jsonRpcResponse.getError().getMessage());
-                }
-                return jsonRpcResponse;
+            String requestBodyJsonStr =
+                    ObjectMapperFactory.getObjectMapper().writeValueAsString(request);
+            logger.info("sendRequestToGroupByProxy, request body: " + requestBodyJsonStr);
+            String responseBodyJsonStr = networkHandle.onRPCRequest(requestBodyJsonStr);
+            logger.info("sendRequestToGroupByProxy, response body: " + responseBodyJsonStr);
+            if (responseBodyJsonStr == null) {
+                NetworkResponseCode errorInfo =
+                        new NetworkResponseCode(
+                                NetworkResponseCode.RespNullCode,
+                                NetworkResponseCode.RespNullMessage);
+                String errorStr =
+                        ObjectMapperFactory.getObjectMapper().writeValueAsString(errorInfo);
+                throw new NetworkHandlerException(errorStr);
+            }
+            return parseNetworkResponse(request, responseBodyJsonStr, responseType);
+        } catch (JsonProcessingException e) {
+            logger.error("serialize request failed, error info: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private <T extends JsonRpcResponse> NetworkResponse<T> parseNetworkResponse(
+            JsonRpcRequest request, String responseStr, Class<T> responseType) {
+        int code = NetworkResponseCode.SuccessCode;
+        String message = NetworkResponseCode.SuccessMessage;
+        T entity = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map responseMap = objectMapper.readValue(responseStr, Map.class);
+            code = (int) responseMap.get(NetworkResponseCode.CODE);
+            message = (String) responseMap.get(NetworkResponseCode.MESSAGE);
+            if (code == NetworkResponseCode.SuccessCode) {
+                Map dataMap = (Map) responseMap.get(NetworkResponseCode.DATA);
+                entity =
+                        objectMapper.readValue(
+                                objectMapper.writeValueAsString(dataMap), responseType);
             } else {
                 logger.error(
-                        "parseResponseIntoJsonRpcResponse failed, method: {}, group: {}, seq: {}, retErrorMessage: {}, retErrorCode: {}",
-                        request.getMethod(),
-                        this.groupId,
-                        response.getMessageID(),
-                        response.getErrorMessage(),
-                        response.getErrorCode());
-                throw new ClientException(
-                        response.getErrorCode(),
-                        response.getErrorMessage(),
-                        "get response failed, errorCode:"
-                                + response.getErrorCode()
-                                + ", error message:"
-                                + response.getErrorMessage());
+                        "parseNetworkResponse failed for request "
+                                + request.getMethod()
+                                + ", error info: "
+                                + message);
+                NetworkResponseCode errorInfo = new NetworkResponseCode(code, message);
+                String errorStr =
+                        ObjectMapperFactory.getObjectMapper().writeValueAsString(errorInfo);
+                throw new NetworkHandlerException(errorStr);
             }
-
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             logger.error(
-                    "parseResponseIntoJsonRpcResponse failed for decode the message exception, errorMessage: {}, groupId: {}",
-                    e.getMessage(),
-                    this.groupId);
+                    "parseNetworkResponse failed for request "
+                            + request.getMethod()
+                            + ", exception info: "
+                            + e.getMessage());
             throw new ClientException(
-                    "parseResponseIntoJsonRpcResponse failed for decode the message exceptioned, error message:"
-                            + e.getMessage(),
-                    e);
-        } catch (IOException e) {
-            logger.error("IOException, errorMessage: {}", e.getMessage());
-            throw new ClientException("IOException, error message:" + e.getMessage());
+                    "parseNetworkResponse failed for request "
+                            + request.getMethod()
+                            + ", exception info: "
+                            + e.getMessage());
         }
-    }
 
-    /**
-     * encode the request into message
-     *
-     * @return the messaged encoded from the request
-     */
-    private Message encodeRequestToMessage(JsonRpcRequest request, Short messageType) {
-        try {
-            byte[] encodedData = objectMapper.writeValueAsBytes(request);
-            Message message = new Message();
-            message.setSeq(ChannelUtils.newSeq());
-            message.setResult(0);
-            message.setType(messageType);
-            message.setData(encodedData);
-            logger.trace(
-                    "encodeRequestToMessage, seq: {}, method: {}, messageType: {}",
-                    message.getSeq(),
-                    request.getMethod(),
-                    message.getType());
-            return message;
-        } catch (JsonProcessingException e) {
-            logger.error(
-                    "sendRequestToGroup failed for decode the message exceptioned, errorMessge: {}",
-                    e.getMessage());
-            throw new ClientException(
-                    "sendRequestToGroup to "
-                            + this.groupId
-                            + "failed for decode the message exceptioned, error message:"
-                            + e.getMessage(),
-                    e);
-        }
+        return new NetworkResponse(code, message, entity);
     }
 }
