@@ -15,7 +15,6 @@
 package org.fisco.bcos.sdk.model;
 
 public class ConstantConfig {
-    public static final String CONFIG_FILE_NAME = "config.toml";
     public static final Integer MIN_GROUPID = 1;
     public static final Integer MAX_GROUPID = 32767;
 }
