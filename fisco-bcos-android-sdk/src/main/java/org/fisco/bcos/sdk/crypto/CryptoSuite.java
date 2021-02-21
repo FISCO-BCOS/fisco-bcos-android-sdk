@@ -13,7 +13,6 @@
  */
 package org.fisco.bcos.sdk.crypto;
 
-import java.security.KeyPair;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.crypto.exceptions.UnsupportedCryptoTypeException;
 import org.fisco.bcos.sdk.crypto.hash.Hash;
@@ -22,7 +21,6 @@ import org.fisco.bcos.sdk.crypto.hash.SM3Hash;
 import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.crypto.keypair.ECDSAKeyPair;
 import org.fisco.bcos.sdk.crypto.keypair.SM2KeyPair;
-import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
 import org.fisco.bcos.sdk.crypto.signature.ECDSASignature;
 import org.fisco.bcos.sdk.crypto.signature.SM2Signature;
 import org.fisco.bcos.sdk.crypto.signature.Signature;
@@ -42,17 +40,6 @@ public class CryptoSuite {
     private final CryptoKeyPair keyPairFactory;
     private CryptoKeyPair cryptoKeyPair;
     private ConfigOption config;
-
-    public CryptoSuite(int cryptoTypeConfig, ConfigOption configOption) {
-        this(cryptoTypeConfig);
-        logger.info("init CryptoSuite, cryptoType: {}", cryptoTypeConfig);
-        setConfig(configOption);
-        // doesn't set the account name, generate the keyPair randomly
-        if (!configOption.getAccountConfig().isAccountConfigured()) {
-            createKeyPair();
-            return;
-        }
-    }
 
     /**
      * init the common crypto implementation according to the crypto type
@@ -114,21 +101,6 @@ public class CryptoSuite {
         return signatureImpl.sign(message, keyPair);
     }
 
-    // for AMOP topic verify, generate signature
-    public String sign(KeyTool keyTool, String message) {
-        CryptoKeyPair cryptoKeyPair = this.keyPairFactory.createKeyPair(keyTool.getKeyPair());
-        return signatureImpl.signWithStringSignature(message, cryptoKeyPair);
-    }
-
-    // for AMOP topic verify, verify the signature
-    public boolean verify(KeyTool keyTool, String message, String signature) {
-        return verify(keyTool.getHexedPublicKey(), message, signature);
-    }
-
-    public boolean verify(KeyTool keyTool, byte[] message, byte[] signature) {
-        return verify(keyTool.getHexedPublicKey(), message, signature);
-    }
-
     public boolean verify(final String publicKey, final String message, final String signature) {
         return signatureImpl.verify(publicKey, message, signature);
     }
@@ -143,14 +115,8 @@ public class CryptoSuite {
         return this.cryptoKeyPair;
     }
 
-    public CryptoKeyPair createKeyPair(KeyPair keyPair) {
-        this.cryptoKeyPair = this.keyPairFactory.createKeyPair(keyPair);
-        this.cryptoKeyPair.setConfig(config);
-        return this.cryptoKeyPair;
-    }
-
-    public CryptoKeyPair createKeyPair(String hexedPrivateKey) {
-        this.cryptoKeyPair = this.keyPairFactory.createKeyPair(hexedPrivateKey);
+    public CryptoKeyPair derivePublicKey(String hexedPrivateKey) {
+        this.cryptoKeyPair = this.keyPairFactory.derivePublicKey(hexedPrivateKey);
         this.cryptoKeyPair.setConfig(config);
         return this.cryptoKeyPair;
     }

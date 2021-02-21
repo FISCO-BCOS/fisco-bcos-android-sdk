@@ -44,10 +44,6 @@ public interface Client {
 
     static Client build(Integer groupId, JsonRpcService jsonRpcService, ProxyConfig proxyConfig) {
         int cryptoTypeProxyConfig = proxyConfig.getCryptoType();
-        if (cryptoTypeProxyConfig != CryptoType.ECDSA_TYPE) {
-            logger.error("only support ECDSA");
-            return null;
-        }
         // get crypto type from nodeVersion
         Integer cryptoType = CryptoType.ECDSA_TYPE;
         JsonRpcRequest jsonRpcRequest =
@@ -80,7 +76,7 @@ public interface Client {
                 CryptoSuite cryptoSuite = new CryptoSuite(cryptoType);
                 String privateKey = proxyConfig.getHexPrivateKey();
                 if (privateKey != null && !privateKey.isEmpty()) {
-                    cryptoSuite.createKeyPair(privateKey);
+                    cryptoSuite.derivePublicKey(privateKey);
                 } else {
                     cryptoSuite.createKeyPair();
                 }

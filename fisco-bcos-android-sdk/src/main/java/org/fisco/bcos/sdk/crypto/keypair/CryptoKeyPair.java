@@ -19,7 +19,6 @@ import java.security.KeyPair;
 import org.fisco.bcos.sdk.config.ConfigOption;
 import org.fisco.bcos.sdk.crypto.exceptions.KeyPairException;
 import org.fisco.bcos.sdk.crypto.hash.Hash;
-import org.fisco.bcos.sdk.crypto.keystore.KeyTool;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.utils.Hex;
@@ -62,18 +61,6 @@ public abstract class CryptoKeyPair {
     public CryptoKeyPair() {}
 
     /**
-     * init CryptoKeyPair from the keyPair
-     *
-     * @param keyPair the original keyPair
-     */
-    public CryptoKeyPair(KeyPair keyPair) {
-        this.keyPair = keyPair;
-        // init privateKey/publicKey from the keyPair
-        this.hexPrivateKey = KeyTool.getHexedPrivateKey(keyPair.getPrivate());
-        this.hexPublicKey = KeyTool.getHexedPublicKey(keyPair.getPublic());
-    }
-
-    /**
      * get CryptoKeyPair information from CryptoResult
      *
      * @param nativeResult
@@ -106,17 +93,7 @@ public abstract class CryptoKeyPair {
      */
     public abstract CryptoKeyPair generateKeyPair();
 
-    public abstract CryptoKeyPair createKeyPair(KeyPair keyPair);
-
-    public CryptoKeyPair createKeyPair(BigInteger privateKeyValue) {
-        KeyPair keyPair = KeyTool.convertPrivateKeyToKeyPair(privateKeyValue, curveName);
-        return createKeyPair(keyPair);
-    }
-
-    public CryptoKeyPair createKeyPair(String hexPrivateKey) {
-        KeyPair keyPair = KeyTool.convertHexedStringToKeyPair(hexPrivateKey, curveName);
-        return createKeyPair(keyPair);
-    }
+    public abstract CryptoKeyPair derivePublicKey(String hexPrivateKey);
 
     protected static String getPublicKeyNoPrefix(String publicKeyStr) {
         String publicKeyNoPrefix = Numeric.cleanHexPrefix(publicKeyStr);
