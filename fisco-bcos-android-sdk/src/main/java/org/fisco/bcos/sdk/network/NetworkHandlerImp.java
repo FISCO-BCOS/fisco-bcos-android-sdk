@@ -7,8 +7,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.fisco.bcos.sdk.client.exceptions.NetworkHandlerException;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
+import org.fisco.bcos.sdk.network.model.NetworkResponseCode;
+import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
 public class NetworkHandlerImp implements NetworkHandlerInterface {
 
@@ -22,7 +25,6 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
 
     @Override
     public String onRPCRequest(String requestBodyJsonStr) {
-        // logger.trace("onRPCRequest http request body: " + requestBodyJsonStr);
 
         OkHttpClient okHttpClient = new OkHttpClient();
         String URL = ipPort + "Bcos-node-proxy/rpc/v1";
@@ -33,8 +35,13 @@ public class NetworkHandlerImp implements NetworkHandlerInterface {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 String responseBodyJsonStr = response.body().string();
-                // logger.trace("onRPCRequest http response body: " + responseBodyJsonStr);
                 return responseBodyJsonStr;
+            } else {
+                NetworkResponseCode errorInfo =
+                        new NetworkResponseCode(response.code(), response.message());
+                String errorStr =
+                        ObjectMapperFactory.getObjectMapper().writeValueAsString(errorInfo);
+                throw new NetworkHandlerException(errorStr);
             }
         } catch (ConnectException e) {
             logger.error("onRPCRequest failed, error info: " + e.getMessage());

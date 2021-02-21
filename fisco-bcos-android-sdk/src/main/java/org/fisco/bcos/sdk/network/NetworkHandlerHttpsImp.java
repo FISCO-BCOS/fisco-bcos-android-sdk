@@ -21,9 +21,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.fisco.bcos.sdk.client.exceptions.ClientException;
+import org.fisco.bcos.sdk.client.exceptions.NetworkHandlerException;
 import org.fisco.bcos.sdk.log.Logger;
 import org.fisco.bcos.sdk.log.LoggerFactory;
 import org.fisco.bcos.sdk.network.model.CertInfo;
+import org.fisco.bcos.sdk.network.model.NetworkResponseCode;
+import org.fisco.bcos.sdk.utils.ObjectMapperFactory;
 
 public class NetworkHandlerHttpsImp implements NetworkHandlerInterface {
 
@@ -166,6 +169,12 @@ public class NetworkHandlerHttpsImp implements NetworkHandlerInterface {
             if (response.isSuccessful()) {
                 String responseBodyJsonStr = response.body().string();
                 return responseBodyJsonStr;
+            } else {
+                NetworkResponseCode errorInfo =
+                        new NetworkResponseCode(response.code(), response.message());
+                String errorStr =
+                        ObjectMapperFactory.getObjectMapper().writeValueAsString(errorInfo);
+                throw new NetworkHandlerException(errorStr);
             }
         } catch (ConnectException e) {
             logger.error("onRPCRequest failed, error info: " + e.getMessage());
