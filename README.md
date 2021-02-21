@@ -1,11 +1,17 @@
 # fisco-bcos-android-sdk
 android sdk for FISCO-BCOS
 
-- 用户使用`fisco-bcos-android-sdk`前，需部署 [节点接入代理服务 bcos-node-proxy](https://github.com/FISCO-BCOS/bcos-node-proxy/tree/feature_mobile_http) ，android sdk 通过节点代理与区块链节点进行通信。
+用户开发 Android 区块链应用时可通过引入`fisco-bcos-android-sdk`与 FISCO-BCOS 进行交互，交互内容包括**查询区块链状态**及**发送交易**。
 
-- `fisco-bcos-android-sdk`支持`armeabi-v7a`和`arm64-v8a`两种架构，兼容的最低 Android 版本`minSdkVersion`为**21**，需获取**读写权限**及**网络访问权限**。
-
-- `fisco-bcos-android-sdk`提供的接口均为**同步接口**，与区块链节点进行交互的接口涉及 http/https 请求，用户使用 android sdk 过程中需留意线程切换的影响。
+| 注意事项      | 说明                        | 
+| ------------ | ------------------------- | 
+| 使用准备      | 部署 [节点接入代理服务 bcos-node-proxy](https://github.com/FISCO-BCOS/bcos-node-proxy/tree/feature_mobile_http) ，android sdk 通过节点代理与区块链节点进行通信 |
+| 架构提供      | `armeabi-v7a`、`arm64-v8a` |
+| Android API | 21+                         | 
+| 权限申请      | 读权限、网络访问权限          | 
+| sdk arr 大小  | 1M                         |
+| 编译依赖      | 详见`2. 添加依赖`内容         |
+| 网络请求      | 与区块链节点进行交互的`http/https`服务接口均为**同步接口**，用户使用 android sdk 过程中需留意线程切换的影响 |
 
 ## 如何基于 fisco-bcos-android-sdk 开发区块链应用
 
@@ -13,13 +19,12 @@ android sdk for FISCO-BCOS
 
 ### 1. 获取权限
 
-对于引入 android sdk 的项目，用户可在项目的配置文件`app/src/main/AndroidManifest.xml`中增加以下内容获取读写权限及网络访问权限。
+对于引入 android sdk 的项目，用户可在项目的配置文件`app/src/main/AndroidManifest.xml`中增加以下内容获取读权限及网络访问权限。
 
 ```java
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.fisco.bcos.android.demo">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -57,23 +62,12 @@ allprojects {
 ## 注：对于部分原项目已有的依赖，可忽略引用
 dependencies {
     implementation 'org.fisco-bcos.android-sdk:fisco-bcos-android-sdk:1.0.0-SNAPSHOT'
-    implementation 'org.slf4j:slf4j-api:1.7.21'
-    implementation 'org.slf4j:slf4j-log4j12:1.7.30'
-    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.0.pr3'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.0.pr3'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.0.pr3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
     implementation 'org.apache.commons:commons-lang3:3.1'
-    implementation 'io.netty:netty-all:4.1.50.Final'
     implementation 'commons-io:commons-io:2.4'
-    implementation 'com.squareup:javapoet:1.7.0'
-    implementation 'info.picocli:picocli:3.6.0'
-    implementation 'com.madgag.spongycastle:core:1.54.0.0'
-    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
-    implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
-    implementation 'com.madgag.spongycastle:pg:1.54.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.13.0'
-    implementation 'com.google.guava:guava:29.0-jre'
 }
 ```
 
@@ -86,8 +80,8 @@ dependencies {
 | 设置项             | 是否可选 | 说明                                                           | 
 | ----------------- | ------- | --------------------------------------------------------------|
 | chainId           | 必选    | 链标识，需与 FISCO-BCOS 节点配置的一致                             |
-| crytoType         | 必选    | 是否使用国密，需与 FISCO-BCOS 节点配置的一致，目前支持 ECDSA_TYPE（0）|
-| hexPrivateKey     | 必选    | 发交易进行签名使用的私钥，用户可从文件或数据库中读取                   |
+| crytoType         | 必选    | 是否使用国密交易及账号，需与 FISCO-BCOS 节点配置的一致，目前可选值包括 ECDSA_TYPE 和 SM_TYPE |
+| hexPrivateKey     | 可选    | 发交易进行签名使用的私钥，用户可从文件或数据库中读取进行设置，如不设置，sdk 内部随机生成                   |
 | networkHandler    | 可选    | http/https 请求实现，用户可自行实现并传入，如不传入，采用 sdk 内部实现  |
 
 上述的`networkHandler`提供了`http`和`https`两种传输协议的内置实现。其中，`NetworkHandlerImp`实现`http`请求，直接访问`Bcos-node-proxy`；`NetworkHandlerHttpsImp`实现`https`请求，通过 Nginx 访问`Bcos-node-proxy`，需新建`assets`目录放置 Nginx 的证书。
@@ -151,7 +145,12 @@ try {
     logger.info("getTransactionByHash, result: " + JsonUtils.toJson(transaction.getResult()));
     BcosTransactionReceipt receipt = client.getTransactionReceipt(ret1.getTransactionHash());
     logger.info("getTransactionReceipt, result: " + JsonUtils.toJson(receipt.getResult()));
+
+    client.stop();
+} catch (NetworkHandlerException e) {
+    logger.error("NetworkHandlerException error info: " + e.getMessage());
 } catch (Exception e) {
     logger.error("error info: " + e.getMessage());
+    e.printStackTrace();
 }
 ```

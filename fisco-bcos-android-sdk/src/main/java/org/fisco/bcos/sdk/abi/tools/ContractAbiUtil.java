@@ -16,7 +16,6 @@ package org.fisco.bcos.sdk.abi.tools;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.fisco.bcos.sdk.abi.wrapper.ABIDefinition;
@@ -52,8 +51,6 @@ public class ContractAbiUtil {
             }
         } catch (JsonProcessingException e) {
             logger.warn(" invalid json, abi: {}, e: {} ", contractAbi, e);
-        } catch (IOException e) {
-            logger.warn(" io error, e: {} ", contractAbi, e);
         }
         return result;
     }
