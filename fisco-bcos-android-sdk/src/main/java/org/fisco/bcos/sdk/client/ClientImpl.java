@@ -15,9 +15,6 @@ package org.fisco.bcos.sdk.client;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcMethods;
 import org.fisco.bcos.sdk.client.protocol.request.JsonRpcRequest;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
@@ -30,7 +27,6 @@ import org.fisco.bcos.sdk.model.NetworkResponse;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.fisco.bcos.sdk.network.model.NetworkResponseCode;
-import org.fisco.bcos.sdk.utils.ThreadPoolService;
 
 public class ClientImpl implements Client {
     private JsonRpcService jsonRpcService;
@@ -39,10 +35,11 @@ public class ClientImpl implements Client {
     private CryptoSuite cryptoSuite;
     private NodeVersion nodeVersion;
 
+    private long getGetBlockNumberLastTime = 0;
     private static long getBlockNumberInterval = 60000;
     private static BigInteger blockLimit = BigInteger.valueOf(500);
     private BigInteger curBlockNum = BigInteger.ZERO;
-    private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
+    private BlockNumber blockNumResponse;
 
     public ClientImpl(
             Integer groupId,
@@ -77,15 +74,7 @@ public class ClientImpl implements Client {
     }
 
     @Override
-    public void start() {
-        startPeriodTask();
-    }
-
-    private void startPeriodTask() {
-        // periodically updateBlockNumber, default period : 60s
-        scheduledExecutorService.scheduleAtFixedRate(
-                () -> updateBlockNumber(), 0, getBlockNumberInterval, TimeUnit.MILLISECONDS);
-    }
+    public void start() {}
 
     @Override
     public NodeVersion getNodeVersion() {
@@ -102,9 +91,13 @@ public class ClientImpl implements Client {
 
     @Override
     public BlockNumber getBlockNumber() {
-        NetworkResponse<BlockNumber> networkResponse = getBlockNumberByProxy();
-        curBlockNum = networkResponse.getResult().getBlockNumber();
-        return networkResponse.getResult();
+        if (System.currentTimeMillis() - getGetBlockNumberLastTime > getBlockNumberInterval) {
+            NetworkResponse<BlockNumber> networkResponse = getBlockNumberByProxy();
+            curBlockNum = networkResponse.getResult().getBlockNumber();
+            blockNumResponse = networkResponse.getResult();
+            getGetBlockNumberLastTime = System.currentTimeMillis();
+        }
+        return blockNumResponse;
     }
 
     public NetworkResponse<BlockNumber> getBlockNumberByProxy() {
@@ -125,6 +118,7 @@ public class ClientImpl implements Client {
 
     @Override
     public BigInteger getBlockLimit() {
+        getBlockNumber();
         return curBlockNum.add(blockLimit);
     }
 
@@ -199,7 +193,5 @@ public class ClientImpl implements Client {
     }
 
     @Override
-    public void stop() {
-        ThreadPoolService.stopThreadPool(scheduledExecutorService);
-    }
+    public void stop() {}
 }

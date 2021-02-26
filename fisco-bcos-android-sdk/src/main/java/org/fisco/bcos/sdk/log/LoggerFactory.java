@@ -8,10 +8,10 @@ public class LoggerFactory {
     }
 
     public static Logger getLogger(Class<?> clazz) {
-        String className = clazz.getName();
-        if (logger == null) {
-            logger = new Logger(className);
+        if (logger != null) {
+            return logger;
+        } else {
+            return new Logger(clazz.getName());
         }
-        return logger;
     }
 }
