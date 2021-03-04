@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="10dp"
+    tools:context=".MainActivityA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="链ID"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_chain_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1"
+            app:layout_constraintBottom_toBottomOf="@+id/textview1"
+            app:layout_constraintStart_toEndOf="@+id/textview1"
+            app:layout_constraintTop_toTopOf="@+id/textview1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="群组ID"
+            app:layout_constraintLeft_toLeftOf="@+id/textview1" />
+
+        <EditText
+            android:id="@+id/et_group_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1"
+            app:layout_constraintBottom_toBottomOf="@+id/textview2"
+            app:layout_constraintLeft_toLeftOf="@+id/edit_text1"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text1"
+            app:layout_constraintTop_toTopOf="@+id/textview2" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_transact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rb_ECDSA_TYPE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="非国密交易" />
+
+        <RadioButton
+            android:id="@+id/rb_GM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="国密交易" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_key_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rb_key_radom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="随机密钥" />
+
+        <RadioButton
+            android:id="@+id/rb_key_specify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="业务指定密钥" />
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/et_key_specify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="业务指定密钥" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请求IP Port" />
+
+        <EditText
+            android:id="@+id/et_ip_port"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="https://116.63.184.110:8180/" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_deploy_load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="调用/部署合约" />
+</LinearLayout>
