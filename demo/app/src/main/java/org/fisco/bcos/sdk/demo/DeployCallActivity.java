@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,9 +36,9 @@ import org.fisco.bcos.sdk.transaction.model.dto.TransactionResponse;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
 
-public class DeployLoadActivity extends AppCompatActivity {
+public class DeployCallActivity extends AppCompatActivity {
 
-    Logger logger = LoggerFactory.getLogger(DeployLoadActivity.class);
+    Logger logger = LoggerFactory.getLogger(DeployCallActivity.class);
 
     private ExecutorService singleThreadExecutor;
     private ProxyConfig proxyConfig = new ProxyConfig();
@@ -52,7 +51,6 @@ public class DeployLoadActivity extends AppCompatActivity {
     private EditText etSetString;
     private Button btnGet;
     private EditText etGetString;
-    private TextView tvMsg;
 
     private Client client;
     private HelloWorld sol;
@@ -64,7 +62,7 @@ public class DeployLoadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_deploy_load);
+        setContentView(R.layout.activity_deploy_call);
         intent = getIntent();
         initView();
         initEvent();
@@ -81,7 +79,7 @@ public class DeployLoadActivity extends AppCompatActivity {
         etSetString = findViewById(R.id.et_set_contract);
         btnGet = findViewById(R.id.btn_get);
         etGetString = findViewById(R.id.et_get_contract);
-        tvMsg = findViewById(R.id.tv_msg);
+        etGetString.setEnabled(false);
     }
 
     private void initEvent() {
@@ -95,6 +93,9 @@ public class DeployLoadActivity extends AppCompatActivity {
                                     public void run() {
                                         if (!isInitClient) {
                                             initClient();
+                                        }
+                                        if (client == null) {
+                                            return;
                                         }
                                         if (isWrapper) {
                                             deployContractByWrapper();
@@ -117,6 +118,9 @@ public class DeployLoadActivity extends AppCompatActivity {
                                         if (!isInitClient) {
                                             initClient();
                                         }
+                                        if (client == null) {
+                                            return;
+                                        }
                                         if (isWrapper) {
                                             loadContractByWrapper();
                                         } else {
@@ -137,6 +141,9 @@ public class DeployLoadActivity extends AppCompatActivity {
                                     public void run() {
                                         if (!isInitClient) {
                                             initClient();
+                                        }
+                                        if (client == null) {
+                                            return;
                                         }
                                         if (isWrapper) {
                                             if (sol != null) {
@@ -166,6 +173,9 @@ public class DeployLoadActivity extends AppCompatActivity {
                                     public void run() {
                                         if (!isInitClient) {
                                             initClient();
+                                        }
+                                        if (client == null) {
+                                            return;
                                         }
                                         if (isWrapper) {
                                             if (sol != null) {
@@ -241,7 +251,7 @@ public class DeployLoadActivity extends AppCompatActivity {
                 new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(DeployLoadActivity.this, message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(DeployCallActivity.this, message, Toast.LENGTH_LONG).show();
                     }
                 });
     }
