@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Fiscobcosandroidsdkdemo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivityA">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
