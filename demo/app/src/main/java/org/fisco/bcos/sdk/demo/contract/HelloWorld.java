@@ -41,7 +41,7 @@ public class HelloWorld extends Contract {
 
     public static final String FUNC_SET = "set";
 
-    public  String FUNC_GET = "get";
+    public String FUNC_GET = "get";
 
     protected HelloWorld(String contractAddress, Client client, CryptoKeyPair credential) {
         super(getBinary(client.getCryptoSuite()), contractAddress, client, credential);
