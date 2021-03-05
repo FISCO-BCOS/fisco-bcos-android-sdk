@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rbGM;
     private EditText etIPPort;
     private TextView tvKeyInfo;
+    private RadioGroup rgKey;
     private RadioButton rbRadonKey;
     private RadioButton rbSpecifyKey;
     private EditText etSpecifyKey;
@@ -50,9 +52,11 @@ public class MainActivity extends AppCompatActivity {
         tvKeyInfo = findViewById(R.id.tv_key_info_id);
         TextPaint tp2 = tvKeyInfo.getPaint();
         tp2.setFakeBoldText(true);
+        rgKey = findViewById(R.id.rg_key_type);
         rbRadonKey = findViewById(R.id.rb_key_radom);
         rbSpecifyKey = findViewById(R.id.rb_key_specify);
         etSpecifyKey = findViewById(R.id.et_key_specify);
+        etSpecifyKey.setEnabled(false);
 
         // contract used way
         tvContractInfo = findViewById(R.id.tv_contract_info_id);
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, DeployLoadActivity.class);
+                        Intent intent = new Intent(MainActivity.this, DeployCallActivity.class);
                         intent.putExtra("chainId", etChainId.getText().toString().trim());
                         intent.putExtra("groupId", etGroupId.getText().toString().trim());
                         intent.putExtra("transactType", rbECDSA.isChecked());
@@ -77,6 +81,19 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("keyContent", etSpecifyKey.getText().toString().trim());
                         intent.putExtra("transactInfo", rbWrapper.isChecked());
                         startActivity(intent);
+                    }
+                });
+        rgKey.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        switch (checkedId){
+                            case R.id.rb_key_radom:
+                                etSpecifyKey.setEnabled(false);
+                                break;
+                            case R.id.rb_key_specify:
+                                etSpecifyKey.setEnabled(true);
+                                break;
+                        }
                     }
                 });
     }

@@ -78,7 +78,7 @@
             android:id="@+id/et_ip_port"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="https://116.63.184.110:8180/" />
+            android:text="https://127.0.0.1:8180/" />
     </LinearLayout>
 
     <RadioGroup
