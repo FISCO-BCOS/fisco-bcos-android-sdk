@@ -7,12 +7,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 import org.apache.commons.lang3.tuple.Pair;
 import org.fisco.bcos.sdk.BcosSDK;
+import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.exceptions.NetworkHandlerException;
 import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
@@ -33,30 +37,29 @@ import org.fisco.bcos.sdk.transaction.model.dto.TransactionResponse;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 import org.fisco.bcos.sdk.transaction.tools.JsonUtils;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-
 public class DeployLoadActivity extends AppCompatActivity {
-    private ExecutorService singleThreadExecutor;
-    ProxyConfig proxyConfig = new ProxyConfig();
-    Intent intent;
-    BcosSDK sdk;
-    Button btnDeployContract;
-    Button btnLoadContract;
-    EditText etContractAddress;
-    Button btnSet;
-    EditText etSetString;
-    Button btnGet;
-    EditText etGetString;
-    TextView tvMsg;
 
-    Client client;
-    HelloWorld sol = null;
-    boolean isInitClient = false;
-    Logger logger;
+    Logger logger = LoggerFactory.getLogger(DeployLoadActivity.class);
+
+    private ExecutorService singleThreadExecutor;
+    private ProxyConfig proxyConfig = new ProxyConfig();
+    private Intent intent;
+    private BcosSDK sdk;
+    private Button btnDeployContract;
+    private Button btnLoadContract;
+    private EditText etContractAddress;
+    private Button btnSet;
+    private EditText etSetString;
+    private Button btnGet;
+    private EditText etGetString;
+    private TextView tvMsg;
+
+    private Client client;
+    private HelloWorld sol;
+    private TransactionProcessor manager;
+    private String contractAddress;
+    private boolean isInitClient = false;
+    private boolean isWrapper = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,25 +69,9 @@ public class DeployLoadActivity extends AppCompatActivity {
         initView();
         initEvent();
         initParam();
-//        intent.putExtra("chainId", etChainId.getText().toString().trim());
-//        intent.putExtra("groupId", etGroupId.getText().toString().trim());
-//        intent.putExtra("transactType", rbECDSA.isChecked());
-//        intent.putExtra("keyType", rbRadonKey.isChecked());
-//        intent.putExtra("ipPort", etIPPort.getText().toString().trim());
-        logger = LoggerFactory.getLogger(MainActivityA.class);
+
         singleThreadExecutor = SingleLineUtil.getInstance().getSingle();
-
-//        new Thread(
-//                new Runnable() {
-//                    @Override
-//                    public void run() {
-////                        httpRequest(logger);
-//                        httpsRequest(logger);
-//                    }
-//                })
-//                .start();
     }
-
 
     private void initView() {
         btnDeployContract = findViewById(R.id.btn_deploy);
@@ -98,228 +85,189 @@ public class DeployLoadActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
-        btnDeployContract.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                singleThreadExecutor.execute(new Runnable() {
+        btnDeployContract.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        if (!isInitClient) {
-                            initClient();
-                        }
-                        deployContract();
+                    public void onClick(View v) {
+                        singleThreadExecutor.execute(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isInitClient) {
+                                            initClient();
+                                        }
+                                        if (isWrapper) {
+                                            deployContractByWrapper();
+                                        } else {
+                                            deployContractByAbiBin();
+                                        }
+                                    }
+                                });
                     }
                 });
 
-
-            }
-        });
-        btnLoadContract.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                singleThreadExecutor.execute(new Runnable() {
+        btnLoadContract.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        if (!isInitClient) {
-                            initClient();
-                        }
-                        loadContract();
+                    public void onClick(View v) {
+                        singleThreadExecutor.execute(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isInitClient) {
+                                            initClient();
+                                        }
+                                        if (isWrapper) {
+                                            loadContractByWrapper();
+                                        } else {
+                                            loadContractByAbiBin();
+                                        }
+                                    }
+                                });
                     }
                 });
 
-
-            }
-        });
-
-        btnSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                singleThreadExecutor.execute(new Runnable() {
+        btnSet.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        if (!isInitClient) {
-                            initClient();
-                        }
-                        setContract();
+                    public void onClick(View v) {
+                        singleThreadExecutor.execute(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isInitClient) {
+                                            initClient();
+                                        }
+                                        if (isWrapper) {
+                                            if (sol != null) {
+                                                setByWrapper();
+                                            } else {
+                                                showMessage("please first deploy or load contract");
+                                            }
+                                        } else {
+                                            if (contractAddress != null) {
+                                                setByAbiBin();
+                                            } else {
+                                                showMessage("please first deploy or load contract");
+                                            }
+                                        }
+                                    }
+                                });
                     }
                 });
-            }
-        });
 
-        btnGet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                singleThreadExecutor.execute(new Runnable() {
+        btnGet.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        if (!isInitClient) {
-                            initClient();
-                        }
-                        getContract();
+                    public void onClick(View v) {
+                        singleThreadExecutor.execute(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isInitClient) {
+                                            initClient();
+                                        }
+                                        if (isWrapper) {
+                                            if (sol != null) {
+                                                getByWrapper();
+                                            } else {
+                                                showMessage("please first deploy or load contract");
+                                            }
+                                        } else {
+                                            if (contractAddress != null) {
+                                                getByAbiBin();
+                                            } else {
+                                                showMessage("please first deploy or load contract");
+                                            }
+                                        }
+                                    }
+                                });
                     }
                 });
-            }
-        });
     }
 
     private void initParam() {
         // config param, if you do not pass in the implementation of network access, use the default
         // class
-        proxyConfig.setChainId(intent.getStringExtra("chainId"));
-        proxyConfig.setCryptoType(intent.getBooleanExtra("keyType", true) ? CryptoType.ECDSA_TYPE : CryptoType.SM_TYPE);
-        proxyConfig.setHexPrivateKey(
-                "65c70b77051903d7876c63256d9c165cd372ec7df813d0b45869c56fcf5fd564");
+        proxyConfig.setChainId(intent.getStringExtra("chainId").trim());
+        proxyConfig.setCryptoType(
+                intent.getBooleanExtra("transactType", true)
+                        ? CryptoType.ECDSA_TYPE
+                        : CryptoType.SM_TYPE);
+        if (!intent.getBooleanExtra("keyType", true)) {
+            proxyConfig.setHexPrivateKey(intent.getStringExtra("keyContent").trim());
+        }
         NetworkHandlerHttpsImp networkHandlerImp = new NetworkHandlerHttpsImp();
-        networkHandlerImp.setIpAndPort(intent.getStringExtra("ipPort"));
+        networkHandlerImp.setIpAndPort(intent.getStringExtra("ipPort").trim());
         CertInfo certInfo = new CertInfo("nginx.crt");
         networkHandlerImp.setCertInfo(certInfo);
         networkHandlerImp.setContext(getApplicationContext());
         proxyConfig.setNetworkHandler(networkHandlerImp);
         // config param end
+        isWrapper = intent.getBooleanExtra("transactInfo", true);
     }
-
 
     @Override
     protected void onDestroy() {
-        sdk.stopAll();
-        client.stop();
-        super.onDestroy();
-    }
-
-    private void httpsRequest(Logger logger) {
-        BcosSDK sdk = BcosSDK.build(proxyConfig);
-        deployAndSendContract(sdk, logger);
-        callContract(sdk, logger);
-        try {
-            Thread.sleep(3000);
-        } catch (Exception e) {
-            logger.error("exception:", e);
+        if (client != null) {
+            client.stop();
         }
-        sdk.stopAll();
+        if (sdk != null) {
+            sdk.stopAll();
+        }
+        super.onDestroy();
     }
 
     private void initClient() {
         try {
             sdk = BcosSDK.build(proxyConfig);
-            client = sdk.getClient(1);
+            client = sdk.getClient(new Integer(intent.getStringExtra("groupId").trim()));
             NodeVersion nodeVersion = client.getClientNodeVersion();
             logger.info("node version: " + JsonUtils.toJson(nodeVersion));
             isInitClient = true;
         } catch (NetworkHandlerException e) {
-            logger.error("exception", e);
+            String errorInfo = "init client NetworkHandlerException, error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
+        } catch (Exception e) {
+            String errorInfo = "init client Exception, error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
         }
-
     }
 
-    private void deployContract() {
+    private void showMessage(String message) {
+        runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(DeployLoadActivity.this, message, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void deployContractByWrapper() {
         try {
             sol = HelloWorld.deploy(client, client.getCryptoSuite().getCryptoKeyPair());
             logger.info(
                     "deploy contract , contract address: "
                             + JsonUtils.toJson(sol.getContractAddress()));
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    etContractAddress.setText(sol.getContractAddress());
-                }
-            });
+            runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            etContractAddress.setText(sol.getContractAddress());
+                        }
+                    });
         } catch (ContractException e) {
             e.printStackTrace();
-            logger.error("NetworkHandlerException error info: " + e.getMessage());
-        }
-
-    }
-
-    private void loadContract() {
-        sol = HelloWorld.load("".equals(etContractAddress.getText().toString().trim()) ?
-                        "0x2ffa020155c6c7e388c5e5c9ec7e6d403ec2c2d6" : etContractAddress.getText().toString().trim(),
-                client,
-                client.getCryptoSuite().getCryptoKeyPair());
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(DeployLoadActivity.this, "contract address: " + sol.getContractAddress(), Toast.LENGTH_LONG).show();
-
-            }
-        });
-    }
-
-    private void setContract() {
-        if("".equals(etSetString.getText().toString().trim())){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(DeployLoadActivity.this,"please type in set content!",Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-        TransactionReceipt ret1 = sol.set(etSetString.getText().toString().trim());
-        logger.info("send, receipt: " + JsonUtils.toJson(ret1));
-        BcosTransaction transaction = client.getTransactionByHash(ret1.getTransactionHash());
-        logger.info(
-                "getTransactionByHash, result: " + JsonUtils.toJson(transaction.getResult()));
-        BcosTransactionReceipt receipt =
-                client.getTransactionReceipt(ret1.getTransactionHash());
-        logger.info("getTransactionReceipt, result: " + JsonUtils.toJson(receipt.getResult()));
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvMsg.setText("send, receipt: " + JsonUtils.toJson(ret1) + "/n" +
-                        "getTransactionByHash, result: " + JsonUtils.toJson(transaction.getResult()) +
-                        "/n" + "getTransactionReceipt, result: " + JsonUtils.toJson(receipt.getResult()));
-            }
-        });
-    }
-
-    private String getContract() {
-        String ret2 = null;
-        try {
-            ret2 = sol.get();
-        } catch (ContractException e) {
-            e.printStackTrace();
-        }
-        logger.info("call to return string, result: " + ret2);
-        String finalRet = ret2;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                etGetString.setText(finalRet);
-            }
-        });
-        return ret2;
-    }
-
-    private void deployAndSendContract(BcosSDK sdk, Logger logger) {
-        try {
-//            initClient(sdk, logger);
-//            HelloWorld sol = HelloWorld.deploy(client, client.getCryptoSuite().getCryptoKeyPair());
-//            logger.info(
-//            "deploy contract , contract address: "
-//                    + JsonUtils.toJson(sol.getContractAddress()));
-            // HelloWorldProxy sol =
-//            HelloWorld.load("0x2ffa020155c6c7e388c5e5c9ec7e6d403ec2c2d6", client,
-            // client.getCryptoSuite().getCryptoKeyPair());
-//            TransactionReceipt ret1 = sol.set("Hello, FISCO BCOS.");
-//            logger.info("send, receipt: " + JsonUtils.toJson(ret1));
-//            String ret2 = sol.get();
-//            logger.info("call to return string, result: " + ret2);
-//            BcosTransaction transaction = client.getTransactionByHash(ret1.getTransactionHash());
-//            logger.info(
-//                    "getTransactionByHash, result: " + JsonUtils.toJson(transaction.getResult()));
-//            BcosTransactionReceipt receipt =
-//                    client.getTransactionReceipt(ret1.getTransactionHash());
-//            logger.info("getTransactionReceipt, result: " + JsonUtils.toJson(receipt.getResult()));
-
-            client.stop();
-        } catch (NetworkHandlerException e) {
-            logger.error("NetworkHandlerException error info: " + e.getMessage());
-        } catch (Exception e) {
-            logger.error("error info: " + e.getMessage());
-            e.printStackTrace();
+            String errorInfo = "ContractException error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
         }
     }
 
-    private void callContract(BcosSDK sdk, Logger logger) {
+    private void deployContractByAbiBin() {
         String contractName = "HelloWorld";
         Pair<String, String> abiBinStr = getContractAbiBin(contractName);
         String contractAbi = abiBinStr.getLeft();
@@ -327,8 +275,7 @@ public class DeployLoadActivity extends AppCompatActivity {
         logger.info("Contract abi: " + contractAbi + ", bin: " + contractBin);
 
         try {
-            Client client = sdk.getClient(1);
-            TransactionProcessor manager =
+            manager =
                     TransactionProcessorFactory.createTransactionProcessor(
                             client,
                             client.getCryptoSuite().getCryptoKeyPair(),
@@ -339,27 +286,149 @@ public class DeployLoadActivity extends AppCompatActivity {
             if (!response.getTransactionReceipt().getStatus().equals("0x0")) {
                 return;
             }
-            String contractAddress = response.getContractAddress();
+            contractAddress = response.getContractAddress();
             logger.info("deploy contract , contract address: " + contractAddress);
+            runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            etContractAddress.setText(contractAddress);
+                        }
+                    });
+        } catch (NetworkHandlerException e) {
+            String errorInfo = "NetworkHandlerException error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorInfo = "error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
+        }
+    }
+
+    private void loadContractByWrapper() {
+        if ("".equals(etContractAddress.getText().toString().trim())) {
+            showMessage("please input contract address to load contract");
+            return;
+        }
+        sol =
+                HelloWorld.load(
+                        etContractAddress.getText().toString().trim(),
+                        client,
+                        client.getCryptoSuite().getCryptoKeyPair());
+        showMessage("load contract address: " + sol.getContractAddress());
+    }
+
+    private void loadContractByAbiBin() {
+        if ("".equals(etContractAddress.getText().toString().trim())) {
+            showMessage("please input contract address to load contract");
+            return;
+        }
+        String contractName = "HelloWorld";
+        Pair<String, String> abiBinStr = getContractAbiBin(contractName);
+        String contractAbi = abiBinStr.getLeft();
+        String contractBin = abiBinStr.getRight();
+        logger.info("Contract abi: " + contractAbi + ", bin: " + contractBin);
+
+        manager =
+                TransactionProcessorFactory.createTransactionProcessor(
+                        client,
+                        client.getCryptoSuite().getCryptoKeyPair(),
+                        contractName,
+                        contractAbi,
+                        contractBin);
+        contractAddress = etContractAddress.getText().toString().trim();
+        showMessage("load contract address: " + contractAddress);
+    }
+
+    private void setByWrapper() {
+        String content = etSetString.getText().toString().trim();
+        if ("".equals(content)) {
+            showMessage("please input in set content");
+            return;
+        }
+        TransactionReceipt ret1 = sol.set(content);
+        logger.info("send, receipt: " + JsonUtils.toJson(ret1));
+        BcosTransaction transaction = client.getTransactionByHash(ret1.getTransactionHash());
+        logger.info("getTransactionByHash, result: " + JsonUtils.toJson(transaction.getResult()));
+        BcosTransactionReceipt receipt = client.getTransactionReceipt(ret1.getTransactionHash());
+        logger.info("getTransactionReceipt, result: " + JsonUtils.toJson(receipt.getResult()));
+        showMessage("call contract successfully, transaction hash:" + ret1.getTransactionHash());
+    }
+
+    private void setByAbiBin() {
+        String content = etSetString.getText().toString().trim();
+        if ("".equals(content)) {
+            showMessage("please input in set content");
+            return;
+        }
+        try {
             List<Object> paramsSet = new ArrayList<>();
-            paramsSet.add("Hello, FISCO BCOS.");
+            paramsSet.add(content);
             TransactionResponse ret1 =
                     manager.sendTransactionAndGetResponse(contractAddress, "set", paramsSet);
             logger.info("send, receipt: " + JsonUtils.toJson(ret1));
+            BcosTransaction transaction =
+                    client.getTransactionByHash(ret1.getTransactionReceipt().getTransactionHash());
+            logger.info(
+                    "getTransactionByHash, result: " + JsonUtils.toJson(transaction.getResult()));
+            BcosTransactionReceipt receipt =
+                    client.getTransactionReceipt(ret1.getTransactionReceipt().getTransactionHash());
+            logger.info("getTransactionReceipt, result: " + JsonUtils.toJson(receipt.getResult()));
+            showMessage(
+                    "call contract successfully, transaction hash:"
+                            + ret1.getTransactionReceipt().getTransactionHash());
+        } catch (ABICodecException e) {
+            String errorInfo = "ABICodecException error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
+        }
+    }
+
+    private void getByWrapper() {
+        try {
+            String ret1 = sol.get();
+            logger.info("call to return string, result: " + ret1);
+            String finalRet = ret1;
+            runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            etGetString.setText(finalRet);
+                        }
+                    });
+        } catch (ContractException e) {
+            e.printStackTrace();
+            String errorInfo = "ContractException error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
+        }
+    }
+
+    private void getByAbiBin() {
+        try {
             List<Object> paramsGet = new ArrayList<>();
-            CallResponse ret2 =
+            CallResponse ret1 =
                     manager.sendCall(
                             client.getCryptoSuite().getCryptoKeyPair().getAddress(),
                             contractAddress,
                             "get",
                             paramsGet);
-            List<Object> ret3 = JsonUtils.fromJsonList(ret2.getValues(), Object.class);
-            logger.info("call to return object list, result: " + ret3);
-        } catch (NetworkHandlerException e) {
-            logger.error("NetworkHandlerException error info: " + e.getMessage());
+            List<Object> ret2 = JsonUtils.fromJsonList(ret1.getValues(), Object.class);
+            logger.info("call to return object list, result: " + ret2);
+            String finalRet = ret2.toString();
+            runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            etGetString.setText(finalRet);
+                        }
+                    });
         } catch (Exception e) {
-            logger.error("error info: " + e.getMessage());
-            e.printStackTrace();
+            String errorInfo = "Exception error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
         }
     }
 
@@ -384,15 +453,4 @@ public class DeployLoadActivity extends AppCompatActivity {
 
         return null;
     }
-    //    private void httpRequest(Logger logger) {
-//
-//
-//        sdk = BcosSDK.build(proxyConfig);
-//        deployAndSendContract(sdk, logger);
-//        try {
-//            Thread.sleep(3000);
-//        } catch (Exception e) {
-//            logger.error("exception:", e);
-//        }
-//    }
 }
