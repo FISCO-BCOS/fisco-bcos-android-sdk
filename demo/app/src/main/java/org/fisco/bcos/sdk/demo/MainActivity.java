@@ -83,10 +83,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-        rgKey.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgKey.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        switch (checkedId){
+                        switch (checkedId) {
                             case R.id.rb_key_radom:
                                 etSpecifyKey.setEnabled(false);
                                 break;

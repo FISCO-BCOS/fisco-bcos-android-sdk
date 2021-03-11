@@ -15,9 +15,8 @@
 package org.fisco.bcos.sdk.transaction.builder;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import org.fisco.bcos.sdk.abi.ABICodec;
 import org.fisco.bcos.sdk.abi.ABICodecException;
 import org.fisco.bcos.sdk.client.Client;
@@ -51,7 +50,7 @@ public class TransactionBuilderService implements TransactionBuilderInterface {
             throws ABICodecException {
         ABICodec abiCodec = new ABICodec(cryptoSuite);
         String data = abiCodec.encodeMethod(abi, functionName, params);
-        Random r = ThreadLocalRandom.current();
+        SecureRandom r = new SecureRandom();
         BigInteger randomId = new BigInteger(250, r);
         RawTransaction rawTransaction =
                 RawTransaction.createTransaction(
@@ -79,7 +78,7 @@ public class TransactionBuilderService implements TransactionBuilderInterface {
             BigInteger chainId,
             BigInteger groupId,
             String extraData) {
-        Random r = new Random();
+        SecureRandom r = new SecureRandom();
         BigInteger randomId = new BigInteger(250, r);
         BigInteger blockLimit = client.getBlockLimit();
         return RawTransaction.createTransaction(
