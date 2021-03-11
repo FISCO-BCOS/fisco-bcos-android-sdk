@@ -270,7 +270,7 @@ public class DeployCallActivity extends AppCompatActivity {
                         }
                     });
         } catch (ContractException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             String errorInfo = "ContractException error info: " + e.getMessage();
             logger.error(errorInfo);
             showMessage(errorInfo);
@@ -310,7 +310,7 @@ public class DeployCallActivity extends AppCompatActivity {
             logger.error(errorInfo);
             showMessage(errorInfo);
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             String errorInfo = "error info: " + e.getMessage();
             logger.error(errorInfo);
             showMessage(errorInfo);
@@ -409,7 +409,7 @@ public class DeployCallActivity extends AppCompatActivity {
                         }
                     });
         } catch (ContractException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             String errorInfo = "ContractException error info: " + e.getMessage();
             logger.error(errorInfo);
             showMessage(errorInfo);
@@ -458,7 +458,10 @@ public class DeployCallActivity extends AppCompatActivity {
             while ((line = bufReader.readLine()) != null) Result += line;
             return Result;
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            String errorInfo = "getFromAssets failed, error info: " + e.getMessage();
+            logger.error(errorInfo);
+            showMessage(errorInfo);
         }
 
         return null;

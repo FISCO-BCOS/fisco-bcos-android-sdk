@@ -87,7 +87,7 @@ public interface Client {
             }
         } catch (Exception e) {
             logger.error("build client failed, error info: " + e.getMessage());
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         return null;
     }
