@@ -177,9 +177,10 @@ public class NetworkHandlerHttpsImp implements NetworkHandlerInterface {
                 throw new NetworkHandlerException(errorStr);
             }
         } catch (ConnectException e) {
-            logger.error("onRPCRequest failed, error info: " + e.getMessage());
+            logger.error("onRPCRequest failed, ConnectException error info: " + e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            logger.error("onRPCRequest failed, IOException error info: " + e.getMessage());
         }
 
         return null;
