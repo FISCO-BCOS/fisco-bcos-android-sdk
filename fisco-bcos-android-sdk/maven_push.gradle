@@ -28,6 +28,32 @@ uploadArchives {
             pom.artifactId = ARTIFACT_ID
             pom.groupId = GROUP_ID
 
+            pom.project {
+                name 'fisco-bcos'
+                packaging 'arr'
+                description 'fisco-bcos android sdk'
+                url 'http://www.fisco-bcos.org'
+
+                scm {
+                    url 'https://github.com/FISCO-BCOS/fisco-bcos-android-sdk.git'
+                    connection 'https://github.com/FISCO-BCOS/fisco-bcos-android-sdk.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'fisco-dev'
+                        name 'fisco-dev'
+                        email 'service@fisco.com.cn'
+                    }
+                }
+            }
+
             repository(url: getRepositoryUrl()) {
                 authentication(userName: NAME, password: PASSWORD)
             }

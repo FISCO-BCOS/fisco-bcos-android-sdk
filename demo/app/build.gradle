@@ -45,7 +45,7 @@ configurations.all {
 
 dependencies {
 
-    implementation 'org.fisco-bcos.android-sdk:fisco-bcos-android-sdk:1.0.0-SNAPSHOT'
+    implementation 'org.fisco-bcos.android-sdk:fisco-bcos-android-sdk:1.0.0'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
