@@ -15,7 +15,7 @@
 
 | 重要事项      | 说明                                                                                                                                                                     |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 服务依赖      | [节点接入代理服务 bcos-node-proxy](https://github.com/FISCO-BCOS/bcos-node-proxy)                                                                                        |
+| 服务依赖      | 节点接入代理服务 bcos-node-proxy [Github 链接](https://github.com/FISCO-BCOS/bcos-node-proxy.git) [Gitee 链接](https://gitee.com/FISCO-BCOS/bcos-node-proxy.git)         |
 | 包含架构      | armeabi-v7a 和 arm64-v8a                                                                                                                                                 |
 | 支持 API 下限 | 21（平台版本 Android 5.0）                                                                                                                                               |
 | 所需权限      | 读权限（用于获取服务端证书）、网络访问权限（用于访问区块链节点接入代理服务）                                                                                             |
