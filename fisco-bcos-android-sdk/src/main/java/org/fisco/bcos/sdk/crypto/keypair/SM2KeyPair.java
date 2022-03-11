@@ -59,7 +59,7 @@ public class SM2KeyPair extends CryptoKeyPair {
 
     @Override
     public CryptoKeyPair derivePublicKey(String hexPrivateKey) {
-        return new ECDSAKeyPair(NativeInterface.sm2DerivePublicKey(hexPrivateKey));
+        return new SM2KeyPair(NativeInterface.sm2DerivePublicKey(hexPrivateKey));
     }
 
     public static String getAddressByPublicKey(String publicKey) {
